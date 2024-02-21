@@ -9,6 +9,7 @@ import { catchAll } from '~/src/server/common/helpers/errors'
 import { secureContext } from '~/src/server/common/helpers/secure-context'
 
 const isProduction = config.get('isProduction')
+const withPathPrefix = config.get('withPathPrefix')
 
 async function createServer() {
   const server = hapi.server({
@@ -44,9 +45,13 @@ async function createServer() {
 
   await server.register(requestLogger)
 
-  await server.register(router, {
-    routes: { prefix: config.get('appPathPrefix') }
-  })
+  if (withPathPrefix) {
+    await server.register(router, {
+      routes: { prefix: config.get('appPathPrefix') }
+    })
+  } else {
+    await server.register(router)
+  }
 
   await server.register(nunjucksConfig)
 

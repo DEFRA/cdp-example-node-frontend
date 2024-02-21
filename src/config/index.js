@@ -35,7 +35,7 @@ const config = convict({
   assetPath: {
     doc: 'Asset path',
     format: String,
-    default: 'public',
+    default: '/public',
     env: 'ASSET_PATH'
   },
   appPathPrefix: {
@@ -43,6 +43,12 @@ const config = convict({
     format: String,
     default: '/cdp-example-node-frontend',
     env: 'APP_PATH_PREFIX'
+  },
+  withPathPrefix: {
+    doc: 'Include application url path prefix',
+    format: Boolean,
+    default: 'true',
+    env: 'WITH_PATH_PREFIX'
   },
   isProduction: {
     doc: 'If this application running in the production environment',

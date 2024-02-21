@@ -7,6 +7,7 @@ import { buildNavigation } from '~/src/config/nunjucks/context/build-navigation'
 const logger = createLogger()
 const assetPath = config.get('assetPath')
 const appPathPrefix = config.get('appPathPrefix')
+const withPathPrefix = config.get('withPathPrefix')
 
 const manifestPath = path.resolve(
   config.get('root'),
@@ -29,7 +30,11 @@ function context(request) {
     getAssetPath: function (asset) {
       const webpackAssetPath = webpackManifest[asset]
 
-      return `${appPathPrefix}/${assetPath}/${webpackAssetPath}`
+      if (withPathPrefix) {
+        return `${appPathPrefix}${assetPath}/${webpackAssetPath}`
+      } else {
+        return `${assetPath}/${webpackAssetPath}`
+      }
     }
   }
 }
