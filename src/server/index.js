@@ -9,6 +9,7 @@ import { catchAll } from '~/src/server/common/helpers/errors'
 import { secureContext } from '~/src/server/common/helpers/secure-context'
 
 const isProduction = config.get('isProduction')
+const appPathPrefix = config.get('appPathPrefix')
 const withPathPrefix = config.get('withPathPrefix')
 
 async function createServer() {
@@ -47,7 +48,7 @@ async function createServer() {
 
   if (withPathPrefix) {
     await server.register(router, {
-      routes: { prefix: config.get('appPathPrefix') }
+      routes: { prefix: appPathPrefix }
     })
   } else {
     await server.register(router)
@@ -56,6 +57,26 @@ async function createServer() {
   await server.register(nunjucksConfig)
 
   server.ext('onPreResponse', catchAll)
+  server.ext({
+    type: 'onRequest',
+    method: function (request, h) {
+      if (withPathPrefix) {
+        /*
+         * appPathPrefix
+         * If the request url does not have the path prefix,
+         * then we need to add the prefix from the request url
+         */
+      } else {
+        /*
+         * appPathPrefix
+         * If the request url does have the path prefix,
+         * then we need to remove the prefix from the request url
+         */
+      }
+      // request.setUrl()
+      return h.continue
+    }
+  })
 
   return server
 }
