@@ -1,38 +1,23 @@
-import { config } from '~/src/config'
-
-const appPathPrefix = config.get('appPathPrefix')
+import { sanitisePath } from 'src/helpers/sanitise-url-path.js'
 
 function buildNavigation(request) {
   return [
     {
       text: 'Home',
-      url: generatePath('/'),
-      isActive: request.path === generatePath('/')
+      url: sanitisePath('/'),
+      isActive: request.path === sanitisePath('/')
     },
     {
       text: 'About',
-      url: generatePath('/about'),
-      isActive: request.path === generatePath('/about')
+      url: sanitisePath('/about'),
+      isActive: request.path === sanitisePath('/about')
     },
     {
       text: 'Third',
-      url: generatePath('/third'),
-      isActive: request.path === generatePath('/third')
+      url: sanitisePath('/third'),
+      isActive: request.path === sanitisePath('/third')
     }
   ]
 }
 
-function generatePath(requestPath, prefix = appPathPrefix) {
-  const path = `${prefix}${requestPath}`
-  if (path === '' || path === '/') {
-    return '/'
-  } else if (path.startsWith('//')) {
-    return requestPath
-  } else if (requestPath === '/') {
-    return prefix
-  } else {
-    return path
-  }
-}
-
-export { buildNavigation, generatePath }
+export { buildNavigation }
