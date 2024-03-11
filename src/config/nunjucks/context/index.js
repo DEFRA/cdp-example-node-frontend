@@ -3,10 +3,10 @@ import path from 'path'
 import { config } from '~/src/config'
 import { createLogger } from '~/src/server/common/helpers/logging/logger'
 import { buildNavigation } from '~/src/config/nunjucks/context/build-navigation'
+import { sanitisePath } from 'src/helpers/sanitise-url-path.js'
 
 const logger = createLogger()
 const assetPath = config.get('assetPath')
-const appPathPrefix = config.get('appPathPrefix')
 
 const manifestPath = path.resolve(
   config.get('root'),
@@ -27,12 +27,10 @@ function context(request) {
     breadcrumbs: [],
     navigation: buildNavigation(request),
     getAssetPath: function (asset) {
-      const webpackAssetPath = webpackManifest[asset]
-      if (!appPathPrefix || appPathPrefix === '/') {
-        return `${assetPath}/${webpackAssetPath}`
-      } else {
-        return `${appPathPrefix}${assetPath}/${webpackAssetPath}`
-      }
+      return sanitisePath(`${assetPath}/${webpackManifest[asset]}`)
+    },
+    getServiceUrl: function () {
+      return sanitisePath('')
     }
   }
 }
