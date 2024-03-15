@@ -1,0 +1,38 @@
+{% extends 'layouts/page.njk' %}
+
+{% set asideHtml %}
+  <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+    <a class="govuk-link govuk-link--text-colour" href="/creatures/upload">Upload details</a>
+  </h2>
+{% endset %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+        <p>
+          Details of mythical creatures spotted in the UK.
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+          {% for creature in creatures %}
+            {# TODO make this more fancy when we have the data #}
+            <li class="govuk-!-margin-bottom-1">{{ creature }}</li>
+
+          {% else %}
+              <li class="govuk-!-margin-bottom-1">No creatures uploaded.</li>
+          {% endfor %}
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,3 +1,5 @@
+{% set asideContent = params.aside.html | safe if params.aside.html else params.aside.text %}
+
 <div class="govuk-grid-row app-heading" data-testid="app-heading">
   <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"
@@ -7,5 +9,8 @@
       <span class="govuk-caption-m"
             data-testid="app-heading-caption">{{ params.caption }}</span>
     {% endif %}
+  </div>
+  <div class="govuk-grid-column-one-third">
+    {{ asideContent }}
   </div>
 </div>
