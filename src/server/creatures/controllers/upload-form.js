@@ -1,6 +1,12 @@
+import {initUpload} from "~/src/server/common/helpers/cdp-uploader";
+
 const uploadFormController = {
-  handler: (request, h) => {
+  handler: async (request, h) => {
+
+    const secureUpload = await initUpload()
+
     return h.view('creatures/views/upload-form', {
+      action: secureUpload.url,
       pageTitle: 'Upload details',
       heading: 'Seen a mythical creature?',
       kindsOfCreatures: [
