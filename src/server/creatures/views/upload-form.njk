@@ -1,0 +1,67 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Upload all the details about your creature."
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+
+        <form action="{{ action }}" method="post" enctype="multipart/form-data">
+
+          {% call govukFieldset() %}
+
+            {{ govukInput({
+              label: {
+                text: "Name",
+                classes: "govuk-label--m"
+              },
+              id: "name",
+              name: "name",
+              hint: {
+                text: "How is the creature known"
+              }
+            }) }}
+
+            {{ govukSelect({
+              id: "kind",
+              name: "kind",
+              label: {
+                text: "Kind",
+                classes: "govuk-label--m"
+              },
+              hint: {
+                text: "What kind of creature"
+              },
+              items: kindsOfCreatures
+            }) }}
+
+            {{ govukFileUpload({
+              id: "file",
+              name: "file",
+              label: {
+                text: "Picture",
+                classes: "govuk-label--m"
+              },
+              hint: {
+                text: "Filetypes of .jpeg with a max size of 100kb"
+              }
+            }) }}
+
+          {% endcall %}
+
+          {{ govukButton({
+            text: "Upload"
+          }) }}
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
