@@ -2,8 +2,8 @@
 
 {% block content %}
   {{ appHeading({
-    text: heading,
-    caption: "Upload all the details about your animal."
+    title: heading,
+    caption: "Upload a picture."
   }) }}
 
   <div class="govuk-grid-row">
@@ -13,31 +13,6 @@
         <form action="{{ action }}" method="post" enctype="multipart/form-data">
 
           {% call govukFieldset() %}
-
-            {{ govukInput({
-              label: {
-                text: "Name",
-                classes: "govuk-label--m"
-              },
-              id: "name",
-              name: "name",
-              hint: {
-                text: "What is the animals name?"
-              }
-            }) }}
-
-            {{ govukSelect({
-              id: "kind",
-              name: "kind",
-              label: {
-                text: "Kind",
-                classes: "govuk-label--m"
-              },
-              hint: {
-                text: "What kind of animal?"
-              },
-              items: kindsOfCreatures
-            }) }}
 
             {{ govukFileUpload({
               id: "file",

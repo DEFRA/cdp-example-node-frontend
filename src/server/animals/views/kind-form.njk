@@ -1,0 +1,46 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading,
+    caption: "Type of animal."
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+
+        <form action="{{ action }}" method="post">
+
+          {% call govukFieldset() %}
+
+            {{ govukSelect({
+              id: "kind",
+              name: "kind",
+              label: {
+                text: "Kind",
+                classes: "govuk-label--m"
+              },
+              hint: {
+                text: "What kind of animal?"
+              },
+              items: kindsOfAnimals,
+              errorMessage: {
+                text: formErrors.kind.message
+              } if formErrors.kind.message
+            }) }}
+
+          {% endcall %}
+
+          {{ govukButton({
+            text: "Next"
+          }) }}
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

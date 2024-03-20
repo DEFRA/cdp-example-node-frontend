@@ -1,13 +1,14 @@
 import path from 'path'
 import nunjucks from 'nunjucks'
 import { load } from 'cheerio'
-import { camelCase } from 'lodash'
+import { camelCase, upperFirst } from 'lodash'
+
 import * as filters from '~/src/config/nunjucks/filters'
-import * as globals from '~/src/config/nunjucks/globals'
 
 const nunjucksTestEnv = nunjucks.configure(
   [
     'node_modules/govuk-frontend/dist/',
+    'server',
     path.normalize(
       path.resolve(__dirname, '..', 'src', 'server', 'common', 'templates')
     ),
@@ -17,23 +18,18 @@ const nunjucksTestEnv = nunjucks.configure(
   ],
   {
     trimBlocks: true,
-    lstripBlocks: true
+    lstripBlocks: true,
+    watch: false
   }
 )
-
-Object.keys(globals).forEach((global) => {
-  nunjucksTestEnv.addFilter(global, globals[global])
-})
 
 Object.keys(filters).forEach((filter) => {
   nunjucksTestEnv.addFilter(filter, filters[filter])
 })
 
-function renderComponent(componentName, params, callBlock) {
-  const macroPath = `${componentName}/macro.njk`
-  const macroName = `app${
-    componentName.charAt(0).toUpperCase() + camelCase(componentName.slice(1))
-  }`
+function renderTestComponent(name, params, callBlock) {
+  const macroPath = `${name}/macro.njk`
+  const macroName = `app${upperFirst(camelCase(name))}`
   const macroParams = JSON.stringify(params, null, 2)
   let macroString = `{%- from "${macroPath}" import ${macroName} -%}`
 
@@ -46,4 +42,4 @@ function renderComponent(componentName, params, callBlock) {
   return load(nunjucksTestEnv.renderString(macroString))
 }
 
-export { renderComponent }
+export { renderTestComponent }

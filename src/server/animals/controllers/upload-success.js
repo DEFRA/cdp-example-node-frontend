@@ -1,3 +1,4 @@
+// TODO
 const uploadSuccessController = {
   handler: (request, h) => {
     return h.view('animals/views/upload-success', {
@@ -9,7 +10,7 @@ const uploadSuccessController = {
           href: '/animals'
         },
         {
-          text: 'Upload details',
+          text: 'Add animal',
           href: '/animals/upload'
         },
         {

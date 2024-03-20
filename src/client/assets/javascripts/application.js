@@ -1,5 +1,8 @@
 import { initAll } from 'govuk-frontend'
 
+import { initModule } from '~/src/client/common/helpers/init-module'
+import { banner } from '~/src/server/common/components/banner/banner'
+
 import '../stylesheets/application.scss'
 
 import '../images/favicon.ico'
@@ -10,3 +13,6 @@ import '../images/govuk-icon-512.png'
 import '../images/govuk-icon-mask.svg'
 
 initAll()
+
+// Notification banner
+initModule('app-notification', banner)

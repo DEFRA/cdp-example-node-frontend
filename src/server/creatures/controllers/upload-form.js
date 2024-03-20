@@ -1,4 +1,4 @@
-import { initUpload } from '~/src/helpers/upload/uploader'
+import { initUpload } from '~/src/server/common/helpers/upload/uploader'
 
 const uploadFormController = {
   handler: async (request, h) => {
@@ -10,7 +10,7 @@ const uploadFormController = {
     })
 
     return h.view('creatures/views/upload-form', {
-      pageTitle: 'Upload details',
+      pageTitle: 'Add creature',
       action: secureUpload.url,
       heading: 'Seen a mythical creature?',
       kindsOfCreatures: [
@@ -54,7 +54,7 @@ const uploadFormController = {
           href: '/creatures'
         },
         {
-          text: 'Upload details'
+          text: 'Add creature'
         }
       ]
     })

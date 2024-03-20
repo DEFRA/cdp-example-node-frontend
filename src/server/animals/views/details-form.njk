@@ -1,0 +1,45 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading,
+    caption: "Animal details."
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+
+        <form action="{{ action }}" method="post">
+
+          {% call govukFieldset() %}
+
+            {{ govukInput({
+              label: {
+                text: "Name",
+                classes: "govuk-label--m"
+              },
+              id: "name",
+              name: "name",
+              hint: {
+                text: "What is the animals name?"
+              },
+              errorMessage: {
+                text: formErrors.name.message
+              } if formErrors.name.message
+            }) }}
+
+          {% endcall %}
+
+          {{ govukButton({
+            text: "Next"
+          }) }}
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
