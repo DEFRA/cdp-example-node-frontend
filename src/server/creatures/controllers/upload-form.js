@@ -1,7 +1,17 @@
+import { initUpload } from '~/src/server/common/helpers/upload/uploader'
+
 const uploadFormController = {
-  handler: (request, h) => {
+  handler: async (request, h) => {
+    const secureUpload = await initUpload(request, h, {
+      successRedirect: 'http://localhost:3000/creatures/upload/success',
+      failureRedirect: 'http://localhost:3000/creatures/upload/failure',
+      scanResultCallback: 'http://localhost:3000', // TODO
+      fileDestination: 'http://localhost:3000' // TODO
+    })
+
     return h.view('creatures/views/upload-form', {
-      pageTitle: 'Upload details',
+      pageTitle: 'Add creature',
+      action: secureUpload.url,
       heading: 'Seen a mythical creature?',
       kindsOfCreatures: [
         {
@@ -44,7 +54,7 @@ const uploadFormController = {
           href: '/creatures'
         },
         {
-          text: 'Upload details'
+          text: 'Add creature'
         }
       ]
     })

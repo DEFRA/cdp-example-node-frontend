@@ -2,13 +2,13 @@
 
 {% set asideHtml %}
   <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
-    <a class="govuk-link govuk-link--text-colour" href="/creatures/upload">Upload details</a>
+    <a class="govuk-link govuk-link--text-colour" href="/creatures/upload">Add creature</a>
   </h2>
 {% endset %}
 
 {% block content %}
   {{ appHeading({
-    text: heading,
+    title: heading,
     aside: {
       html: asideHtml
     }

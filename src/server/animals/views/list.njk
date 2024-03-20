@@ -1,0 +1,38 @@
+{% extends 'layouts/page.njk' %}
+
+{% set asideHtml %}
+  <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+    <a class="govuk-link govuk-link--text-colour" href="/animals/add">Add animal</a>
+  </h2>
+{% endset %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading,
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+        <p>
+          Details of animals spotted in the UK.
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+          {% for animal in animals %}
+            {# TODO make this more fancy when we have the data #}
+            <li class="govuk-!-margin-bottom-1">{{ animal }}</li>
+
+          {% else %}
+              <li class="govuk-!-margin-bottom-1">No animals uploaded.</li>
+          {% endfor %}
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

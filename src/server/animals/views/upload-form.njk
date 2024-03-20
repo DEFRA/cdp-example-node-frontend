@@ -1,0 +1,42 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading,
+    caption: "Upload a picture."
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+
+        <form action="{{ action }}" method="post" enctype="multipart/form-data">
+
+          {% call govukFieldset() %}
+
+            {{ govukFileUpload({
+              id: "file",
+              name: "file",
+              label: {
+                text: "Picture",
+                classes: "govuk-label--m"
+              },
+              hint: {
+                text: "Filetypes of .jpeg with a max size of 100kb"
+              }
+            }) }}
+
+          {% endcall %}
+
+          {{ govukButton({
+            text: "Upload"
+          }) }}
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

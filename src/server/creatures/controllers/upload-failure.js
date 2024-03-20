@@ -9,7 +9,7 @@ const uploadFailureController = {
           href: '/creatures'
         },
         {
-          text: 'Upload details',
+          text: 'Add creature',
           href: '/creatures/upload'
         },
         {
