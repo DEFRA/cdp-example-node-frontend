@@ -3,7 +3,7 @@
 {% block content %}
   {{ appHeading({
     text: heading,
-    caption: "Upload all the details about your creature."
+    caption: "Upload all the details about your animal."
   }) }}
 
   <div class="govuk-grid-row">
@@ -22,7 +22,7 @@
               id: "name",
               name: "name",
               hint: {
-                text: "What is the creatures name?"
+                text: "What is the animals name?"
               }
             }) }}
 
@@ -34,7 +34,7 @@
                 classes: "govuk-label--m"
               },
               hint: {
-                text: "What kind of creature?"
+                text: "What kind of animal?"
               },
               items: kindsOfCreatures
             }) }}

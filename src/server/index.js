@@ -9,6 +9,7 @@ import { requestLogger } from '~/src/server/common/helpers/logging/request-logge
 import { catchAll } from '~/src/server/common/helpers/errors'
 import { secureContext } from '~/src/server/common/helpers/secure-context'
 import { buildRedisClient } from '~/src/server/common/helpers/redis-client'
+import { sessionManager } from '~/src/server/common/helpers/session-manager'
 
 const client = buildRedisClient()
 const isProduction = config.get('isProduction')
@@ -60,11 +61,7 @@ async function createServer() {
     await server.register(secureContext)
   }
 
-  await server.register(requestLogger)
-
-  await server.register(router)
-
-  await server.register(nunjucksConfig)
+  await server.register([requestLogger, sessionManager, router, nunjucksConfig])
 
   server.ext('onPreResponse', catchAll)
 

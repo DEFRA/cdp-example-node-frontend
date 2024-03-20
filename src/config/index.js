@@ -76,6 +76,13 @@ const config = convict({
     default: process.env.NODE_ENV !== 'production',
     env: 'USE_SINGLE_INSTANCE_CACHE'
   },
+  sessionCookiePassword: {
+    doc: 'Session cookie password',
+    format: '*',
+    default: 'beepBoopBeepDevelopmentOnlyBeepBoop',
+    sensitive: true,
+    env: 'SESSION_COOKIE_PASSWORD'
+  },
   isProduction: {
     doc: 'If this application running in the production environment',
     format: Boolean,

@@ -3,16 +3,16 @@ import { initUpload } from '~/src/helpers/upload/uploader'
 const uploadFormController = {
   handler: async (request, h) => {
     const secureUpload = await initUpload(request, h, {
-      successRedirect: 'http://localhost:3000/creatures/upload/success',
-      failureRedirect: 'http://localhost:3000/creatures/upload/failure',
+      successRedirect: 'http://localhost:3000/animals/upload/success',
+      failureRedirect: 'http://localhost:3000/animals/upload/failure',
       scanResultCallback: 'http://localhost:3000', // TODO
       fileDestination: 'http://localhost:3000' // TODO
     })
 
-    return h.view('creatures/views/upload-form', {
+    return h.view('animals/views/upload-form', {
       pageTitle: 'Upload details',
       action: secureUpload.url,
-      heading: 'Seen a mythical creature?',
+      heading: 'Seen an Animal?',
       kindsOfCreatures: [
         {
           text: ' - - select - - ',
@@ -20,38 +20,30 @@ const uploadFormController = {
           attributes: { selected: true }
         },
         {
-          value: 'banshee',
-          text: 'Banshee'
+          value: 'rabbit',
+          text: 'Rabbit'
         },
         {
-          value: 'chimera',
-          text: 'Chimera'
+          value: 'cow',
+          text: 'Cow'
         },
         {
-          value: 'griffen',
-          text: 'Griffen'
+          value: 'horse',
+          text: 'Horse'
         },
         {
-          value: 'mermaid',
-          text: 'Mermaid'
+          value: 'otter',
+          text: 'Otter'
         },
         {
-          value: 'minotaur',
-          text: 'Minotaur'
-        },
-        {
-          value: 'unicorn',
-          text: 'Unicorn'
-        },
-        {
-          value: 'werewolf',
-          text: 'Werewolf'
+          value: 'yak',
+          text: 'Yak'
         }
       ],
       breadcrumbs: [
         {
-          text: 'Creatures',
-          href: '/creatures'
+          text: 'Animals',
+          href: '/animals'
         },
         {
           text: 'Upload details'
