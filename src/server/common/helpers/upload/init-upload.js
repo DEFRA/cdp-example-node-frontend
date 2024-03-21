@@ -1,21 +1,28 @@
 import fetch from 'node-fetch'
 
-async function initUpload({ yar }, h, options = {}) {
+import { config } from '~/src/config'
+
+async function initUpload(options = {}) {
   const {
     successRedirect,
     failureRedirect,
     scanResultCallback,
-    fileDestination
+    destinationBucket,
+    acceptedMimeTypes,
+    maxFileSize
   } = options
 
-  const response = await fetch('http://localhost:7337/initiate', {
+  const endpointUrl = config.get('uploaderApiUrl') + '/initiate'
+  const response = await fetch(endpointUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       successRedirect,
       failureRedirect,
       scanResultCallback,
-      fileDestination
+      destinationBucket,
+      acceptedMimeTypes,
+      maxFileSize
     })
   })
 

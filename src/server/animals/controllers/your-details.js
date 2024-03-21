@@ -25,12 +25,7 @@ const yourDetailsController = {
     if (!validationResult.error) {
       await saveToAnimal(request, h, payload)
 
-      request.yar.flash(sessionNames.notifications, {
-        text: 'Animal added',
-        type: 'success'
-      })
-
-      return h.redirect('/animals')
+      return h.redirect('/animals/add/summary')
     }
   }
 }

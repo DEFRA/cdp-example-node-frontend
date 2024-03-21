@@ -83,6 +83,12 @@ const config = convict({
     sensitive: true,
     env: 'SESSION_COOKIE_PASSWORD'
   },
+  uploaderApiUrl: {
+    doc: 'CDP Uploader API root url',
+    format: String,
+    default: 'http://localhost:7337',
+    env: 'CDP_UPLOADER_API_URL'
+  },
   isProduction: {
     doc: 'If this application running in the production environment',
     format: Boolean,

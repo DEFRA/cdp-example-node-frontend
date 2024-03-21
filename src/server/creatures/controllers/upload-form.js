@@ -1,4 +1,4 @@
-import { initUpload } from '~/src/server/common/helpers/upload/uploader'
+import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
 
 const uploadFormController = {
   handler: async (request, h) => {

@@ -1,6 +1,4 @@
 import { uploadFormController } from '~/src/server/animals/controllers/upload-form'
-import { uploadSuccessController } from '~/src/server/animals/controllers/upload-success'
-import { uploadFailureController } from '~/src/server/animals/controllers/upload-failure'
 import { animalListController } from '~/src/server/animals/controllers/list'
 import { animalController } from '~/src/server/animals/controllers/animal'
 import { startController } from '~/src/server/animals/controllers/start'
@@ -10,6 +8,8 @@ import { kindFormController } from '~/src/server/animals/controllers/kind-form'
 import { kindController } from '~/src/server/animals/controllers/kind'
 import { yourDetailsFormController } from '~/src/server/animals/controllers/your-details-form'
 import { yourDetailsController } from '~/src/server/animals/controllers/your-details'
+import { summaryFormController } from '~/src/server/animals/controllers/summary-form'
+import { createController } from '~/src/server/animals/controllers/create'
 
 export {
   startController,
@@ -20,8 +20,8 @@ export {
   yourDetailsFormController,
   yourDetailsController,
   uploadFormController,
-  uploadSuccessController,
-  uploadFailureController,
+  summaryFormController,
+  createController,
   animalListController,
   animalController
 }
