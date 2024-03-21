@@ -12,8 +12,9 @@ const uploadFormController = {
     const secureUpload = await initUpload(request, h, {
       successRedirect: `http://localhost:3000/animals/upload/success${queryString}`, // TODO
       failureRedirect: `http://localhost:3000/animals/upload/failure${queryString}`, // TODO
-      scanResultCallback: `http://localhost:3000${queryString}`, // TODO
-      fileDestination: `http://localhost:3000${queryString}` // TODO
+      scanResultCallback: `http://localhost:3000/animals/callback${queryString}`, // TODO
+      destinationBucket: 'cdp-example-node-frontend-uploads', // TODO
+      destinationPath: 'animals' // TODO
     })
 
     return h.view('animals/views/upload-form', {

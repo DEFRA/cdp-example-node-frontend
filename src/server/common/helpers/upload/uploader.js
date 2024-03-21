@@ -5,7 +5,8 @@ async function initUpload({ yar }, h, options = {}) {
     successRedirect,
     failureRedirect,
     scanResultCallback,
-    fileDestination
+    destinationBucket,
+    destinationPath
   } = options
 
   const response = await fetch('http://localhost:7337/initiate', {
@@ -15,7 +16,8 @@ async function initUpload({ yar }, h, options = {}) {
       successRedirect,
       failureRedirect,
       scanResultCallback,
-      fileDestination
+      destinationBucket,
+      destinationPath
     })
   })
 
