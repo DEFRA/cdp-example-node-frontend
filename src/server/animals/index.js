@@ -1,16 +1,16 @@
 import {
-  uploadFormController,
-  uploadSuccessController,
-  uploadFailureController,
-  animalListController,
-  animalController,
   startController,
   detailsFormController,
   detailsController,
   kindFormController,
   kindController,
   yourDetailsFormController,
-  yourDetailsController
+  yourDetailsController,
+  uploadFormController,
+  summaryFormController,
+  createController,
+  animalListController,
+  animalController
 } from '~/src/server/animals/controllers'
 import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
 import { sessionNames } from '~/src/server/common/constants/session-names'
@@ -73,16 +73,6 @@ const animals = {
         },
         {
           method: 'GET',
-          path: '/animals/upload/success', // TODO work out how the success fits in to a multi-step form
-          ...uploadSuccessController
-        },
-        {
-          method: 'GET',
-          path: '/animals/upload/failure', // TODO work out how the failure fits in to a multi-step form
-          ...uploadFailureController
-        },
-        {
-          method: 'GET',
           path: '/animals/add/your-details',
           ...yourDetailsFormController
         },
@@ -90,6 +80,16 @@ const animals = {
           method: 'POST',
           path: '/animals/add/your-details',
           ...yourDetailsController
+        },
+        {
+          method: 'GET',
+          path: '/animals/add/summary',
+          ...summaryFormController
+        },
+        {
+          method: 'POST',
+          path: '/animals/add/create',
+          ...createController
         }
       ])
     }

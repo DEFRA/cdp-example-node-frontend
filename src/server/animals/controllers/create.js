@@ -1,15 +1,17 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
 
-const startController = {
+const createController = {
   handler: async (request, h) => {
-    request.yar.clear(sessionNames.animals)
-    request.yar.clear(sessionNames.validationFailure)
-
     await saveToAnimal(request, h, {})
 
-    return h.redirect('/animals/add/details')
+    request.yar.flash(sessionNames.notifications, {
+      text: 'Animal added',
+      type: 'success'
+    })
+
+    return h.redirect('/animals')
   }
 }
 
-export { startController }
+export { createController }

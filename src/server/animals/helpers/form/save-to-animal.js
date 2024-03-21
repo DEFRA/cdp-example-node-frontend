@@ -8,7 +8,8 @@ async function saveToAnimal(request, h, valueObj) {
   await request.yar.commit(h)
 
   const animalsSessionObj = request.yar.get(key)
-  request.logger.info({ animalsSessionObj }, 'Animal Session info')
+
+  request.logger.info({ animalsSessionObj }, 'Animal Session info') // TODO remove
 
   return animalsSessionObj
 }
