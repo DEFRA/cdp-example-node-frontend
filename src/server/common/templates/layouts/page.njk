@@ -22,6 +22,7 @@
 
 {% block head %}
   <link href="{{ getAssetPath('application.css') }}" rel="stylesheet">
+  {% block innerHead %}{% endblock %} {# TODO add meta tags GOVUK way #}
 {% endblock %}
 
 {% block header %}
