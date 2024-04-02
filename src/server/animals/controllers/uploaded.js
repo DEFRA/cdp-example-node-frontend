@@ -43,8 +43,25 @@ const uploadedController = {
 
     // decision/holding page waiting for virus scan and s3 upload
     return h.view('animals/views/uploaded', {
-      pageTitle: 'Uploaded',
-      animalSession
+      pageTitle: 'Virus check',
+      heading: 'Scanning your files',
+      breadcrumbs: [
+        {
+          text: 'Animals',
+          href: '/animals'
+        },
+        {
+          text: 'Details',
+          href: '/animals/add/details'
+        },
+        {
+          text: 'Kind',
+          href: '/animals/add/kind'
+        },
+        {
+          text: 'Upload picture'
+        }
+      ]
     })
   }
 }
