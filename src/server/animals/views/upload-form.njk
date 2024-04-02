@@ -25,8 +25,8 @@
                 text: "Filetypes of .jpeg with a max size of 100kb"
               },
               errorMessage: {
-                text: uploadError
-              } if uploadError
+                text: formErrors.file.message
+              } if formErrors.file.message
             }) }}
 
           {% endcall %}

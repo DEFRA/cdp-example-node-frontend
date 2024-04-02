@@ -1,17 +1,22 @@
-import { provideAnimalSession } from '~/src/server/animals/helpers/pre/provide-animal-session'
+import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
+import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
 
 const uploadFormController = {
-  options: {
-    pre: [provideAnimalSession]
-  },
   handler: async (request, h) => {
-    const animalSession = request.pre.animalSession
-    const uploadError = animalSession?.uploadStatus?.error
+    const secureUpload = await initUpload({
+      successRedirect: 'http://localhost:3000/animals/add/uploaded',
+      failureRedirect: 'http://localhost:3000/animals/add/uploaded',
+      scanResultCallback: 'http://localhost:3000',
+      destinationBucket: 'my-bucket',
+      acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
+      maxFileSize: 100
+    })
+
+    await saveToAnimal(request, h, { secureUpload })
 
     return h.view('animals/views/upload-form', {
       pageTitle: 'Add animal',
-      uploadError,
-      action: animalSession.secureUpload.url,
+      action: secureUpload.url,
       heading: 'Seen an Animal?',
       breadcrumbs: [
         {
