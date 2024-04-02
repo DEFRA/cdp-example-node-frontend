@@ -1,0 +1,23 @@
+{% extends 'layouts/page.njk' %}
+
+{% block head %}
+  {{ super() }}
+
+  <meta http-equiv="refresh" content="1">
+{% endblock %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+        Uploaded files are being virus checked
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

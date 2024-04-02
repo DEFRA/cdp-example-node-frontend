@@ -10,7 +10,8 @@ import {
   summaryFormController,
   createController,
   animalListController,
-  animalController
+  animalController,
+  uploadedController
 } from '~/src/server/animals/controllers'
 import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
 import { sessionNames } from '~/src/server/common/constants/session-names'
@@ -90,6 +91,11 @@ const animals = {
           method: 'POST',
           path: '/animals/add/create',
           ...createController
+        },
+        {
+          method: 'GET',
+          path: '/animals/add/uploaded',
+          ...uploadedController
         }
       ])
     }
