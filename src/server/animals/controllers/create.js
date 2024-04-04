@@ -1,12 +1,20 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
-import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
+import { createAnimal } from '~/src/server/animals/helpers/fetch/create-animal'
+import { provideAnimalSession } from '~/src/server/animals/helpers/pre/provide-animal-session'
 
 const createController = {
+  options: {
+    pre: [provideAnimalSession]
+  },
   handler: async (request, h) => {
-    await saveToAnimal(request, h, {})
+    const animalSession = request.pre.animalSession
 
+    const json = await createAnimal(animalSession)
+    const name = json?.animal?.name
+
+    request.yar.clear(sessionNames.animals)
     request.yar.flash(sessionNames.notifications, {
-      text: 'Animal added',
+      text: `Animal ${name} added`,
       type: 'success'
     })
 

@@ -39,6 +39,35 @@ const config = convict({
     default: '/public',
     env: 'ASSET_PATH'
   },
+  localstackEndpoint: {
+    doc: 'Localstack endpoint',
+    format: String,
+    default: 'http://localhost:4566'
+  },
+  awsRegion: {
+    doc: 'AWS region',
+    format: String,
+    default: 'eu-west-2',
+    env: 'AWS_REGION'
+  },
+  cdpEnvironment: {
+    doc: 'The CDP environment the app is currently in, with the addition of "local"',
+    format: [
+      'local',
+      'infra-dev',
+      'management',
+      'dev',
+      'test',
+      'perf-test',
+      'prod'
+    ],
+    default: process.env.ENVIRONMENT ?? 'local'
+  },
+  uploadBucketName: {
+    doc: 'Upload bucket name',
+    format: String,
+    default: 'uploads'
+  },
   redisHost: {
     doc: 'Redis cache host',
     format: String,
@@ -88,6 +117,17 @@ const config = convict({
     format: String,
     default: 'http://localhost:7337',
     env: 'CDP_UPLOADER_API_URL'
+  },
+  cdpExampleNodeBackendUrl: {
+    doc: 'CDP example Node backend API root url',
+    format: String,
+    default: 'http://localhost:3049',
+    env: 'CDP_EXAMPLE_NODE_BACKEND_URL'
+  },
+  imageBucket: {
+    doc: 'Image bucket Url',
+    format: String,
+    default: 'http://localhost:4566'
   },
   isProduction: {
     doc: 'If this application running in the production environment',

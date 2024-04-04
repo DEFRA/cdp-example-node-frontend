@@ -2,11 +2,13 @@ import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
 
 const uploadFormController = {
   handler: async (request, h) => {
-    const secureUpload = await initUpload(request, h, {
+    const secureUpload = await initUpload({
       successRedirect: 'http://localhost:3000/creatures/upload/success',
       failureRedirect: 'http://localhost:3000/creatures/upload/failure',
-      scanResultCallback: 'http://localhost:3000', // TODO
-      fileDestination: 'http://localhost:3000' // TODO
+      scanResultCallback: 'http://localhost:3000',
+      destinationBucket: 'my-bucket',
+      acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
+      maxFileSize: 100
     })
 
     return h.view('creatures/views/upload-form', {
