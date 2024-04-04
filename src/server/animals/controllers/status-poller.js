@@ -1,8 +1,8 @@
-import { provideAnimalSession } from '~/src/server/animals/helpers/pre/provide-animal-session'
-import { fetchStatus } from '~/src/server/common/helpers/upload/fetch-status'
 import { sessionNames } from '~/src/server/common/constants/session-names'
+import { fetchStatus } from '~/src/server/common/helpers/upload/fetch-status'
+import { provideAnimalSession } from '~/src/server/animals/helpers/pre/provide-animal-session'
 
-const uploadedController = {
+const statusPollerController = {
   options: {
     pre: [provideAnimalSession]
   },
@@ -42,7 +42,7 @@ const uploadedController = {
     }
 
     // decision/holding page waiting for virus scan and s3 upload
-    return h.view('animals/views/uploaded', {
+    return h.view('animals/views/status-poller', {
       pageTitle: 'Virus check',
       heading: 'Scanning your files',
       breadcrumbs: [
@@ -66,4 +66,4 @@ const uploadedController = {
   }
 }
 
-export { uploadedController }
+export { statusPollerController }

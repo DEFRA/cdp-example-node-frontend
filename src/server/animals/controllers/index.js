@@ -10,7 +10,7 @@ import { yourDetailsFormController } from '~/src/server/animals/controllers/your
 import { yourDetailsController } from '~/src/server/animals/controllers/your-details'
 import { summaryFormController } from '~/src/server/animals/controllers/summary-form'
 import { createController } from '~/src/server/animals/controllers/create'
-import { uploadedController } from '~/src/server/animals/controllers/uploaded'
+import { statusPollerController } from '~/src/server/animals/controllers/status-poller'
 
 export {
   startController,
@@ -25,5 +25,5 @@ export {
   createController,
   animalListController,
   animalController,
-  uploadedController
+  statusPollerController
 }
