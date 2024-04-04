@@ -112,7 +112,7 @@ const config = convict({
     sensitive: true,
     env: 'SESSION_COOKIE_PASSWORD'
   },
-  uploaderApiUrl: {
+  cdpUploaderApiUrl: {
     doc: 'CDP Uploader API root url',
     format: String,
     default: 'http://localhost:7337',
@@ -123,11 +123,6 @@ const config = convict({
     format: String,
     default: 'http://localhost:3049',
     env: 'CDP_EXAMPLE_NODE_BACKEND_URL'
-  },
-  imageBucket: {
-    doc: 'Image bucket Url',
-    format: String,
-    default: 'http://localhost:4566'
   },
   isProduction: {
     doc: 'If this application running in the production environment',
