@@ -9,9 +9,9 @@ const uploadFormController = {
 
     const destinationBucket = `cdp-${cdpEnvironment}-${uploadBucketName}`
     const secureUpload = await initUpload({
-      successRedirect: 'http://localhost:3000/animals/add/uploaded',
-      failureRedirect: 'http://localhost:3000/animals/add/uploaded',
-      scanResultCallback: 'http://localhost:3000',
+      successRedirect: 'http://localhost:3000/animals/add/status-poller',
+      failureRedirect: 'http://localhost:3000/animals/add/status-poller',
+      scanResultCallback: 'http://localhost:3000', // TODO make this optional
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100,
       destinationBucket
