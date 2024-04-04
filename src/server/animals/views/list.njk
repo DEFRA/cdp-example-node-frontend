@@ -23,11 +23,12 @@
 
         <ul class="govuk-list govuk-list--bullet">
           {% for animal in animals %}
-            {# TODO make this more fancy when we have the data #}
-            <li class="govuk-!-margin-bottom-1">{{ animal }}</li>
+            <li class="govuk-!-margin-bottom-1">
+              <a href="animals/{{ animal.animalId }}">{{ animal.name }} the {{ animal.kind }}</a>
+            </li>
 
           {% else %}
-              <li class="govuk-!-margin-bottom-1">No animals uploaded.</li>
+            <li class="govuk-!-margin-bottom-1">No animals uploaded.</li>
           {% endfor %}
         </ul>
 

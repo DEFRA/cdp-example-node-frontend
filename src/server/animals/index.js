@@ -39,7 +39,7 @@ const animals = {
         },
         {
           method: 'GET',
-          path: '/animals/{id}',
+          path: '/animals/{animalId}',
           ...animalController
         },
         {

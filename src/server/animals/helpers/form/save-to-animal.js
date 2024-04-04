@@ -1,3 +1,4 @@
+import { config } from '~/src/config'
 import { sessionNames } from '~/src/server/common/constants/session-names'
 
 async function saveToAnimal(request, h, valueObj) {
@@ -9,7 +10,9 @@ async function saveToAnimal(request, h, valueObj) {
 
   const animalsSessionObj = request.yar.get(key)
 
-  request.logger.info({ animalsSessionObj }, 'Animal Session info') // TODO remove
+  if (config.get('isDevelopment')) {
+    request.logger.info({ animalsSessionObj }, 'Animal Session info')
+  }
 
   return animalsSessionObj
 }
