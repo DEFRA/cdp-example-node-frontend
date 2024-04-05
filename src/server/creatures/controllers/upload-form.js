@@ -34,6 +34,10 @@ const uploadFormController = {
           text: 'Griffen'
         },
         {
+          value: 'hecatoncheires',
+          text: 'Hecatoncheires'
+        },
+        {
           value: 'mermaid',
           text: 'Mermaid'
         },
