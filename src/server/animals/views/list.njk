@@ -21,10 +21,11 @@
           Details of animals spotted in the UK.
         </p>
 
-        <ul class="govuk-list govuk-list--bullet">
+        <ul class="govuk-list govuk-list--spaced">
           {% for animal in animals %}
             <li class="govuk-!-margin-bottom-1">
-              <a href="animals/{{ animal.animalId }}">{{ animal.name }} the {{ animal.kind }}</a>
+              <a class="govuk-link govuk-link--no-visited-state"
+                 href="animals/{{ animal.animalId }}">{{ animal.name }} the {{ animal.kind }}</a>
             </li>
 
           {% else %}
