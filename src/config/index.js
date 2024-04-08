@@ -50,10 +50,11 @@ const config = convict({
     default: 'eu-west-2',
     env: 'AWS_REGION'
   },
-  uploadBucketName: {
-    doc: 'Upload bucket name',
+  bucket: {
+    doc: 'Bucket name',
     format: String,
-    default: 'uploads'
+    default: 'cdp-uploads',
+    env: 'BUCKET'
   },
   presignedUrlExpiry: {
     doc: 'Presigned url expiry',
