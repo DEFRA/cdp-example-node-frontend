@@ -50,6 +50,17 @@ const config = convict({
     default: 'eu-west-2',
     env: 'AWS_REGION'
   },
+  uploadBucketName: {
+    doc: 'Upload bucket name',
+    format: String,
+    default: 'uploads'
+  },
+  presignedUrlExpiry: {
+    doc: 'Presigned url expiry',
+    format: Number,
+    default: oneWeek,
+    env: 'PRESIGNED_URL_EXPIRY'
+  },
   cdpEnvironment: {
     doc: 'The CDP environment the app is currently in, with the addition of "local"',
     format: [
@@ -62,11 +73,6 @@ const config = convict({
       'prod'
     ],
     default: process.env.ENVIRONMENT ?? 'local'
-  },
-  uploadBucketName: {
-    doc: 'Upload bucket name',
-    format: String,
-    default: 'uploads'
   },
   redisHost: {
     doc: 'Redis cache host',

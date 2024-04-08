@@ -19,7 +19,9 @@ async function buildS3PresignedUrl({ bucket, key, region }) {
     Region: region
   })
 
-  return await getSignedUrl(client, command)
+  return await getSignedUrl(client, command, {
+    expiresIn: config.get('presignedUrlExpiry')
+  })
 }
 
 export { buildS3PresignedUrl }
