@@ -11,6 +11,12 @@ Based on the CDP template https://github.com/DEFRA/cdp-node-frontend-template
 - [Local development](#local-development)
   - [Setup](#setup)
   - [Development](#development)
+  - [AWS CLI](#aws-cli)
+    - [AWS Local](#aws-local)
+      - [AWS local alias](#aws-local-alias)
+    - [LocalStack](#localstack)
+      - [Docker](#docker)
+    - [Localstack CLI](#localstack-cli)
   - [Local JSON API](#local-json-api)
   - [Production](#production)
   - [Npm scripts](#npm-scripts)
@@ -51,6 +57,57 @@ To run the application in `development` mode run:
 ```bash
 npm run dev
 ```
+
+### AWS CLI
+
+- Install the AWS CLI https://aws.amazon.com/cli/
+
+### AWS Local
+
+- _awslocal_ is a wrapper around the _AWS CLI_ that talks to your local _localstack_
+- You can install a PIP https://github.com/localstack/awscli-local
+  But note it only works with the older v1 of _AWS CLI_
+
+#### AWS local alias
+
+- Alternatively just alias it locally:
+
+```bash
+alias awslocal='aws --profile localstack $argv --endpoint-url http://localhost:4566'
+```
+
+- And add to your `.aws/credentials`
+
+```bash
+[localstack]
+aws_access_key_id = test
+aws_secret_access_key = test
+```
+
+### LocalStack
+
+Either run _localstack_ directly via _docker_ and _AWS CLI_, or via the _localstack CLI_.
+
+#### Docker
+
+- Run AWS LocalStack Docker container:
+
+```bash
+docker run --pull=always -d -p 4566:4566 -p 4510-4559:4510-4559 localstack/localstack:latest
+```
+
+Note the exposed endpoint is `http://localhost:4566`
+
+### Localstack CLI
+
+- Install [LocalStack CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli)
+- Run the CLI
+
+```
+localstack start
+```
+
+Note the exposed endpoint is `https://localhost:4566`
 
 ### Local JSON API
 
