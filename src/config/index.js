@@ -53,7 +53,7 @@ const config = convict({
   bucket: {
     doc: 'Bucket name',
     format: String,
-    default: 'cdp-uploads',
+    default: 'cdp-example-node-frontend',
     env: 'BUCKET'
   },
   presignedUrlExpiry: {

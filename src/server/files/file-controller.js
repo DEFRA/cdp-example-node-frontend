@@ -12,7 +12,7 @@ const fileController = {
     const fileId = request.params.id
 
     const command = new GetObjectCommand({
-      Bucket: config.get('uploadBucketName'),
+      Bucket: config.get('bucket'),
       Key: fileId
     })
 
