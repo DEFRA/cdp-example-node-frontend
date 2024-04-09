@@ -9,11 +9,9 @@ const provideAnimal = {
       const filePathParts = animal.fileUrl.split('/')
       const key = filePathParts.slice(1).join('/')
 
-      const fileUrl = '/file/' + key
-
       return {
         ...animal,
-        fileUrl
+        fileUrl: '/file/' + key
       }
     }
 
