@@ -16,7 +16,8 @@ const uploadFormController = {
       scanResultCallback: `${nodeBackendUrl}/callback`,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100,
-      destinationBucket
+      destinationBucket,
+      destinationPath: '/animals'
     })
 
     await saveToAnimal(request, h, { secureUpload })

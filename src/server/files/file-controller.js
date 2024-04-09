@@ -19,12 +19,11 @@ const fileController = {
     }
   },
   handler: async (request, h) => {
-    const params = request.params
-    const key = `${params.id}/${params.fileName}`
+    const fileId = decodeURIComponent(request.params.id)
 
     const command = new GetObjectCommand({
       Bucket: config.get('bucket'),
-      Key: key
+      Key: fileId
     })
 
     try {
