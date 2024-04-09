@@ -5,11 +5,13 @@ import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
 const uploadFormController = {
   handler: async (request, h) => {
     const destinationBucket = config.get('bucket')
+    const appBaseUrl = config.get('appBaseUrl')
+    const redirectUrl = `${appBaseUrl}/animals/add/status-poller`
 
     const secureUpload = await initUpload({
-      successRedirect: 'http://localhost:3000/animals/add/status-poller', // TODO there will be only 1 redirect
-      failureRedirect: 'http://localhost:3000/animals/add/status-poller', // TODO there will be only 1 redirect
-      scanResultCallback: 'http://localhost:3000', // TODO this is going to be made optional in the cdp-uploader service
+      successRedirect: redirectUrl, // TODO there will be only 1 redirect
+      failureRedirect: redirectUrl, // TODO there will be only 1 redirect
+      scanResultCallback: appBaseUrl, // TODO this is going to be made optional in the cdp-uploader service
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100,
       destinationBucket

@@ -4,11 +4,12 @@ import { config } from '~/src/config'
 const uploadFormController = {
   handler: async (request, h) => {
     const destinationBucket = config.get('bucket')
+    const appBaseUrl = config.get('appBaseUrl')
 
     const secureUpload = await initUpload({
-      successRedirect: 'http://localhost:3000/creatures/upload/success',
-      failureRedirect: 'http://localhost:3000/creatures/upload/failure',
-      scanResultCallback: 'http://localhost:3000',
+      successRedirect: `${appBaseUrl}/creatures/upload/success`,
+      failureRedirect: `${appBaseUrl}/creatures/upload/failure`,
+      scanResultCallback: `${appBaseUrl}`,
       destinationBucket,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100

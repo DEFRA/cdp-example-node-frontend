@@ -33,6 +33,12 @@ const config = convict({
     format: String,
     default: path.normalize(path.join(__dirname, '..', '..'))
   },
+  appBaseUrl: {
+    doc: 'Application base URL',
+    format: String,
+    default: 'http://localhost:3000',
+    env: 'APP_BASE_URL'
+  },
   assetPath: {
     doc: 'Asset path',
     format: String,
@@ -55,12 +61,6 @@ const config = convict({
     format: String,
     default: 'cdp-example-node-frontend',
     env: 'BUCKET'
-  },
-  presignedUrlExpiry: {
-    doc: 'Presigned url expiry',
-    format: Number,
-    default: oneWeek,
-    env: 'PRESIGNED_URL_EXPIRY'
   },
   cdpEnvironment: {
     doc: 'The CDP environment the app is currently in, with the addition of "local"',
@@ -119,11 +119,11 @@ const config = convict({
     sensitive: true,
     env: 'SESSION_COOKIE_PASSWORD'
   },
-  cdpUploaderApiUrl: {
-    doc: 'CDP Uploader API root url',
+  cdpUploaderUrl: {
+    doc: 'CDP Uploader root url',
     format: String,
     default: 'http://localhost:7337',
-    env: 'CDP_UPLOADER_API_URL'
+    env: 'CDP_UPLOADER_URL'
   },
   cdpExampleNodeBackendUrl: {
     doc: 'CDP example Node backend API root url',

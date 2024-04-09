@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 import { config } from '~/src/config'
 
 async function fetchStatus(id) {
-  const endpointUrl = config.get('cdpUploaderApiUrl') + `/status/${id}`
+  const endpointUrl = config.get('cdpUploaderUrl') + `/status/${id}`
 
   const response = await fetch(endpointUrl, {
     method: 'GET',
