@@ -12,7 +12,7 @@ async function initUpload(options = {}) {
     maxFileSize
   } = options
 
-  const endpointUrl = config.get('cdpUploaderApiUrl') + '/initiate'
+  const endpointUrl = config.get('cdpUploaderUrl') + '/initiate'
   const response = await fetch(endpointUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
