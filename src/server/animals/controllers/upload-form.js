@@ -6,12 +6,14 @@ const uploadFormController = {
   handler: async (request, h) => {
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
+    const nodeBackendUrl = config.get('cdpExampleNodeBackendUrl')
+
     const redirectUrl = `${appBaseUrl}/animals/add/status-poller`
 
     const secureUpload = await initUpload({
       successRedirect: redirectUrl, // TODO there will be only 1 redirect
       failureRedirect: redirectUrl, // TODO there will be only 1 redirect
-      scanResultCallback: appBaseUrl, // TODO this is going to be made optional in the cdp-uploader service
+      scanResultCallback: `${nodeBackendUrl}/callback`,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100,
       destinationBucket
