@@ -5,11 +5,12 @@ const uploadFormController = {
   handler: async (request, h) => {
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
+    const nodeBackendUrl = config.get('cdpExampleNodeBackendUrl')
 
     const secureUpload = await initUpload({
       successRedirect: `${appBaseUrl}/creatures/upload/success`,
       failureRedirect: `${appBaseUrl}/creatures/upload/failure`,
-      scanResultCallback: `${appBaseUrl}`,
+      scanResultCallback: `${nodeBackendUrl}/callback`,
       destinationBucket,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100
