@@ -6,7 +6,7 @@ async function initUpload(options = {}) {
   const {
     successRedirect,
     failureRedirect,
-    scanResultCallback,
+    scanResultCallbackUrl,
     destinationBucket,
     acceptedMimeTypes,
     maxFileSize
@@ -19,7 +19,7 @@ async function initUpload(options = {}) {
     body: JSON.stringify({
       successRedirect,
       failureRedirect,
-      scanResultCallback,
+      scanResultCallbackUrl,
       destinationBucket,
       acceptedMimeTypes,
       maxFileSize

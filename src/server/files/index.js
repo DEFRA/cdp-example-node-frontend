@@ -6,7 +6,7 @@ const files = {
     register: async (server) => {
       server.route({
         method: 'GET',
-        path: '/file/{id}/{fileName}',
+        path: '/file/{uploadId}/{fileId}',
         ...fileController
       })
     }
