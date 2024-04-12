@@ -1,6 +1,7 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { fetchStatus } from '~/src/server/common/helpers/upload/fetch-status'
 import { provideAnimalSession } from '~/src/server/animals/helpers/pre/provide-animal-session'
+import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
 
 const statusPollerController = {
   options: {
@@ -9,14 +10,16 @@ const statusPollerController = {
   handler: async (request, h) => {
     const animalSession = request.pre.animalSession
 
-    const uploadId = animalSession?.secureUpload?.id
-    const uploadStatus = await fetchStatus(uploadId)
+    const uploadId = animalSession?.secureUpload?.uploadId
+    const status = await fetchStatus(uploadId)
 
-    const hasPassedVirusCheck = uploadStatus?.scanResult?.safe
-    const delivered = uploadStatus?.delivered
-    const fileUrl = uploadStatus?.scanResult?.fileUrl
+    const isReady =
+      status?.uploadStatus === 'ready' ||
+      status?.uploadStatus === 'acknowledged'
+    const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
 
-    const hasUploadedFile = uploadStatus?.fields?.file?.fileName
+    // TODO: can this be better?
+    const hasUploadedFile = status?.files.length > 0
 
     // No file uploaded - Return to upload form with errors
     if (!hasUploadedFile) {
@@ -28,16 +31,24 @@ const statusPollerController = {
     }
 
     // Virus check failed - Return to upload form with errors
-    if (hasPassedVirusCheck === false) {
-      request.yar.flash(sessionNames.validationFailure, {
-        formErrors: { file: { message: 'Virus check failed' } }
-      })
+    if (isReady) {
+      if (!hasPassedVirusCheck) {
+        request.yar.flash(sessionNames.validationFailure, {
+          formErrors: { file: { message: 'Virus check failed' } }
+        })
 
-      return h.redirect('/animals/add/upload-picture')
+        return h.redirect('/animals/add/upload-picture')
+      }
+
+      // TODO: save the file info to the session
+      await saveToAnimal(request, h, {
+        fileUrl: status.files[0].s3Key
+      })
+      return h.redirect('/animals/add/your-details')
     }
 
     // Move to next step in the multi-step form
-    if (hasPassedVirusCheck && delivered && fileUrl) {
+    if (isReady && hasPassedVirusCheck) {
       return h.redirect('/animals/add/your-details')
     }
 
