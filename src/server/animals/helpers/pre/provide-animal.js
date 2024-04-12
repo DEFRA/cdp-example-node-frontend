@@ -5,7 +5,7 @@ const provideAnimal = {
     const { animal } = (await getAnimal(request.params.animalId)) ?? {}
 
     if (animal) {
-      const fileUrl = '/file/' + encodeURIComponent(animal.fileUrl)
+      const fileUrl = '/file/' + animal.fileUrl
 
       return {
         ...animal,

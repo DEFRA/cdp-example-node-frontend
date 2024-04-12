@@ -13,7 +13,7 @@ const uploadFormController = {
     const secureUpload = await initUpload({
       successRedirect: redirectUrl, // TODO there will be only 1 redirect
       failureRedirect: redirectUrl, // TODO there will be only 1 redirect
-      scanResultCallback: `${nodeBackendUrl}/callback`,
+      scanResultCallbackUrl: `${nodeBackendUrl}/callback`,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100,
       destinationBucket,

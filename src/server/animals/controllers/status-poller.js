@@ -13,11 +13,13 @@ const statusPollerController = {
     const uploadId = animalSession?.secureUpload?.uploadId
     const status = await fetchStatus(uploadId)
 
-    const isReady = status?.uploadStatus === 'ready'
+    const isReady =
+      status?.uploadStatus === 'ready' ||
+      status?.uploadStatus === 'acknowledged'
     const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
 
     // TODO: can this be better?
-    const hasUploadedFile = status?.fields?.file
+    const hasUploadedFile = status?.files.length > 0
 
     // No file uploaded - Return to upload form with errors
     if (!hasUploadedFile) {
@@ -30,11 +32,7 @@ const statusPollerController = {
 
     // Virus check failed - Return to upload form with errors
     if (isReady) {
-      const fileStatus = status.files.find(
-        (f) => f.fileId === status.fields.file.fileId
-      )
-
-      if (fileStatus === 'infected') {
+      if (!hasPassedVirusCheck) {
         request.yar.flash(sessionNames.validationFailure, {
           formErrors: { file: { message: 'Virus check failed' } }
         })
@@ -44,7 +42,7 @@ const statusPollerController = {
 
       // TODO: save the file info to the session
       await saveToAnimal(request, h, {
-        fileUrl: fileStatus.uploadId + '/' + fileStatus.fileId
+        fileUrl: status.files[0].s3Key
       })
       return h.redirect('/animals/add/your-details')
     }

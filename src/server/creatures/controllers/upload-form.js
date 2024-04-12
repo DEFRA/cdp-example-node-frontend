@@ -10,7 +10,7 @@ const uploadFormController = {
     const secureUpload = await initUpload({
       successRedirect: `${appBaseUrl}/creatures/upload/success`,
       failureRedirect: `${appBaseUrl}/creatures/upload/failure`,
-      scanResultCallback: `${nodeBackendUrl}/callback`,
+      scanResultCallbackUrl: `${nodeBackendUrl}/callback`,
       destinationBucket,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100
