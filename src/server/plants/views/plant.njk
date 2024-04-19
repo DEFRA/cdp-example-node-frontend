@@ -1,0 +1,23 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+
+        <h2 class="govuk-heading-m">
+          {{ plant.name }} the plant🌵
+        </h2>
+
+        <img class="app-img"
+             src="{{ plant.fileUrl }}"
+             alt="{{ plant.name }} picture">
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
