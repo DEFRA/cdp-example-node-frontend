@@ -31,24 +31,21 @@ const statusPollerController = {
     }
 
     // Virus check failed - Return to upload form with errors
-    if (isReady) {
-      if (!hasPassedVirusCheck) {
-        request.yar.flash(sessionNames.validationFailure, {
-          formErrors: { file: { message: 'Virus check failed' } }
-        })
-
-        return h.redirect('/animals/add/upload-picture')
-      }
-
-      // TODO: save the file info to the session
-      await saveToAnimal(request, h, {
-        fileUrl: status.files[0].s3Key
+    if (isReady && !hasPassedVirusCheck) {
+      request.yar.flash(sessionNames.validationFailure, {
+        formErrors: { file: { message: 'Virus check failed' } }
       })
-      return h.redirect('/animals/add/your-details')
+
+      return h.redirect('/animals/add/upload-picture')
     }
 
-    // Move to next step in the multi-step form
     if (isReady && hasPassedVirusCheck) {
+      // TODO: save the file info to the session
+      await saveToAnimal(request, h, {
+        fileUrl: status.files.at(0)?.s3Key
+      })
+
+      // Move to next step in the multi-step form
       return h.redirect('/animals/add/your-details')
     }
 
