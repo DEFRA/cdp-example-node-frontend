@@ -14,6 +14,11 @@ function buildNavigation(request) {
       text: 'Creatures',
       url: '/creatures',
       isActive: request.path.startsWith('/creatures')
+    },
+    {
+      text: 'Plants',
+      url: '/plants',
+      isActive: request.path.startsWith('/plants')
     }
   ]
 }
