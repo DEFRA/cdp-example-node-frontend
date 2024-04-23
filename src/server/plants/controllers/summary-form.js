@@ -7,6 +7,8 @@ const summaryFormController = {
   handler: async (request, h) => {
     const plantSession = request.pre.plantSession
 
+    // TODO display virus scan status around here
+
     return h.view('plants/views/summary-form', {
       pageTitle: 'Summary',
       action: '/plants/add/create',

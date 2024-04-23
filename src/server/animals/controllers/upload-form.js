@@ -8,11 +8,12 @@ const uploadFormController = {
     const appBaseUrl = config.get('appBaseUrl')
     const nodeBackendUrl = config.get('cdpExampleNodeBackendUrl')
 
+    // TODO the uploader will accept only 1 callback url in the end
     const redirectUrl = `${appBaseUrl}/animals/add/status-poller`
 
     const secureUpload = await initUpload({
-      successRedirect: redirectUrl, // TODO there will be only 1 redirect
-      failureRedirect: redirectUrl, // TODO there will be only 1 redirect
+      successRedirect: redirectUrl,
+      failureRedirect: redirectUrl,
       scanResultCallbackUrl: `${nodeBackendUrl}/callback`,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100,
