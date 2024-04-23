@@ -25,7 +25,7 @@ const uploadFormController = {
 
     return h.view('animals/views/upload-form', {
       pageTitle: 'Add animal',
-      action: secureUpload.url,
+      action: secureUpload.uploadUrl,
       heading: 'Seen an Animal?',
       breadcrumbs: [
         {
