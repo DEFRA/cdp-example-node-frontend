@@ -2,16 +2,29 @@ import ecsFormat from '@elastic/ecs-pino-format'
 
 import { config } from '~/src/config'
 
+const isDevelopment = config.get('isDevelopment')
+const redactionPaths = [
+  'req.headers.authorization',
+  'req.headers.cookie',
+  'res.headers'
+]
+
+if (!isDevelopment) {
+  redactionPaths.push('sensitive')
+}
+
+if (isDevelopment) {
+  redactionPaths.push('req', 'res')
+}
+
 const loggerOptions = {
   enabled: !config.get('isTest'),
   redact: {
-    paths: ['req.headers.authorization', 'req.headers.cookie', 'res.headers'],
+    paths: redactionPaths,
     remove: true
   },
   level: config.get('logLevel'),
-  ...(config.get('isDevelopment')
-    ? { transport: { target: 'pino-pretty' } }
-    : ecsFormat())
+  ...(isDevelopment ? { transport: { target: 'pino-pretty' } } : ecsFormat())
 }
 
 export { loggerOptions }
