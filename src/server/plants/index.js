@@ -5,7 +5,7 @@ import {
   createController,
   plantListController,
   plantController,
-  statusPollerController,
+  uploadCallbackController,
   detailsFormController,
   detailsController
 } from '~/src/server/plants/controllers'
@@ -55,7 +55,7 @@ const plants = {
         },
         {
           method: 'GET',
-          path: '/plants/add/upload-picture',
+          path: '/plants/add/upload-pictures',
           ...uploadFormController
         },
         {
@@ -70,8 +70,8 @@ const plants = {
         },
         {
           method: 'GET',
-          path: '/plants/add/status-poller',
-          ...statusPollerController
+          path: '/plants/add/upload-callback',
+          ...uploadCallbackController
         }
       ])
     }

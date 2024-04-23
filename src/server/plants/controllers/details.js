@@ -25,7 +25,7 @@ const detailsController = {
     if (!validationResult.error) {
       await saveToPlant(request, h, payload)
 
-      return h.redirect('/plants/add/upload-picture')
+      return h.redirect('/plants/add/upload-pictures')
     }
   }
 }

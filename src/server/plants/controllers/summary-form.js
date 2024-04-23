@@ -22,12 +22,8 @@ const summaryFormController = {
           href: '/plants/add/details'
         },
         {
-          text: 'Kind',
-          href: '/plants/add/kind'
-        },
-        {
-          text: 'Upload picture',
-          href: '/plants/add/upload-picture'
+          text: 'Upload pictures',
+          href: '/plants/add/upload-pictures'
         },
         {
           text: 'Summary'

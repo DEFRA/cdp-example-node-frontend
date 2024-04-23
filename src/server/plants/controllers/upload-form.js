@@ -1,31 +1,34 @@
 import { config } from '~/src/config'
 import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
-import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
+import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
 
 const uploadFormController = {
+  options: {
+    pre: [providePlantSession]
+  },
   handler: async (request, h) => {
+    const plantSession = request.pre.plantSession
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
     const nodeBackendUrl = config.get('cdpExampleNodeBackendUrl')
-
-    const redirectUrl = `${appBaseUrl}/plants/add/status-poller`
+    const redirectUrl = `${appBaseUrl}/plants/add/upload-callback`
 
     const secureUpload = await initUpload({
-      successRedirect: redirectUrl, // TODO there will be only 1 redirect
-      failureRedirect: redirectUrl, // TODO there will be only 1 redirect
+      successRedirect: redirectUrl,
+      failureRedirect: redirectUrl,
       scanResultCallbackUrl: `${nodeBackendUrl}/callback`,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100,
       destinationBucket,
-      destinationPath: '/animals'
+      destinationPath: '/animals',
+      metadata: { plantId: plantSession?.plantId }
     })
 
-    await saveToPlant(request, h, { secureUpload })
-
     return h.view('plants/views/upload-form', {
-      pageTitle: 'Add plant',
-      action: secureUpload.url,
-      heading: 'Seen a Plant?',
+      pageTitle: 'Upload pictures',
+      plantSession,
+      action: secureUpload.uploadUrl,
+      heading: 'Upload pictures',
       breadcrumbs: [
         {
           text: 'Plants',
@@ -36,7 +39,7 @@ const uploadFormController = {
           href: '/plants/add/details'
         },
         {
-          text: 'Upload picture'
+          text: 'Upload pictures'
         }
       ]
     })

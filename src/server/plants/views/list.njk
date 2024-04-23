@@ -18,14 +18,14 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-body" data-testid="app-page-body">
         <p>
-          Details of your favourite plants.
+          Information about your favourite plants.
         </p>
 
         <ul class="govuk-list govuk-list--spaced">
           {% for plant in plants %}
             <li class="govuk-!-margin-bottom-1">
               <a class="govuk-link govuk-link--no-visited-state"
-                 href="plants/{{ plant.plantId }}">{{ plant.name }}</a>
+                 href="plants/{{ plant.plantId }}">{{ plant.name }} the plant</a>
             </li>
 
           {% else %}

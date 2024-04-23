@@ -3,7 +3,7 @@
 {% block content %}
   {{ appHeading({
     title: heading,
-    caption: "Review your animal."
+    caption: "Review your plant."
   }) }}
 
   <div class="govuk-grid-row">
@@ -14,6 +14,16 @@
 
           <ul class="govuk-list govuk-list--bullet">
             <li><strong>Name:</strong> {{ plantSession.name }}</li>
+            <li>
+              <strong>Files:</strong>
+              <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-7">
+                {% for file in plantSession.files %}
+                  <li>{{ file.filename }}</li>
+                {% else %}
+                  <li>No files for your plant uploaded yet.</li>
+                {% endfor %}
+              </ul>
+            </li>
           </ul>
 
           {{ govukButton({

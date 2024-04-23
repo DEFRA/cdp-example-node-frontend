@@ -1,4 +1,3 @@
-import { config } from '~/src/config'
 import { sessionNames } from '~/src/server/common/constants/session-names'
 
 async function saveToPlant(request, h, valueObj) {
@@ -10,9 +9,7 @@ async function saveToPlant(request, h, valueObj) {
 
   const plantsSessionObj = request.yar.get(key)
 
-  if (config.get('isDevelopment')) {
-    request.logger.info({ plantsSessionObj }, 'Plant Session info')
-  }
+  request.logger.debug({ sensitive: plantsSessionObj }, 'Plant Session info:')
 
   return plantsSessionObj
 }

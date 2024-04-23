@@ -7,8 +7,9 @@ async function createPlant(plantSession) {
   const { json } = await fetcher(endpoint, {
     method: 'post',
     body: JSON.stringify({
+      plantId: plantSession.plantId,
       name: plantSession.name,
-      fileUrl: plantSession.fileUrl
+      files: plantSession.files
     })
   })
 

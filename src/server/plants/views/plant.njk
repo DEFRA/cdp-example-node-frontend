@@ -13,11 +13,20 @@
           {{ plant.name }} the plant🌵
         </h2>
 
-        <img class="app-img"
-             src="{{ plant.fileUrl }}"
-             alt="{{ plant.name }} picture">
+        <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-7">
+
+          {% for fileUrl in plant.fileUrls %}
+
+            <li>
+              <img class="app-img" src="{{ fileUrl }}" alt="picture">
+            </li>
+
+          {% else %}
+            <li>No files for your plant uploaded yet.</li>
+          {% endfor %}
+        </ul>
+
       </div>
     </div>
   </div>
-
 {% endblock %}
