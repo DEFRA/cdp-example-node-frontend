@@ -10,7 +10,7 @@ async function createAnimal(animalSession) {
       name: animalSession.name,
       kind: animalSession.kind,
       phoneNumber: animalSession.phoneNumber,
-      fileUrl: animalSession.fileUrl
+      file: animalSession.file
     })
   })
 
