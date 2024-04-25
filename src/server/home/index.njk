@@ -92,6 +92,34 @@
         </ul>
       </div>
     </div>
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+      <div class="govuk-grid-column-three-quarters">
+        <h2 class="govuk-heading-m">A long lived form with async upload callbacks</h2>
+        <p>
+          The <a href="/birds" class="govuk-link govuk-link--no-visited-state">Birds</a> long lived form is an
+          example of:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Works across new HTTP sessions</li>
+          <li>Upload more files functionality over time</li>
+          <li>Form validation</li>
+          <li>Persisting data to the <a href="https://github.com/DEFRA/cdp-example-node-backend"
+                                        rel="noreferrer noopener" target="_blank"
+                                        class="govuk-link govuk-link--no-visited-state">cdp-example-node-backend</a>
+            Mongo DB
+          </li>
+          <li>Virus scanning of files via the <a href="https://github.com/DEFRA/cdp-uploader"
+                                                 rel="noreferrer noopener" target="_blank"
+                                                 class="govuk-link  govuk-link--no-visited-state">
+              cdp-uploader</a> service
+          </li>
+          <li>Async virus scanning callback to <em>cdp-example-node-backend</em></li>
+          <li>Async further external processing of uploads</li>
+        </ul>
+      </div>
+    </div>
+
   </main>
 
 {% endblock %}
