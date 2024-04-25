@@ -15,7 +15,6 @@ const statusPollerController = {
     }
   },
   handler: async (request, h) => {
-    // TODO look into custom Joi validator
     const status = request.pre.status
     const hasUploadedFile = status?.files?.length > 0
 
