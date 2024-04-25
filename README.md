@@ -11,6 +11,7 @@ Based on the CDP template https://github.com/DEFRA/cdp-node-frontend-template
 - [Local development](#local-development)
   - [Setup](#setup)
   - [Development](#development)
+    - [Updating dependencies](#updating-dependencies)
   - [AWS CLI](#aws-cli)
     - [AWS Local](#aws-local)
       - [AWS local alias](#aws-local-alias)
@@ -56,6 +57,16 @@ To run the application in `development` mode run:
 
 ```bash
 npm run dev
+```
+
+#### Updating dependencies
+
+To update dependencies globally install https://www.npmjs.com/package/npm-check-updates
+
+> Run the script below, run tests, test teh application and commit the altered package.json and package-lock.json files
+
+```bash
+ncu -i
 ```
 
 ### AWS CLI
