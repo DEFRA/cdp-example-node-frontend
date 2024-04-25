@@ -2,12 +2,12 @@ import Joi from 'joi'
 
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
-import { providePlantStatus } from '~/src/server/plants/helpers/pre/provide-plant-status'
+import { provideStatus } from '~/src/server/common/helpers/pre/provide-status'
 import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
 
 const statusPollerController = {
   options: {
-    pre: [providePlantSession, providePlantStatus],
+    pre: [providePlantSession, provideStatus],
     validate: {
       query: Joi.object({
         uploadId: Joi.string().guid().required()
@@ -15,7 +15,8 @@ const statusPollerController = {
     }
   },
   handler: async (request, h) => {
-    const status = request.pre.plantStatus
+    // TODO look into custom Joi validator
+    const status = request.pre.status
     const hasUploadedFile = status?.files?.length > 0
 
     // No file uploaded - Return to upload form with error
@@ -39,6 +40,7 @@ const statusPollerController = {
       return h.redirect('/plants/add/upload-pictures')
     }
 
+    // File has successfully passed virus check and is ready to be used/stored in session/db
     if (hasBeenVirusChecked && hasPassedVirusCheck) {
       const previouslyUploadFiles = request.pre.plantSession?.files ?? []
       const fileUpload = status?.files?.at(0)
@@ -49,7 +51,8 @@ const statusPollerController = {
           {
             filename: fileUpload.filename,
             uploadId: fileUpload.uploadId,
-            fileId: fileUpload.fileId
+            fileId: fileUpload.fileId,
+            fileUrl: fileUpload.uploadId + '/' + fileUpload.fileId
           }
         ]
       })

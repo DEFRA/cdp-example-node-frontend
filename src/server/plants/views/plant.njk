@@ -15,10 +15,10 @@
 
         <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-7">
 
-          {% for fileUrl in plant.fileUrls %}
+          {% for file in plant.files %}
 
             <li>
-              <img class="app-img" src="{{ fileUrl }}" alt="picture">
+              <img class="app-img" src="/file/{{ file.fileUrl }}" alt="{{ file.filename }} picture">
             </li>
 
           {% else %}

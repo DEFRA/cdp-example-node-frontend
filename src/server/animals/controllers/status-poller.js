@@ -1,24 +1,14 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
-import { fetchStatus } from '~/src/server/common/helpers/upload/fetch-status'
-import { provideAnimalSession } from '~/src/server/animals/helpers/pre/provide-animal-session'
 import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
+import { provideStatus } from '~/src/server/common/helpers/pre/provide-status'
 
 const statusPollerController = {
   options: {
-    pre: [provideAnimalSession]
+    pre: [provideStatus]
   },
   handler: async (request, h) => {
-    const animalSession = request.pre.animalSession
-
-    const uploadId = animalSession?.secureUpload?.uploadId
-    const status = await fetchStatus(uploadId)
-
-    const isReady =
-      status?.uploadStatus === 'ready' ||
-      status?.uploadStatus === 'acknowledged'
-    const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
-
-    // TODO: can this be better?
+    // TODO look into custom Joi validator
+    const status = request.pre.status
     const hasUploadedFile = status?.files.length > 0
 
     // No file uploaded - Return to upload form with errors
@@ -30,8 +20,11 @@ const statusPollerController = {
       return h.redirect('/animals/add/upload-picture')
     }
 
+    const hasBeenVirusChecked = status?.uploadStatus === 'ready'
+    const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
+
     // Virus check failed - Return to upload form with errors
-    if (isReady && !hasPassedVirusCheck) {
+    if (hasBeenVirusChecked && !hasPassedVirusCheck) {
       request.yar.flash(sessionNames.validationFailure, {
         formErrors: { file: { message: 'Virus check failed' } }
       })
@@ -39,17 +32,24 @@ const statusPollerController = {
       return h.redirect('/animals/add/upload-picture')
     }
 
-    if (isReady && hasPassedVirusCheck) {
-      // TODO: save the file info to the session
+    // File has successfully passed virus check and is ready to be used/stored in session/db
+    if (hasBeenVirusChecked && hasPassedVirusCheck) {
+      const fileUpload = status.files.at(0)
+
       await saveToAnimal(request, h, {
-        fileUrl: status.files.at(0)?.s3Key
+        file: {
+          filename: fileUpload.filename,
+          uploadId: fileUpload.uploadId,
+          fileId: fileUpload.fileId,
+          fileUrl: fileUpload.uploadId + '/' + fileUpload.fileId
+        }
       })
 
-      // Move to next step in the multi-step form
+      // Move to next step in the multistep form
       return h.redirect('/animals/add/your-details')
     }
 
-    // decision/holding page waiting for virus scan and s3 upload
+    // Virus check polling page
     return h.view('animals/views/status-poller', {
       pageTitle: 'Virus check',
       heading: 'Scanning your files',
