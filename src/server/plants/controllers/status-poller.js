@@ -1,9 +1,9 @@
 import Joi from 'joi'
 
-import { sessionNames } from '~/src/server/common/constants/session-names'
 import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
 import { provideStatus } from '~/src/server/common/helpers/pre/provide-status'
 import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
+import { populateErrorFlashMessage } from '~/src/server/common/helpers/form/populate-error-flash-message'
 
 const statusPollerController = {
   options: {
@@ -15,26 +15,43 @@ const statusPollerController = {
     }
   },
   handler: async (request, h) => {
+    const setError = populateErrorFlashMessage(request)
     const status = request.pre.status
-    const hasUploadedFile = status?.files?.length > 0
+    const fileUpload = status.files.at(0)
+    const acceptedMimeTypes = status.acceptedMimeTypes
+    const hasUploadedFile = status?.files.length > 0
+    const hasBeenVirusChecked = status?.uploadStatus === 'ready'
+    const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
+    const fileUploadSizeMb = fileUpload?.contentLength / 1024
+    const fileSizeLimitExceeded = fileUploadSizeMb > status?.maxFileSize
+    const hasCorrectMimeType = acceptedMimeTypes.includes(
+      fileUpload?.contentType
+    )
 
-    // No file uploaded - Return to upload form with error
+    // No file uploaded
     if (!hasUploadedFile) {
-      request.yar.flash(sessionNames.validationFailure, {
-        formErrors: { file: { message: 'Choose a file' } }
-      })
+      setError('Choose a file')
 
       return h.redirect('/plants/add/upload-pictures')
     }
 
-    const hasBeenVirusChecked = status?.uploadStatus === 'ready'
-    const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
+    // Mime type mismatch
+    if (!hasCorrectMimeType) {
+      setError(`Files of ${acceptedMimeTypes.join(', ')} only`)
 
-    // Virus check failed - Return to upload form with errors
+      return h.redirect('/plants/add/upload-pictures')
+    }
+
+    // Filesize limit exceeded
+    if (fileSizeLimitExceeded) {
+      setError(`Max file size of ${status?.maxFileSize}`)
+
+      return h.redirect('/plants/add/upload-pictures')
+    }
+
+    // Virus check failed
     if (hasBeenVirusChecked && !hasPassedVirusCheck) {
-      request.yar.flash(sessionNames.validationFailure, {
-        formErrors: { file: { message: 'Virus check failed' } }
-      })
+      setError('Virus check failed')
 
       return h.redirect('/plants/add/upload-pictures')
     }
