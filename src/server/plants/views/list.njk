@@ -1,0 +1,40 @@
+{% extends 'layouts/page.njk' %}
+
+{% set asideHtml %}
+  <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+    <a class="govuk-link govuk-link--text-colour" href="/plants/add">Add plant</a>
+  </h2>
+{% endset %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading,
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+        <p>
+          Information about your favourite plants.
+        </p>
+
+        <ul class="govuk-list govuk-list--spaced">
+          {% for plant in plants %}
+            <li class="govuk-!-margin-bottom-1">
+              <a class="govuk-link govuk-link--no-visited-state"
+                 href="plants/{{ plant.plantId }}">{{ plant.name }} the plant</a>
+            </li>
+
+          {% else %}
+            <li class="govuk-!-margin-bottom-1">No plants uploaded.</li>
+          {% endfor %}
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

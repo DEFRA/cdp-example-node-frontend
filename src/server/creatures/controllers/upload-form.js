@@ -18,7 +18,7 @@ const uploadFormController = {
 
     return h.view('creatures/views/upload-form', {
       pageTitle: 'Add creature',
-      action: secureUpload.url,
+      action: secureUpload.uploadUrl,
       heading: 'Seen a mythical creature?',
       kindsOfCreatures: [
         {

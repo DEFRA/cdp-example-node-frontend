@@ -1,18 +1,19 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { fetchStatus } from '~/src/server/common/helpers/upload/fetch-status'
-import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
+import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
 
+// TODO is this still needed?
 // TODO what is this doing?
 // This is fetching the status of an upload and saving its result to the session - refactor, this is overkill
-async function saveAnimalsUploadStatus(request, h) {
-  const animalsSession = request.yar.get(sessionNames.animals)
-  const uploadId = animalsSession?.secureUpload?.id
+async function savePlantsUploadStatus(request, h) {
+  const plantsSession = request.yar.get(sessionNames.plants)
+  const uploadId = plantsSession?.secureUpload?.id
 
   if (uploadId) {
     const uploadStatus = await fetchStatus(uploadId)
 
-    await saveToAnimal(request, h, { uploadStatus })
+    await saveToPlant(request, h, { uploadStatus })
   }
 }
 
-export { saveAnimalsUploadStatus }
+export { savePlantsUploadStatus }
