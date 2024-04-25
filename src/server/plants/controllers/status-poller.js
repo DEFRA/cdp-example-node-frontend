@@ -37,7 +37,7 @@ const statusPollerController = {
 
     // Mime type mismatch
     if (!hasCorrectMimeType) {
-      setError(`Files of ${acceptedMimeTypes.join(', ')} only`)
+      setError(`Files of ${acceptedMimeTypes.join(', ')}`)
 
       return h.redirect('/plants/add/upload-pictures')
     }
