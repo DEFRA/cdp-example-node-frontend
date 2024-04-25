@@ -15,7 +15,7 @@ const uploadFormController = {
     const secureUpload = await initUpload({
       successRedirect: redirectUrl,
       failureRedirect: redirectUrl,
-      acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
+      acceptedMimeTypes: ['image/png', 'image/jpeg'],
       maxFileSize: 100,
       destinationBucket,
       destinationPath: '/animals',
