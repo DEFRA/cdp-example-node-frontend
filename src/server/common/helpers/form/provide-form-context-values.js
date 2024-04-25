@@ -9,7 +9,9 @@ function provideFormContextValues(sessionName = null) {
     if (response.variety === 'view') {
       const sessionValue = sessionName && request.yar.get(sessionName)
 
-      request.logger.debug({ sensitive: sessionValue }, 'Session context info:')
+      if (sessionValue) {
+        request.logger.debug({ sessionValue }, 'Session context info:')
+      }
 
       const validationFailure = request.yar
         .flash(sessionNames.validationFailure)

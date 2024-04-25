@@ -10,13 +10,11 @@ const uploadFormController = {
     const plantSession = request.pre.plantSession
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
-    const nodeBackendUrl = config.get('cdpExampleNodeBackendUrl')
-    const redirectUrl = `${appBaseUrl}/plants/add/upload-callback`
+    const redirectUrl = `${appBaseUrl}/plants/add/status-poller`
 
     const secureUpload = await initUpload({
       successRedirect: redirectUrl,
       failureRedirect: redirectUrl,
-      scanResultCallbackUrl: `${nodeBackendUrl}/callback`,
       acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
       maxFileSize: 100,
       destinationBucket,
