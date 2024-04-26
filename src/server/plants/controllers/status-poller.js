@@ -20,7 +20,6 @@ const statusPollerController = {
     const fileUpload = status.files.at(0)
     const acceptedMimeTypes = ['image/png', 'image/jpeg']
     const maxFileSize = 100
-    const hasUploadedFile = status?.files.length > 0
     const hasBeenVirusChecked = status?.uploadStatus === 'ready'
     const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
     const fileUploadSizeMb = fileUpload?.contentLength / 1024
@@ -29,9 +28,11 @@ const statusPollerController = {
       fileUpload?.contentType
     )
 
-    // No file uploaded
-    if (!hasUploadedFile) {
-      setError('Choose a file')
+    const fileInputStatus = status?.fields?.file
+    const fileInputHasError = fileInputStatus?.hasError
+
+    if (fileInputHasError) {
+      setError(fileInputStatus.errorMessage)
 
       return h.redirect('/plants/add/upload-pictures')
     }
