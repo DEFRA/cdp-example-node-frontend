@@ -1,12 +1,10 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
+import { birds } from '~/src/server/birds/data/birds'
 
-const listController = {
+const listBirdsController = {
   handler: async (request, h) => {
     request.yar.clear(sessionNames.validationFailure)
-
-    const birds = [] // await getBirds()
-
-    return h.view('birds/views/list', {
+    return h.view('birds/views/list-birds', {
       pageTitle: 'Birds',
       heading: 'Birds',
       birds
@@ -14,4 +12,4 @@ const listController = {
   }
 }
 
-export { listController }
+export { listBirdsController }

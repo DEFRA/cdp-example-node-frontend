@@ -1,0 +1,41 @@
+// import * as crypto from 'node:crypto'
+// import Joi from 'joi'
+
+import { sessionNames } from '~/src/server/common/constants/session-names'
+import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
+import { birdValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
+
+const createTrackingController = {
+  handler: async (request, h) => {
+    const payload = request?.payload
+
+    const validationResult = birdValidation.validate(payload, {
+      abortEarly: false
+    })
+
+    if (validationResult?.error) {
+      console.log('validationResult.error', validationResult.error)
+
+      const errorDetails = buildErrorDetails(validationResult.error.details)
+
+      request.yar.flash(sessionNames.validationFailure, {
+        formValues: payload,
+        formErrors: errorDetails
+      })
+
+      return h.redirect('/birds')
+    }
+
+    if (!validationResult.error) {
+      console.log('Save tracking')
+      const birdId = payload.birdId
+
+      // const trackingId = crypto.randomUUID()
+
+      return h.redirect(`/birds/${birdId}/tracking/spotter`)
+      // return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
+    }
+  }
+}
+
+export { createTrackingController }
