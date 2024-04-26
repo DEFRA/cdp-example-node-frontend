@@ -10,11 +10,9 @@ const uploadFormController = {
     const plantSession = request.pre.plantSession
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
-    const redirectUrl = `${appBaseUrl}/plants/add/status-poller`
 
     const secureUpload = await initUpload({
-      successRedirect: redirectUrl,
-      failureRedirect: redirectUrl,
+      redirect: `${appBaseUrl}/plants/add/status-poller`,
       destinationBucket,
       destinationPath: '/animals',
       metadata: { plantId: plantSession?.plantId }

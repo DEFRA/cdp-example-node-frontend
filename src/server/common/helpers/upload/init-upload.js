@@ -3,20 +3,14 @@ import fetch from 'node-fetch'
 import { config } from '~/src/config'
 
 async function initUpload(options = {}) {
-  const {
-    successRedirect,
-    failureRedirect,
-    scanResultCallbackUrl,
-    destinationBucket
-  } = options
+  const { redirect, scanResultCallbackUrl, destinationBucket } = options
 
   const endpointUrl = config.get('cdpUploaderUrl') + '/initiate'
   const response = await fetch(endpointUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      successRedirect,
-      failureRedirect,
+      redirect,
       scanResultCallbackUrl,
       destinationBucket
     })

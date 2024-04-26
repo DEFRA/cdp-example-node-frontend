@@ -6,12 +6,8 @@ const uploadFormController = {
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
 
-    // TODO the uploader will accept only 1 callback url in the end
-    const redirectUrl = `${appBaseUrl}/animals/add/status-poller`
-
     const secureUpload = await initUpload({
-      successRedirect: redirectUrl,
-      failureRedirect: redirectUrl,
+      redirect: `${appBaseUrl}/animals/add/status-poller`,
       destinationBucket,
       destinationPath: '/animals'
     })
