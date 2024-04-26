@@ -7,9 +7,7 @@ async function initUpload(options = {}) {
     successRedirect,
     failureRedirect,
     scanResultCallbackUrl,
-    destinationBucket,
-    acceptedMimeTypes,
-    maxFileSize
+    destinationBucket
   } = options
 
   const endpointUrl = config.get('cdpUploaderUrl') + '/initiate'
@@ -20,9 +18,7 @@ async function initUpload(options = {}) {
       successRedirect,
       failureRedirect,
       scanResultCallbackUrl,
-      destinationBucket,
-      acceptedMimeTypes,
-      maxFileSize
+      destinationBucket
     })
   })
 

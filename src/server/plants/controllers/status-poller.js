@@ -18,12 +18,13 @@ const statusPollerController = {
     const setError = populateErrorFlashMessage(request)
     const status = request.pre.status
     const fileUpload = status.files.at(0)
-    const acceptedMimeTypes = status.acceptedMimeTypes
+    const acceptedMimeTypes = ['image/png', 'image/jpeg']
+    const maxFileSize = 100
     const hasUploadedFile = status?.files.length > 0
     const hasBeenVirusChecked = status?.uploadStatus === 'ready'
     const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
     const fileUploadSizeMb = fileUpload?.contentLength / 1024
-    const fileSizeLimitExceeded = fileUploadSizeMb > status?.maxFileSize
+    const fileSizeLimitExceeded = fileUploadSizeMb > maxFileSize
     const hasCorrectMimeType = acceptedMimeTypes.includes(
       fileUpload?.contentType
     )
@@ -48,7 +49,7 @@ const statusPollerController = {
 
     // Filesize limit exceeded
     if (fileSizeLimitExceeded) {
-      setError(`Max file size of ${status?.maxFileSize}`)
+      setError(`Max file size of ${maxFileSize}`)
 
       return h.redirect('/plants/add/upload-pictures')
     }
