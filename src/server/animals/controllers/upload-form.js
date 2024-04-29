@@ -6,15 +6,15 @@ const uploadFormController = {
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
 
-    const secureUpload = await initUpload({
+    const uploadDetail = await initUpload({
       redirect: `${appBaseUrl}/animals/add/status-poller`,
       destinationBucket,
-      destinationPath: '/animals'
+      destinationPath: 'animals'
     })
 
     return h.view('animals/views/upload-form', {
       pageTitle: 'Add animal',
-      action: secureUpload.uploadUrl,
+      action: uploadDetail.uploadAndScanUrl,
       heading: 'Seen an Animal?',
       breadcrumbs: [
         {

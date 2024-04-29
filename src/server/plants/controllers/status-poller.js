@@ -21,16 +21,16 @@ const statusPollerController = {
     const acceptedMimeTypes = ['image/png', 'image/jpeg']
     const maxFileSize = 100
     const hasBeenVirusChecked = status?.uploadStatus === 'ready'
-    const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
-    const fileUploadSizeMb = fileUpload?.contentLength / 1024
+    const hasRejectedFiles = status?.numberOfRejectedFiles > 0
+    const fileUploadSizeMb = fileUpload?.contentLength / 1024 / 1024
     const fileSizeLimitExceeded = fileUploadSizeMb > maxFileSize
+    const fileInputStatus = status?.fields?.file
+    const fileInputHasError = fileInputStatus?.hasError
     const hasCorrectMimeType = acceptedMimeTypes.includes(
       fileUpload?.contentType
     )
 
-    const fileInputStatus = status?.fields?.file
-    const fileInputHasError = fileInputStatus?.hasError
-
+    // Errors from cdp-uploader
     if (fileInputHasError) {
       setError(fileInputStatus.errorMessage)
 
@@ -55,15 +55,8 @@ const statusPollerController = {
       return h.redirect('/plants/add/upload-pictures')
     }
 
-    // Virus check failed
-    if (hasBeenVirusChecked && !hasPassedVirusCheck) {
-      setError('Virus check failed')
-
-      return h.redirect('/plants/add/upload-pictures')
-    }
-
-    // File has successfully passed virus check and is ready to be used/stored in session/db
-    if (hasBeenVirusChecked && hasPassedVirusCheck) {
+    // File is ready to be used
+    if (hasBeenVirusChecked && !hasRejectedFiles) {
       const previouslyUploadFiles = request.pre.plantSession?.files ?? []
       const fileUpload = status?.files?.at(0)
 

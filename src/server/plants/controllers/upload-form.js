@@ -11,17 +11,17 @@ const uploadFormController = {
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
 
-    const secureUpload = await initUpload({
+    const uploadDetail = await initUpload({
       redirect: `${appBaseUrl}/plants/add/status-poller`,
       destinationBucket,
-      destinationPath: '/animals',
+      destinationPath: 'plants',
       metadata: { plantId: plantSession?.plantId }
     })
 
     return h.view('plants/views/upload-form', {
       pageTitle: 'Upload pictures',
       plantSession,
-      action: secureUpload.uploadUrl,
+      action: uploadDetail.uploadAndScanUrl,
       heading: 'Upload pictures',
       breadcrumbs: [
         {

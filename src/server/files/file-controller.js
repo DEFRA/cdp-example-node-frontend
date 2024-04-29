@@ -14,17 +14,22 @@ const fileController = {
     validate: {
       params: Joi.object({
         uploadId: Joi.string().required(),
-        fileId: Joi.string().required()
+        fileId: Joi.string().required(),
+        destinationPath: Joi.string().default(null)
       })
     }
   },
   handler: async (request, h) => {
     const uploadId = decodeURIComponent(request.params.uploadId)
     const fileId = decodeURIComponent(request.params.fileId)
+    const destinationPath = request.params.destinationPath
+    const key = destinationPath
+      ? `${destinationPath}/${uploadId}/${fileId}`
+      : `${uploadId}/${fileId}`
 
     const command = new GetObjectCommand({
       Bucket: config.get('bucket'),
-      Key: `${uploadId}/${fileId}`
+      Key: key
     })
 
     try {
