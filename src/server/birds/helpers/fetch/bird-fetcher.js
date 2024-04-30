@@ -7,6 +7,11 @@ function birdPath(bird, path) {
   return `${backendUrl}/birds/${bird.birdId}${path}`
 }
 
+async function birdGet(bird, path) {
+  const endpoint = birdPath(bird, path)
+  return await fetcher(endpoint)
+}
+
 async function birdPost(bird, path, body) {
   const endpoint = trackingPath(bird, path)
   const { json } = await fetcher(endpoint, {
@@ -16,4 +21,4 @@ async function birdPost(bird, path, body) {
   return json
 }
 
-export { birdPath, birdPost }
+export { birdPath, birdGet, birdPost }
