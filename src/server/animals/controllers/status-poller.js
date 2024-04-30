@@ -12,6 +12,7 @@ const statusPollerController = {
     const fileUpload = status.files.at(0)
     const acceptedMimeTypes = ['image/png', 'image/jpeg']
     const maxFileSize = 100
+    const hasUploadedFile = status?.files.length > 0
     const hasBeenVirusChecked = status?.uploadStatus === 'ready'
     const hasRejectedFiles = status?.numberOfRejectedFiles > 0
     const fileUploadSizeMb = fileUpload?.contentLength / 1024 / 1024
@@ -21,6 +22,13 @@ const statusPollerController = {
     const hasCorrectMimeType = acceptedMimeTypes.includes(
       fileUpload?.contentType
     )
+
+    // No file uploaded
+    if (!hasUploadedFile) {
+      setError('The selected file is empty')
+
+      return h.redirect('/animals/add/upload-picture')
+    }
 
     // Errors from cdp-uploader
     if (fileInputHasError) {

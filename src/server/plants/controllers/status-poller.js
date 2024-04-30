@@ -20,6 +20,7 @@ const statusPollerController = {
     const fileUpload = status.files.at(0)
     const acceptedMimeTypes = ['image/png', 'image/jpeg']
     const maxFileSize = 100
+    const hasUploadedFile = status?.files.length > 0
     const hasBeenVirusChecked = status?.uploadStatus === 'ready'
     const hasRejectedFiles = status?.numberOfRejectedFiles > 0
     const fileUploadSizeMb = fileUpload?.contentLength / 1024 / 1024
@@ -33,6 +34,13 @@ const statusPollerController = {
     // Errors from cdp-uploader
     if (fileInputHasError) {
       setError(fileInputStatus.errorMessage)
+
+      return h.redirect('/plants/add/upload-pictures')
+    }
+
+    // No file uploaded
+    if (!hasUploadedFile) {
+      setError('The selected file is empty')
 
       return h.redirect('/plants/add/upload-pictures')
     }
