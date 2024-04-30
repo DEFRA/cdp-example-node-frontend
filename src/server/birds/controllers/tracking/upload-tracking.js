@@ -6,8 +6,8 @@ import { trackingValidation } from '~/src/server/birds/helpers/schemas/bird-vali
 import { birds } from '~/src/server/birds/data/birds'
 import { findBirdById } from '~/src/server/birds//helpers/find-bird'
 import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
-import { findTrackingById } from '~/src/server/birds/helpers/find-tracking'
-import { setStatusTrackingUrl } from '~/src/server/birds/helpers/update-tracking-status-url'
+import { findTrackingById } from '~/src/server/birds/helpers/fetch/find-tracking'
+import { setStatusTrackingUrl } from '~/src/server/birds/helpers/fetch/update-tracking-status-url'
 
 const destinationBucket = config.get('bucket')
 const appBaseUrl = config.get('appBaseUrl')

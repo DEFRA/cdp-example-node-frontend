@@ -1,4 +1,4 @@
-import { birdPost } from '~/src/server/birds/helpers/bird-fetcher'
+import { birdPost } from '~/src/server/birds/helpers/fetch/bird-fetcher'
 
 async function createTracking(bird, spotter) {
   console.log('Save tracking')

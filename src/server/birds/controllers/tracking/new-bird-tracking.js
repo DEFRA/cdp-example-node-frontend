@@ -1,7 +1,7 @@
 import Joi from 'joi'
 
 import { sessionNames } from '~/src/server/common/constants/session-names'
-import { findBirdById } from '~/src/server/birds//helpers/find-bird'
+import { findBirdById } from '~/src/server/birds/helpers/find-bird'
 
 const newBirdTrackingController = {
   options: {

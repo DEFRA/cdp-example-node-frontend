@@ -1,4 +1,4 @@
-import { trackingPost } from '~/src/server/birds/helpers/tracking-fetcher'
+import { trackingPost } from '~/src/server/birds/helpers/fetch/tracking-fetcher'
 
 async function setStatusTrackingUrl(bird, trackingId, statusUrl) {
   console.log('Update tracking status')

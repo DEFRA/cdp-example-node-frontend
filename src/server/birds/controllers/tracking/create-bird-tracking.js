@@ -6,7 +6,7 @@ import {
 } from '~/src/server/birds/helpers/schemas/bird-validation'
 import { birds } from '~/src/server/birds/data/birds'
 import { findBirdById } from '~/src/server/birds//helpers/find-bird'
-import { createTracking } from '~/src/server/birds/helpers/create-tracking'
+import { createTracking } from '~/src/server/birds/helpers/fetch/create-tracking'
 
 const createBirdTrackingController = {
   options: {

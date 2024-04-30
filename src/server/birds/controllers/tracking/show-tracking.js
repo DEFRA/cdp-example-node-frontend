@@ -1,8 +1,8 @@
 import { trackingValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
 import { birds } from '~/src/server/birds/data/birds'
-import { findBirdById } from '~/src/server/birds//helpers/find-bird'
-import { findTrackingById } from '~/src/server/birds/helpers/find-tracking'
-import { findTrackingLocations } from '~/src/server/birds/helpers/find-tracking-locations'
+import { findBirdById } from '~/src/server/birds/helpers/find-bird'
+import { findTrackingById } from '~/src/server/birds/helpers/fetch/find-tracking'
+import { findTrackingLocations } from '~/src/server/birds/helpers/fetch/find-tracking-locations'
 import {
   isStatusProcessing,
   isStatusReady,
