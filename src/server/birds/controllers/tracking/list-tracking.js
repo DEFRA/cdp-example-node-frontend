@@ -30,6 +30,19 @@ const listTrackingController = {
         { date: '2023-02-15 15:16', spotter: 'Peter', trackingId: 4 },
         { date: '2024-02-20 11:22', spotter: 'Hans', trackingId: 1 },
         { date: '2024-04-20 23:46', spotter: 'Emma', trackingId: 3 }
+      ],
+      breadcrumbs: [
+        {
+          text: 'Birds',
+          href: '/birds'
+        },
+        {
+          text: bird.name,
+          href: `/birds/${birdId}`
+        },
+        {
+          text: 'Tracking'
+        }
       ]
     })
   }

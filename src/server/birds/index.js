@@ -5,7 +5,10 @@ import {
   createBirdTrackingController,
   newTrackingController,
   newBirdTrackingController,
-  showTrackingUploadController
+  processStatusController,
+  showTrackingController,
+  showTrackingUploadController,
+  trackingUploadedController
 } from '~/src/server/birds/controllers'
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
@@ -29,6 +32,30 @@ const birds = {
         {
           method: 'GET',
           path: '/birds/{birdId}/tracking/{trackingId}',
+          ...showTrackingController
+        }
+      ])
+
+      server.route([
+        {
+          method: 'GET',
+          path: '/birds/{birdId}/tracking/{trackingId}/process-status',
+          ...processStatusController
+        }
+      ])
+
+      server.route([
+        {
+          method: 'GET',
+          path: '/birds/{birdId}/tracking/{trackingId}/uploaded',
+          ...trackingUploadedController
+        }
+      ])
+
+      server.route([
+        {
+          method: 'GET',
+          path: '/birds/{birdId}/tracking/{trackingId}/upload',
           ...showTrackingUploadController
         }
       ])

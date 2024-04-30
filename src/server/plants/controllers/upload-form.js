@@ -18,7 +18,7 @@ const uploadFormController = {
       acceptedMimeTypes: ['image/png', 'image/jpeg'],
       maxFileSize: 100,
       destinationBucket,
-      destinationPath: '/animals',
+      destinationPath: '/plants',
       metadata: { plantId: plantSession?.plantId }
     })
 

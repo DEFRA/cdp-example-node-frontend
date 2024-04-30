@@ -1,6 +1,3 @@
-import * as crypto from 'node:crypto'
-import Joi from 'joi'
-
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
 import {
@@ -9,15 +6,18 @@ import {
 } from '~/src/server/birds/helpers/schemas/bird-validation'
 import { birds } from '~/src/server/birds/data/birds'
 import { findBirdById } from '~/src/server/birds//helpers/find-bird'
+import { createTracking } from '~/src/server/birds/helpers/create-tracking'
 
 const createBirdTrackingController = {
   options: {
     validate: {
-      params: birdValidation
+      params: birdValidation,
+      payload: spotterValidation
     }
   },
   handler: async (request, h) => {
     const payload = request?.payload
+    const spotter = payload?.spotter
     const birdId = request.params.birdId
     const bird = findBirdById(birdId)
 
@@ -44,9 +44,10 @@ const createBirdTrackingController = {
 
     if (!validationResult.error) {
       console.log('Save tracking')
-      const trackingId = crypto.randomUUID()
 
-      return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
+      const { trackingId } = await createTracking(bird, spotter)
+
+      return h.redirect(`/birds/${birdId}/tracking/${trackingId}/upload`)
     }
   }
 }

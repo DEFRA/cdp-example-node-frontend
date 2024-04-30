@@ -1,0 +1,37 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+        <p>
+          Tracking locations for a {{ bird.name }}.
+        </p>
+        <p>
+           Genus: {{ bird.genus }}<br>
+           Species: {{ bird.species }}
+        </p>
+
+          <p>
+        {% if tracking?.spotter %}
+            Spotter: {{ tracking?.spotter }}
+        {% else %}
+            Spotter: No spotter
+        {% endif %}
+          </p>
+
+
+         <p>
+
+            Tracking locations are still being processed. Please check back later.
+
+        </p>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

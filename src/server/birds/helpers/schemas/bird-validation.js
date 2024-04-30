@@ -9,8 +9,8 @@ const birdValidation = Joi.object({
 
 const spotterValidation = Joi.object({
   spotter: Joi.string().required().messages({
-    'any.only': 'Choose an entry',
-    'any.required': 'Choose an entry'
+    'any.only': 'Enter a name',
+    'any.required': 'Enter a a name'
   })
 })
 
