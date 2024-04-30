@@ -43,10 +43,16 @@ const createBirdTrackingController = {
     }
 
     if (!validationResult.error) {
-      console.log('Save tracking')
+      console.log({ bird, spotter }, 'Save tracking')
 
-      const { trackingId } = await createTracking(bird, spotter)
+      const { tracking } = await createTracking(bird, spotter)
 
+      if (!tracking) {
+        console.log('No tracking')
+        return h.redirect(`/birds/${birdId}/tracking/spotter`)
+      }
+
+      const trackingId = tracking?.trackingId
       return h.redirect(`/birds/${birdId}/tracking/${trackingId}/upload`)
     }
   }

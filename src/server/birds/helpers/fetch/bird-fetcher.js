@@ -13,7 +13,7 @@ async function birdGet(bird, path) {
 }
 
 async function birdPost(bird, path, body) {
-  const endpoint = trackingPath(bird, path)
+  const endpoint = birdPath(bird, path)
   const { json } = await fetcher(endpoint, {
     method: 'post',
     body: JSON.stringify(body)

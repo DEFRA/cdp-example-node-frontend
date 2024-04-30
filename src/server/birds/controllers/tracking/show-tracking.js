@@ -1,7 +1,7 @@
 import { trackingValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
 import { birds } from '~/src/server/birds/data/birds'
 import { findBirdById } from '~/src/server/birds/helpers/find-bird'
-import { findTrackingById } from '~/src/server/birds/helpers/fetch/find-tracking'
+import { findTracking } from '~/src/server/birds/helpers/fetch/find-tracking'
 import { findTrackingLocations } from '~/src/server/birds/helpers/fetch/find-tracking-locations'
 import {
   isStatusProcessing,
@@ -26,7 +26,7 @@ const showTrackingController = {
       return h.redirect('/birds')
     }
 
-    const tracking = await findTrackingById(birdId, trackingId)
+    const tracking = await findTracking(bird, trackingId)
 
     if (!tracking) {
       console.log({ birdId, trackingId }, 'Tracking not found')

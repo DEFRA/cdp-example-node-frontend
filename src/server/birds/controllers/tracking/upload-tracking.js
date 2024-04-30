@@ -6,7 +6,7 @@ import { trackingValidation } from '~/src/server/birds/helpers/schemas/bird-vali
 import { birds } from '~/src/server/birds/data/birds'
 import { findBirdById } from '~/src/server/birds//helpers/find-bird'
 import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
-import { findTrackingById } from '~/src/server/birds/helpers/fetch/find-tracking'
+import { findTracking } from '~/src/server/birds/helpers/fetch/find-tracking'
 import { setStatusTrackingUrl } from '~/src/server/birds/helpers/fetch/update-tracking-status-url'
 
 const destinationBucket = config.get('bucket')
@@ -31,7 +31,8 @@ const showTrackingUploadController = {
       return h.redirect('/birds')
     }
 
-    const tracking = findTrackingById(birdId, trackingId)
+    const tracking = await findTracking(bird, trackingId)
+
 
     if (!tracking) {
       console.log({ birdId, trackingId }, 'Tracking not found')
@@ -49,7 +50,9 @@ const showTrackingUploadController = {
       destinationPath: '/birds/tracking'
     })
 
-    await setStatusTrackingUrl(birdId, trackingId, secureUpload.statusUrl)
+    console.log({ secureUpload }, 'Secure upload')
+
+    await setStatusTrackingUrl(bird, trackingId, secureUpload.statusUrl)
 
     return h.view('birds/views/tracking/upload-tracking', {
       pageTitle: `Tracking ${bird.name}`,
