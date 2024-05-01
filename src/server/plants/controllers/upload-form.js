@@ -10,22 +10,19 @@ const uploadFormController = {
     const plantSession = request.pre.plantSession
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
-    const redirectUrl = `${appBaseUrl}/plants/add/status-poller`
 
-    const secureUpload = await initUpload({
-      successRedirect: redirectUrl,
-      failureRedirect: redirectUrl,
-      acceptedMimeTypes: ['image/png', 'image/jpeg'],
-      maxFileSize: 100,
+    const uploadDetail = await initUpload({
+      redirect: `${appBaseUrl}/plants/add/status-poller`,
       destinationBucket,
-      destinationPath: '/animals',
+      destinationPath: 'plants',
+      scanResultCallbackUrl: `${config.get('appBaseUrl')}/plants/callback/${plantSession?.plantId}`,
       metadata: { plantId: plantSession?.plantId }
     })
 
     return h.view('plants/views/upload-form', {
       pageTitle: 'Upload pictures',
       plantSession,
-      action: secureUpload.uploadUrl,
+      action: uploadDetail.uploadAndScanUrl,
       heading: 'Upload pictures',
       breadcrumbs: [
         {

@@ -10,19 +10,29 @@ const statusPollerController = {
     const setError = populateErrorFlashMessage(request)
     const status = request.pre.status
     const fileUpload = status.files.at(0)
-    const acceptedMimeTypes = status.acceptedMimeTypes
-    const hasUploadedFile = status?.files.length > 0
+    const acceptedMimeTypes = ['image/png', 'image/jpeg']
+    const maxFileSize = 100
+    const hasUploadedFile = status?.fields?.file?.contentLength > 0
     const hasBeenVirusChecked = status?.uploadStatus === 'ready'
-    const hasPassedVirusCheck = status?.numberOfInfectedFiles === 0
-    const fileUploadSizeMb = fileUpload?.contentLength / 1024
-    const fileSizeLimitExceeded = fileUploadSizeMb > status?.maxFileSize
+    const hasRejectedFiles = status?.numberOfRejectedFiles > 0
+    const fileUploadSizeMb = fileUpload?.contentLength / 1024 / 1024
+    const fileSizeLimitExceeded = fileUploadSizeMb > maxFileSize
+    const fileInputStatus = status?.fields?.file
+    const fileInputHasError = fileInputStatus?.hasError
     const hasCorrectMimeType = acceptedMimeTypes.includes(
       fileUpload?.contentType
     )
 
     // No file uploaded
     if (!hasUploadedFile) {
-      setError('Choose a file')
+      setError('The selected file is empty')
+
+      return h.redirect('/animals/add/upload-picture')
+    }
+
+    // Errors from cdp-uploader
+    if (fileInputHasError) {
+      setError(fileInputStatus.errorMessage)
 
       return h.redirect('/animals/add/upload-picture')
     }
@@ -40,20 +50,13 @@ const statusPollerController = {
 
     // Filesize limit exceeded
     if (fileSizeLimitExceeded) {
-      setError(`Max file size of ${status?.maxFileSize}`)
+      setError(`Max file size of ${maxFileSize}`)
 
       return h.redirect('/animals/add/upload-picture')
     }
 
-    // Virus check failed
-    if (hasBeenVirusChecked && !hasPassedVirusCheck) {
-      setError('Virus check failed')
-
-      return h.redirect('/animals/add/upload-picture')
-    }
-
-    // File has successfully passed virus check and is ready to be used/stored in session/db
-    if (hasBeenVirusChecked && hasPassedVirusCheck) {
+    // File is ready to be used
+    if (hasBeenVirusChecked && !hasRejectedFiles) {
       await saveToAnimal(request, h, {
         file: {
           filename: fileUpload.filename,
