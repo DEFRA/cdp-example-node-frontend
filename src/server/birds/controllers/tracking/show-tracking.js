@@ -26,12 +26,16 @@ const showTrackingController = {
       return h.redirect('/birds')
     }
 
-    const tracking = await findTracking(bird, trackingId)
+    const { tracking } = await findTracking(bird, trackingId)
 
     if (!tracking) {
       console.log({ birdId, trackingId }, 'Tracking not found')
       return h.redirect(`/birds/${birdId}/tracking`)
     }
+
+    const spotter = tracking.spotter
+    const fileDetails = tracking.fileDetails ?? {}
+    console.log({ bird, tracking, fileDetails }, 'Find tracking')
 
     let locations = []
 
@@ -56,12 +60,13 @@ const showTrackingController = {
       bird,
       birdId,
       tracking,
+      spotter,
       trackingId,
       locations,
       breadcrumbs
     }
 
-    if (tracking.status && isStatusReady(tracking.status)) {
+    if (tracking.trackingStatus && isStatusReady(tracking.trackingStatus)) {
       const trackingLocations = await findTrackingLocations(tracking)
 
       locations = trackingLocations.map((location) => [
@@ -83,17 +88,23 @@ const showTrackingController = {
       })
     }
 
-    if (!tracking.status || isStatusProcessing(tracking.status)) {
+    if (
+      !tracking.trackingStatus ||
+      isStatusProcessing(tracking.trackingStatus)
+    ) {
       return h.view('birds/views/tracking/show-tracking-processing', {
         ...context
       })
     }
 
-    if (tracking.status && isStatusRejected(tracking.status)) {
+    if (tracking.trackingStatus && isStatusRejected(tracking.trackingStatus)) {
       return h.view('birds/views/tracking/show-tracking-rejected', {
         ...context
       })
     }
+
+    console.log({ birdId, trackingId }, 'Tracking status unknown')
+    return h.redirect(`/birds/${birdId}/tracking`)
   }
 }
 

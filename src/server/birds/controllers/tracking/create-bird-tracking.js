@@ -46,6 +46,7 @@ const createBirdTrackingController = {
       console.log({ bird, spotter }, 'Save tracking')
 
       const { tracking } = await createTracking(bird, spotter)
+      console.log({ tracking }, 'Save tracking response')
 
       if (!tracking) {
         console.log('No tracking')

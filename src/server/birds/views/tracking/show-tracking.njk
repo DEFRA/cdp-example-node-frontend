@@ -17,17 +17,10 @@
         </p>
 
           <p>
-        {% if tracking?.spotter %}
-            Spotter: {{ tracking?.spotter }}
+        {% if spotter %}
+            Spotter: {{ spotter }}
         {% else %}
             Spotter: No spotter
-        {% endif %}
-          </p>
-          <p>
-        {% if tracking?.status %}
-            Status: {{ tracking?.status }}
-        {% else %}
-            Status: Status unknown
         {% endif %}
           </p>
 
