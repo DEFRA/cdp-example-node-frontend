@@ -1,9 +1,13 @@
+import { getCreatures } from '~/src/server/creatures/helpers/fetch/get-creatures'
+
 const creatureListController = {
-  handler: (request, h) => {
+  handler: async (request, h) => {
+    const json = await getCreatures()
+
     return h.view('creatures/views/list', {
-      pageTitle: 'Creatures',
-      heading: 'Creatures',
-      creatures: []
+      pageTitle: 'Creatures Sightings',
+      heading: 'Mythical Creature Sightings',
+      creatures: json?.creatures ?? []
     })
   }
 }
