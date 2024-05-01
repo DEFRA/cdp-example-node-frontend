@@ -15,6 +15,7 @@ const uploadFormController = {
       redirect: `${appBaseUrl}/plants/add/status-poller`,
       destinationBucket,
       destinationPath: 'plants',
+      scanResultCallbackUrl: `${config.get('appBaseUrl')}/plants/callback/${plantSession?.plantId}`,
       metadata: { plantId: plantSession?.plantId }
     })
 
