@@ -11,8 +11,9 @@ import { secureContext } from '~/src/server/common/helpers/secure-context'
 import { buildRedisClient } from '~/src/server/common/helpers/redis-client'
 import { sessionManager } from '~/src/server/common/helpers/session-manager'
 import { addFlashMessagesToContext } from '~/src/server/common/helpers/add-flash-messages-to-context'
+import { RedisHelper } from '~/src/server/common/helpers/redis-helper'
 
-const client = buildRedisClient()
+const redisClient = buildRedisClient()
 const isProduction = config.get('isProduction')
 
 async function createServer() {
@@ -46,7 +47,7 @@ async function createServer() {
         name: 'session',
         engine: new CatboxRedis({
           partition: config.get('redisKeyPrefix'),
-          client
+          client: redisClient
         })
       }
     ]
@@ -61,6 +62,10 @@ async function createServer() {
   if (isProduction) {
     await server.register(secureContext)
   }
+
+  const redisHelper = new RedisHelper(redisClient)
+  server.decorate('request', 'redis', redisHelper)
+  server.decorate('server', 'redis', redisHelper)
 
   await server.register([requestLogger, sessionManager, router, nunjucksConfig])
 

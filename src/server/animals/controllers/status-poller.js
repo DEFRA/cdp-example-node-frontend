@@ -26,7 +26,6 @@ const statusPollerController = {
     // No file uploaded
     if (!hasUploadedFile) {
       setError('The selected file is empty')
-
       return h.redirect('/animals/add/upload-picture')
     }
 
