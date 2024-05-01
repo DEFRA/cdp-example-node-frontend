@@ -20,7 +20,7 @@ const statusPollerController = {
     const fileUpload = status.files.at(0)
     const acceptedMimeTypes = ['image/png', 'image/jpeg']
     const maxFileSize = 100
-    const hasUploadedFile = status?.files.length > 0
+    const hasUploadedFile = status?.fields?.file?.contentLength > 0
     const hasBeenVirusChecked = status?.uploadStatus === 'ready'
     const hasRejectedFiles = status?.numberOfRejectedFiles > 0
     const fileUploadSizeMb = fileUpload?.contentLength / 1024 / 1024
