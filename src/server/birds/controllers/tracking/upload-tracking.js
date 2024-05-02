@@ -44,11 +44,10 @@ const showTrackingUploadController = {
     const callbackUrl = `${backendUrl}/birds/${birdId}/tracking/${trackingId}/callback`
 
     const secureUpload = await initUpload({
-      successRedirect: redirectUrl,
-      failureRedirect: redirectUrl,
+      redirect: redirectUrl,
       scanResultCallbackUrl: callbackUrl,
       destinationBucket,
-      destinationPath: '/birds/tracking'
+      destinationPath: 'birds/tracking'
     })
 
     console.log({ secureUpload }, 'Secure upload')
