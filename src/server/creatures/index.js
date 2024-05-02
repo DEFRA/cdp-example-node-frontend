@@ -1,7 +1,7 @@
 import {
   creatureController,
   creatureListController,
-  statusPollerController,
+  uploadStatusPollerController,
   uploadFormController
 } from '~/src/server/creatures/controllers'
 import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
@@ -40,7 +40,7 @@ const creatures = {
         {
           method: 'GET',
           path: '/creatures/{creatureId}/add',
-          ...statusPollerController
+          ...uploadStatusPollerController
         }
       ])
     }

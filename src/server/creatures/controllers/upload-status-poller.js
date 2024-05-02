@@ -1,13 +1,16 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
-import { fetchStatus } from '~/src/server/common/helpers/upload/fetch-status'
 import { createCreature } from '~/src/server/creatures/helpers/fetch/create-creature'
 import { uploadFormValidation } from '~/src/server/creatures/helpers/schemas/upload-form-validation'
 import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
+import { provideUploadStatus } from '~/src/server/common/helpers/pre/provide-upload-status'
 
-const statusPollerController = {
+const uploadStatusPollerController = {
+  options: {
+    pre: [provideUploadStatus]
+  },
   handler: async (request, h) => {
-    const uploadId = request.query.uploadId
     const creatureId = request.params.creatureId
+    const uploadStatus = request.pre.uploadStatus
 
     const storedUploadId = await request.redis.findCreatureId(creatureId)
     if (!storedUploadId) {
@@ -16,16 +19,17 @@ const statusPollerController = {
       return h.redirect('/creatures/upload')
     }
 
-    const upload = await fetchStatus(uploadId)
-
-    const validationResult = uploadFormValidation.validate(upload.fields, {
-      abortEarly: false
-    })
+    const validationResult = uploadFormValidation.validate(
+      uploadStatus.fields,
+      {
+        abortEarly: false
+      }
+    )
     if (validationResult?.error) {
       const errorDetails = buildErrorDetails(validationResult.error.details)
 
       request.yar.flash(sessionNames.validationFailure, {
-        formValues: upload.fields,
+        formValues: uploadStatus.fields,
         formErrors: errorDetails
       })
       request.logger.info(
@@ -35,26 +39,26 @@ const statusPollerController = {
       return h.redirect('/creatures/upload')
     }
 
-    const creatureFiles = upload.fields.creatureFiles
+    const creatureFiles = uploadStatus.fields.creatureFiles
     const missingCreatureFile =
       !Array.isArray(creatureFiles) && creatureFiles.contentLength === 0
 
     if (missingCreatureFile) {
       request.yar.flash(sessionNames.validationFailure, {
-        formValues: upload.fields,
+        formValues: uploadStatus.fields,
         formErrors: { creatureFiles: { message: 'Choose a file' } }
       })
       request.logger.info('No creature files')
       return h.redirect('/creatures/upload')
     }
 
-    const evidenceFiles = upload.fields.evidenceFiles
+    const evidenceFiles = uploadStatus.fields.evidenceFiles
     const missingEvidenceFile =
       !Array.isArray(evidenceFiles) && evidenceFiles.contentLength === 0
 
     if (missingEvidenceFile) {
       request.yar.flash(sessionNames.validationFailure, {
-        formValues: upload.fields,
+        formValues: uploadStatus.fields,
         formErrors: { evidenceFiles: { message: 'Choose a file' } }
       })
       request.logger.info('No evidence files')
@@ -62,13 +66,13 @@ const statusPollerController = {
     }
 
     // Virus check failed - Return to upload form with errors
-    const isReady = upload?.uploadStatus === 'ready'
-    const uploadSuccessful = upload?.numberOfRejectedFiles === 0
+    const isReady = uploadStatus.uploadStatus === 'ready'
+    const uploadSuccessful = uploadStatus.numberOfRejectedFiles === 0
 
     if (isReady && !uploadSuccessful) {
       request.yar.flash(sessionNames.validationFailure, {
         // todo add logic to show file errors
-        formValues: upload.fields,
+        formValues: uploadStatus.fields,
         formErrors: {
           ...(isRejected(creatureFiles, request) && {
             creatureFiles: { message: 'Virus check failed' }
@@ -82,13 +86,15 @@ const statusPollerController = {
       return h.redirect('/creatures/upload')
     }
 
+    // TODO we need to discuss this UX. You upload a file but its automatically saved without a summary. Feels like
+    //  a step is missing
     if (isReady && uploadSuccessful) {
-      await createCreature(creatureId, upload.fields)
+      await createCreature(creatureId, uploadStatus.fields)
       return h.redirect(`/creatures/${creatureId}`)
     }
 
-    // decision/holding page waiting for virus scan and s3 upload
-    return h.view('animals/views/status-poller', {
+    // Virus check polling page
+    return h.view('creatures/views/status-poller', {
       pageTitle: 'Virus check',
       heading: 'Scanning your files',
       breadcrumbs: [
@@ -114,4 +120,4 @@ function isRejected(fileField, request) {
   return files.some((f) => f.fileStatus === 'rejected')
 }
 
-export { statusPollerController }
+export { uploadStatusPollerController }
