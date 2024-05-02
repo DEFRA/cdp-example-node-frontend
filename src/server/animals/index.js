@@ -11,8 +11,8 @@ import {
   createController,
   animalListController,
   animalController,
-  statusPollerController,
-  callbackController
+  callbackController,
+  uploadStatusPollerController
 } from '~/src/server/animals/controllers'
 import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
 import { sessionNames } from '~/src/server/common/constants/session-names'
@@ -100,8 +100,8 @@ const animals = {
         },
         {
           method: 'GET',
-          path: '/animals/add/status-poller',
-          ...statusPollerController
+          path: '/animals/add/upload-status-poller',
+          ...uploadStatusPollerController
         }
       ])
     }

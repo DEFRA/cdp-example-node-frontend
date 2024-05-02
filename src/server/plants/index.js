@@ -7,7 +7,7 @@ import {
   plantController,
   detailsFormController,
   detailsController,
-  statusPollerController,
+  uploadStatusPollerController,
   callbackController
 } from '~/src/server/plants/controllers'
 import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
@@ -76,8 +76,8 @@ const plants = {
         },
         {
           method: 'GET',
-          path: '/plants/add/status-poller',
-          ...statusPollerController
+          path: '/plants/add/upload-status-poller',
+          ...uploadStatusPollerController
         }
       ])
     }
