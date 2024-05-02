@@ -21,7 +21,8 @@ function buildRedisClient() {
     redisClient = new IoRedis({
       port,
       host: config.get('redisHost'),
-      db
+      db,
+      keyPrefix: config.get('redisKeyPrefix')
     })
   } else {
     redisClient = new IoRedis.Cluster(
@@ -32,6 +33,7 @@ function buildRedisClient() {
         }
       ],
       {
+        keyPrefix: config.get('redisKeyPrefix'),
         slotsRefreshTimeout: 10000,
         dnsLookup: (address, callback) => callback(null, address),
         redisOptions: {
