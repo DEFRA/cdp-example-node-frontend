@@ -26,31 +26,43 @@ const processStatusController = {
       return h.redirect('/birds')
     }
 
-    const tracking = await findTracking(bird, trackingId)
+    const { tracking } = await findTracking(bird, trackingId)
 
     if (!tracking) {
       console.log({ birdId, trackingId }, 'Tracking not found')
       return h.redirect(`/birds/${birdId}/tracking`)
     }
 
-    if (!tracking.status || isStatusProcessing(tracking.status)) {
+    if (
+      !tracking.trackingStatus ||
+      isStatusProcessing(tracking.trackingStatus)
+    ) {
+      console.log(
+        { bird, tracking },
+        'Tracking upload still processing' + tracking.trackingStatus
+      )
+      console.log(
+        { bird, tracking },
+        'Tracking upload still processing' +
+          isStatusProcessing(tracking.trackingStatus)
+      )
       console.log({ bird, tracking }, 'Tracking upload still processing')
       return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
     }
 
-    if (tracking.status && isStatusReady(tracking.status)) {
+    if (tracking.trackingStatus && isStatusReady(tracking.trackingStatus)) {
       console.log({ bird, tracking }, 'Tracking upload ready')
       return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
     }
 
-    if (tracking.status && isStatusRejected(tracking.status)) {
+    if (tracking.trackingStatus && isStatusRejected(tracking.trackingStatus)) {
       console.log({ bird, tracking }, 'Tracking upload failed or rejected')
       return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
     }
 
     console.log(
       { bird, tracking },
-      `Tracking upload status unexpected: ${tracking.status}`
+      `Tracking upload status unexpected: ${tracking.trackingStatus}`
     )
     return h.redirect(`/birds/`)
   }

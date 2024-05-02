@@ -31,13 +31,14 @@ const showTrackingUploadController = {
       return h.redirect('/birds')
     }
 
-    const tracking = await findTracking(bird, trackingId)
-
+    const { tracking } = await findTracking(bird, trackingId)
 
     if (!tracking) {
       console.log({ birdId, trackingId }, 'Tracking not found')
       return h.redirect(`/birds/${birdId}/tracking`)
     }
+
+    console.log({ tracking }, 'Tracking found')
 
     const redirectUrl = `${appBaseUrl}/birds/${birdId}/tracking/${trackingId}/uploaded`
     const callbackUrl = `${backendUrl}/birds/${birdId}/tracking/${trackingId}/callback`
