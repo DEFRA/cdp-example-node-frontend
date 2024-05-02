@@ -1,25 +1,25 @@
 import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
 import { config } from '~/src/config'
+import crypto from 'node:crypto'
 
 const uploadFormController = {
   handler: async (request, h) => {
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
-    const nodeBackendUrl = config.get('cdpExampleNodeBackendUrl')
 
+    const creatureId = crypto.randomUUID()
     const secureUpload = await initUpload({
-      successRedirect: `${appBaseUrl}/creatures/upload/success`,
-      failureRedirect: `${appBaseUrl}/creatures/upload/failure`,
-      scanResultCallbackUrl: `${nodeBackendUrl}/callback`,
-      destinationBucket,
-      acceptedMimeTypes: ['.pdf', '.csv', '.png', 'image/jpeg'],
-      maxFileSize: 100
+      redirect: `${appBaseUrl}/creatures/${creatureId}/add`, // map an id back to an upload id
+      destinationBucket
     })
+
+    // store our id to uploadId mapping and use this for verification to ensure upload is genuine
+    await request.redis.storeCreatureId(creatureId, secureUpload.uploadId)
 
     return h.view('creatures/views/upload-form', {
       pageTitle: 'Add creature',
-      action: secureUpload.uploadUrl,
-      heading: 'Seen a mythical creature?',
+      action: secureUpload.uploadAndScanUrl,
+      heading: 'Report mythical creature sighting',
       kindsOfCreatures: [
         {
           text: ' - - select - - ',
@@ -27,36 +27,36 @@ const uploadFormController = {
           attributes: { selected: true }
         },
         {
-          value: 'banshee',
-          text: 'Banshee'
+          value: 'Dragon',
+          text: 'Dragon'
         },
         {
-          value: 'chimera',
-          text: 'Chimera'
+          value: 'Werewolf',
+          text: 'Werewolf'
         },
         {
-          value: 'griffen',
-          text: 'Griffen'
+          value: 'Vampire',
+          text: 'Vampire'
         },
         {
-          value: 'hecatoncheires',
-          text: 'Hecatoncheires'
-        },
-        {
-          value: 'mermaid',
+          value: 'Mermaid',
           text: 'Mermaid'
         },
         {
-          value: 'minotaur',
-          text: 'Minotaur'
-        },
-        {
-          value: 'unicorn',
+          value: 'Unicorn',
           text: 'Unicorn'
         },
         {
-          value: 'werewolf',
-          text: 'Werewolf'
+          value: 'Fairy',
+          text: 'Fairy'
+        },
+        {
+          value: 'Leprechaun',
+          text: 'Leprechaun'
+        },
+        {
+          value: 'Gnome',
+          text: 'Gnome'
         }
       ],
       breadcrumbs: [
@@ -65,7 +65,7 @@ const uploadFormController = {
           href: '/creatures'
         },
         {
-          text: 'Add creature'
+          text: 'Add creature sighting'
         }
       ]
     })

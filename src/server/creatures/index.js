@@ -1,16 +1,26 @@
 import {
-  uploadFormController,
-  uploadController,
-  uploadSuccessController,
-  uploadFailureController,
+  creatureController,
   creatureListController,
-  creatureController
+  statusPollerController,
+  uploadFormController
 } from '~/src/server/creatures/controllers'
+import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
+import { sessionNames } from '~/src/server/common/constants/session-names'
 
 const creatures = {
   plugin: {
     name: 'creatures',
     register: async (server) => {
+      server.ext([
+        {
+          type: 'onPostHandler',
+          method: provideFormContextValues(sessionNames.creatures),
+          options: {
+            before: ['yar'],
+            sandbox: 'plugin'
+          }
+        }
+      ])
       server.route([
         {
           method: 'GET',
@@ -19,7 +29,7 @@ const creatures = {
         },
         {
           method: 'GET',
-          path: '/creatures/{id}',
+          path: '/creatures/{creatureId}',
           ...creatureController
         },
         {
@@ -28,19 +38,9 @@ const creatures = {
           ...uploadFormController
         },
         {
-          method: 'POST',
-          path: '/creatures/upload',
-          ...uploadController
-        },
-        {
           method: 'GET',
-          path: '/creatures/upload/success',
-          ...uploadSuccessController
-        },
-        {
-          method: 'GET',
-          path: '/creatures/upload/failure',
-          ...uploadFailureController
+          path: '/creatures/{creatureId}/add',
+          ...statusPollerController
         }
       ])
     }

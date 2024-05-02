@@ -4,13 +4,11 @@ import { config } from '~/src/config'
 
 async function initUpload(options = {}) {
   const {
-    successRedirect,
-    failureRedirect,
+    redirect,
     scanResultCallbackUrl,
     destinationBucket,
     destinationPath,
-    acceptedMimeTypes,
-    maxFileSize
+    metadata
   } = options
 
   const endpointUrl = config.get('cdpUploaderUrl') + '/initiate'
@@ -18,13 +16,11 @@ async function initUpload(options = {}) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      successRedirect,
-      failureRedirect,
+      redirect,
       scanResultCallbackUrl,
       destinationBucket,
       destinationPath,
-      acceptedMimeTypes,
-      maxFileSize
+      metadata
     })
   })
 

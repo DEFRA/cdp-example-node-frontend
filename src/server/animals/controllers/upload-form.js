@@ -6,21 +6,16 @@ const uploadFormController = {
     const destinationBucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
 
-    // TODO the uploader will accept only 1 callback url in the end
-    const redirectUrl = `${appBaseUrl}/animals/add/status-poller`
-
-    const secureUpload = await initUpload({
-      successRedirect: redirectUrl,
-      failureRedirect: redirectUrl,
-      acceptedMimeTypes: ['image/png', 'image/jpeg'],
-      maxFileSize: 100,
+    const uploadDetail = await initUpload({
+      redirect: `${appBaseUrl}/animals/add/status-poller`,
+      scanResultCallbackUrl: `${appBaseUrl}/animals/callback`,
       destinationBucket,
-      destinationPath: '/animals'
+      destinationPath: 'animals'
     })
 
     return h.view('animals/views/upload-form', {
       pageTitle: 'Add animal',
-      action: secureUpload.uploadUrl,
+      action: uploadDetail.uploadAndScanUrl,
       heading: 'Seen an Animal?',
       breadcrumbs: [
         {
