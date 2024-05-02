@@ -46,17 +46,10 @@ async function createServer() {
       {
         name: 'session',
         engine: new CatboxRedis({
-          partition: config.get('redisKeyPrefix'),
           client: redisClient
         })
       }
     ]
-  })
-
-  server.app.cache = server.cache({
-    cache: 'session',
-    segment: config.get('redisKeyPrefix'),
-    expiresIn: config.get('redisTtl')
   })
 
   if (isProduction) {
