@@ -16,18 +16,18 @@ const trackingUploadedController = {
     const bird = findBirdById(birdId)
 
     if (!bird) {
-      console.log({ birdId, birds }, 'Bird not found')
+      request.logger.warn({ birdId, birds }, 'Bird not found')
       return h.redirect('/birds')
     }
 
     const tracking = await findTracking(bird, trackingId)
 
     if (!tracking) {
-      console.log({ bird, trackingId }, 'Tracking not found')
+      request.logger.info({ bird, trackingId }, 'Tracking not found')
       return h.redirect(`/birds/${birdId}/tracking`)
     }
 
-    console.log({ bird, tracking }, 'Tracking upload finished')
+    request.logger.info({ bird, tracking }, 'Tracking upload finished')
 
     return h.redirect(`/birds/${birdId}/tracking/${trackingId}/process-status`)
   }

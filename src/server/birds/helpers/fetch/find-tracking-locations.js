@@ -1,7 +1,6 @@
 // import { trackingGet } from '~/src/server/birds/helpers/fetch/tracking-fetcher'
 
 async function findTrackingLocations(birdId, trackingId) {
-  console.log('find tracking locations')
   //   return await trackingGet(birdId, trackingId, '/locations')
   // TODO
   return [

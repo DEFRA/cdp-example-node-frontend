@@ -22,14 +22,14 @@ const processStatusController = {
     const bird = findBirdById(birdId)
 
     if (!bird) {
-      console.log({ birdId, birds }, 'Bird not found')
+      request.logger.warn({ birdId, birds }, 'Bird not found')
       return h.redirect('/birds')
     }
 
     const { tracking } = await findTracking(bird, trackingId)
 
     if (!tracking) {
-      console.log({ birdId, trackingId }, 'Tracking not found')
+      request.logger.warn({ birdId, trackingId }, 'Tracking not found')
       return h.redirect(`/birds/${birdId}/tracking`)
     }
 
@@ -37,30 +37,36 @@ const processStatusController = {
       !tracking.trackingStatus ||
       isStatusProcessing(tracking.trackingStatus)
     ) {
-      console.log(
+      request.logger.debug(
         { bird, tracking },
         'Tracking upload still processing' + tracking.trackingStatus
       )
-      console.log(
+      request.logger.debug(
         { bird, tracking },
         'Tracking upload still processing' +
           isStatusProcessing(tracking.trackingStatus)
       )
-      console.log({ bird, tracking }, 'Tracking upload still processing')
+      request.logger.debug(
+        { bird, tracking },
+        'Tracking upload still processing'
+      )
       return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
     }
 
     if (tracking.trackingStatus && isStatusReady(tracking.trackingStatus)) {
-      console.log({ bird, tracking }, 'Tracking upload ready')
+      request.logger.info({ bird, tracking }, 'Tracking upload ready')
       return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
     }
 
     if (tracking.trackingStatus && isStatusRejected(tracking.trackingStatus)) {
-      console.log({ bird, tracking }, 'Tracking upload failed or rejected')
+      request.logger.warn(
+        { bird, tracking },
+        'Tracking upload failed or rejected'
+      )
       return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
     }
 
-    console.log(
+    request.logger.error(
       { bird, tracking },
       `Tracking upload status unexpected: ${tracking.trackingStatus}`
     )

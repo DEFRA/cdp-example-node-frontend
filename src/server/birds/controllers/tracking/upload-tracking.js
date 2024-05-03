@@ -1,5 +1,3 @@
-import Joi from 'joi'
-
 import { config } from '~/src/config'
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { trackingValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
@@ -27,18 +25,18 @@ const showTrackingUploadController = {
     const bird = findBirdById(birdId)
 
     if (!bird) {
-      console.log({ birdId, birds }, 'Bird not found')
+      request.logger.warn({ birdId, birds }, 'Bird not found')
       return h.redirect('/birds')
     }
 
     const { tracking } = await findTracking(bird, trackingId)
 
     if (!tracking) {
-      console.log({ birdId, trackingId }, 'Tracking not found')
+      request.logger.info({ birdId, trackingId }, 'Tracking not found')
       return h.redirect(`/birds/${birdId}/tracking`)
     }
 
-    console.log({ tracking }, 'Tracking found')
+    request.logger.debug({ tracking }, 'Tracking found')
 
     const redirectUrl = `${appBaseUrl}/birds/${birdId}/tracking/${trackingId}/uploaded`
     const callbackUrl = `${backendUrl}/birds/${birdId}/tracking/${trackingId}/callback`
@@ -50,7 +48,7 @@ const showTrackingUploadController = {
       destinationPath: 'birds/tracking'
     })
 
-    console.log({ secureUpload }, 'Secure upload')
+    request.logger.debug({ secureUpload }, 'Secure upload')
 
     await setStatusTrackingUrl(bird, trackingId, secureUpload.statusUrl)
 

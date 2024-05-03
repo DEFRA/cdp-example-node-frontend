@@ -22,20 +22,20 @@ const showTrackingController = {
     const bird = await findBirdById(birdId)
 
     if (!bird) {
-      console.log({ birdId, birds }, 'Bird not found')
+      request.logger.warn({ birdId, birds }, 'Bird not found')
       return h.redirect('/birds')
     }
 
     const { tracking } = await findTracking(bird, trackingId)
 
     if (!tracking) {
-      console.log({ birdId, trackingId }, 'Tracking not found')
+      request.logger.info({ birdId, trackingId }, 'Tracking not found')
       return h.redirect(`/birds/${birdId}/tracking`)
     }
 
     const spotter = tracking.spotter
     const fileDetails = tracking.fileDetails ?? {}
-    console.log({ bird, tracking, fileDetails }, 'Find tracking')
+    request.logger.debug({ bird, tracking, fileDetails }, 'Find tracking')
 
     let locations = []
 
@@ -103,7 +103,7 @@ const showTrackingController = {
       })
     }
 
-    console.log({ birdId, trackingId }, 'Tracking status unknown')
+    request.logger.error({ birdId, trackingId }, 'Tracking status unknown')
     return h.redirect(`/birds/${birdId}/tracking`)
   }
 }

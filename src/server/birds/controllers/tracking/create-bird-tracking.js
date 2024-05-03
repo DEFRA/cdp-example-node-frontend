@@ -22,7 +22,7 @@ const createBirdTrackingController = {
     const bird = findBirdById(birdId)
 
     if (!bird) {
-      console.log({ birdId, birds }, 'Bird not found')
+      request.logger.warn({ birdId, birds }, 'Bird not found')
       return h.redirect('/birds')
     }
 
@@ -38,18 +38,18 @@ const createBirdTrackingController = {
         formErrors: errorDetails
       })
 
-      console.log('validationResult.error', validationResult.error)
+      request.logger.warn('validationResult.error', validationResult.error)
       return h.redirect(`/birds/${birdId}/tracking/spotter`)
     }
 
     if (!validationResult.error) {
-      console.log({ bird, spotter }, 'Save tracking')
+      request.logger.debug({ bird, spotter }, 'Save tracking')
 
       const { tracking } = await createTracking(bird, spotter)
-      console.log({ tracking }, 'Save tracking response')
+      request.logger.debug({ tracking }, 'Save tracking response')
 
       if (!tracking) {
-        console.log('No tracking')
+        request.logger.warn('No tracking')
         return h.redirect(`/birds/${birdId}/tracking/spotter`)
       }
 

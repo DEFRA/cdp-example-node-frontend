@@ -14,7 +14,7 @@ const createTrackingController = {
     })
 
     if (validationResult?.error) {
-      console.log('validationResult.error', validationResult.error)
+      request.logger.warn('validationResult.error', validationResult.error)
 
       const errorDetails = buildErrorDetails(validationResult.error.details)
 
@@ -27,7 +27,7 @@ const createTrackingController = {
     }
 
     if (!validationResult.error) {
-      console.log('Save tracking')
+      request.logger.debug('Save tracking')
       const birdId = payload.birdId
 
       // const trackingId = crypto.randomUUID()
