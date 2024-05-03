@@ -20,7 +20,7 @@ const trackingUploadedController = {
       return h.redirect('/birds')
     }
 
-    const tracking = await findTracking(bird, trackingId)
+    const { tracking } = await findTracking(bird, trackingId)
 
     if (!tracking) {
       request.logger.info({ bird, trackingId }, 'Tracking not found')

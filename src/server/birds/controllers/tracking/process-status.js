@@ -26,7 +26,7 @@ const processStatusController = {
       return h.redirect('/birds')
     }
 
-    const { tracking } = await findTracking(bird, trackingId)
+    const tracking = await findTracking(bird, trackingId)
 
     if (!tracking) {
       request.logger.warn({ birdId, trackingId }, 'Tracking not found')
@@ -37,15 +37,6 @@ const processStatusController = {
       !tracking.trackingStatus ||
       isStatusProcessing(tracking.trackingStatus)
     ) {
-      request.logger.debug(
-        { bird, tracking },
-        'Tracking upload still processing' + tracking.trackingStatus
-      )
-      request.logger.debug(
-        { bird, tracking },
-        'Tracking upload still processing' +
-          isStatusProcessing(tracking.trackingStatus)
-      )
       request.logger.debug(
         { bird, tracking },
         'Tracking upload still processing'

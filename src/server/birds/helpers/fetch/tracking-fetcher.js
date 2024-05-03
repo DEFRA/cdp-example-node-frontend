@@ -7,15 +7,17 @@ function trackingPath(bird, trackingId, path) {
 
 async function trackingGet(bird, trackingId, path) {
   const endpoint = trackingPath(bird, trackingId, path)
-  return await fetcher(endpoint)
+  const { json } = await fetcher(endpoint)
+  return json
 }
 
 async function trackingPost(bird, trackingId, path, body) {
   const endpoint = trackingPath(bird, trackingId, path)
-  return await fetcher(endpoint, {
+  const { json } = await fetcher(endpoint, {
     method: 'post',
     body: JSON.stringify(body)
   })
+  return json
 }
 
 export { trackingPath, trackingGet, trackingPost }

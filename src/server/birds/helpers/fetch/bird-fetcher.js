@@ -9,7 +9,8 @@ function birdPath(bird, path) {
 
 async function birdGet(bird, path) {
   const endpoint = birdPath(bird, path)
-  return await fetcher(endpoint)
+  const { json } = await fetcher(endpoint)
+  return json
 }
 
 async function birdPost(bird, path, body) {
