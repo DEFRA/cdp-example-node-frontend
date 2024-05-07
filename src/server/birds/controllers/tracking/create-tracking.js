@@ -1,6 +1,3 @@
-// import * as crypto from 'node:crypto'
-// import Joi from 'joi'
-
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
 import { birdValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
@@ -30,10 +27,7 @@ const createTrackingController = {
       request.logger.debug('Save tracking')
       const birdId = payload.birdId
 
-      // const trackingId = crypto.randomUUID()
-
       return h.redirect(`/birds/${birdId}/tracking/spotter`)
-      // return h.redirect(`/birds/${birdId}/tracking/${trackingId}`)
     }
   }
 }

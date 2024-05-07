@@ -1,4 +1,3 @@
-// import { config } from '~/src/config'
 import { trackingValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
 import { birds } from '~/src/server/birds/data/birds'
 import { findBirdById } from '~/src/server/birds//helpers/find-bird'
