@@ -13,15 +13,15 @@ const creatureController = {
   handler: async (request, h) => {
     const creature = request.pre.creature
     return h.view('creatures/views/creature', {
-      pageTitle: 'Mythical Creature Sightings',
-      heading: `${creature.kind} sighted on ${creature.date}`,
+      pageTitle: 'Creature',
+      heading: 'Creature',
       breadcrumbs: [
         {
           text: 'Creatures',
           href: '/creatures'
         },
         {
-          text: 'Creature sighting'
+          text: 'Creature'
         }
       ],
       creature

@@ -11,6 +11,7 @@ function buildFilesDetail(value) {
   }))
 }
 
+// TOO create transform and use in summary
 async function createCreature(creature) {
   const endpoint = config.get('cdpExampleNodeBackendUrl') + '/creatures'
 
@@ -27,7 +28,7 @@ async function createCreature(creature) {
       kind: creature.fields.kind,
       creatureFiles,
       date,
-      dream: creature.fields.dreamSighting === 'yes',
+      realLifeSighting: creature.fields.realLifeSighting === 'yes',
       address: {
         addressLine1: creature.fields?.addressLine1,
         addressLine2: creature.fields?.addressLine2,
