@@ -1,60 +1,66 @@
-{% from "govuk/components/table/macro.njk" import govukTable %}
 {% extends 'layouts/page.njk' %}
 
-{% set captionText %}
-  {{ creature.kind }} sighted on {{ creature.date | formatDate }}
-{% endset %}
-
-{% set isDream = 'yes' if creature.dream else 'no' %}
-{% set rows = [
-  [{ text: "Was it a dream?" }, { text: isDream }]
-] %}
-
-{% if creature.address %}
-  {% set address %}
-    {{ creature.address.addressLine1 }},
-    {% if creature.address.addressLine2 %}
-      {{ creature.address.addressLine2 }},
-    {% endif %}
-    {{ creature.address.townOrCity }},
-    {{ creature.address.postCode }}
-  {% endset %}
-  {{ rows.push([{ text: "Address" }, { text: address }]) }}
-{% endif %}
-
-{% set captionText %}
-  {{ creature.kind | capitalize }} sighted on {{ creature.date | formatDate }}
-{% endset %}
-
 {% block content %}
+  {{ appHeading({
+    title: heading
+  }) }}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-body" data-testid="app-page-body">
 
-        {{ govukTable({
-          caption: captionText,
-          captionClasses: "govuk-table__caption--m",
-          firstCellIsHeader: true,
-          rows: rows
-        }) }}
+        <h2 class="govuk-heading-m">
+          {{ creature.kind | capitalize }} the creature
+        </h2>
 
-        <h2 class="govuk-heading-m govuk-!-margin-0 govuk-!-margin-right-2">Images</h2>
-        {% for file in creature.creatureFiles %}
-          <img class="app-img"
-               src="/file/{{ file.fileUrl }}"
-               alt="{{ creature.kind }} picture">
-        {% endfor %}
 
-        {% if creature.evidenceFiles | length %}
-          <h2 class="govuk-heading-m govuk-!-margin-0 govuk-!-margin-right-2">Supporting evidence</h2>
-          {% for file in creature.evidenceFiles %}
-            <img class="app-img"
-                 src="/file/{{ file.fileUrl }}"
-                 alt="{{ creature.kind }} picture">
+        <ul class="govuk-list govuk-list--spaced">
+          <li>
+            <strong>Seen:</strong> {{ creature.date | formatDate }}
+          </li>
+
+          <li>
+            <strong>Seen in real life:</strong> {{ creature.realLifeSighting }}
+          </li>
+
+          {% if creature.address | length %}
+            <li>
+              <strong>Address:</strong>
+              {% for addressKey, addressValue in creature.address %}
+                {{ addressValue }}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </li>
+          {% endif %}
+        </ul>
+
+
+        <h2 class="govuk-heading-m">Images</h2>
+        <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-4">
+
+          {% for file in creature.creatureFiles %}
+            <li>
+              <img class="app-img" src="/file/{{ file.fileUrl }}" alt="{{ file.filename }} picture">
+            </li>
+
+          {% else %}
+            <li>No files available for your creature.</li>
           {% endfor %}
-        {% endif %}
+        </ul>
+
+
+        <h2 class="govuk-heading-m">Supporting evidence images</h2>
+        <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-7">
+
+          {% for file in creature.evidenceFiles %}
+            <li>
+              <img class="app-img" src="/file/{{ file.fileUrl }}" alt="{{ file.filename }} picture">
+            </li>
+
+          {% else %}
+            <li>No evidence files available for your creature.</li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
   </div>
-
 {% endblock %}
