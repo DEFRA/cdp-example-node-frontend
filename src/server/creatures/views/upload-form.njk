@@ -7,7 +7,7 @@
 {% block content %}
   {{ appHeading({
     title: heading,
-    caption: "Upload all the details about your mythical creature sighting."
+    caption: "Upload all the details about the mythical creature you claim to have seen."
   }) }}
 
   <div class="govuk-grid-row">
@@ -21,7 +21,7 @@
               id: "kind",
               name: "kind",
               label: {
-                text: "What kind of creature?",
+                text: "Kind",
                 classes: "govuk-label--m"
               },
               items: kindsOfCreatures,
@@ -35,11 +35,11 @@
               id: "creatureFiles",
               name: "creatureFiles",
               label: {
-                text: "Creature",
+                text: "Images",
                 classes: "govuk-label--m"
               },
               hint: {
-                text: "Filetypes of .jpeg with a max size of 100kb"
+                text: "One or more images with a filetype of .jpeg with a max size of 100kb"
               },
               attributes: {
                 multiple: "multiple"
@@ -55,8 +55,7 @@
             id: "sighting-date",
             fieldset: {
               legend: {
-                text: "Date of sighting",
-                isPageHeading: true,
+                text: "Date",
                 classes: "govuk-fieldset__legend--m"
               }
             },
@@ -90,15 +89,14 @@
 
           {{ govukRadios({
             classes: "govuk-radios--inline",
-            name: "realSighting",
+            name: "dreamSighting",
             fieldset: {
               legend: {
-                text: "Was this sighting in a dream?",
-                isPageHeading: true,
+                text: "Sighting was in a dream",
                 classes: "govuk-fieldset__legend--m"
               }
             },
-            value: formValue.realSighting,
+            value: formValue.dreamSighting,
             items: [
               {
                 value: "yes",
@@ -109,83 +107,90 @@
                 text: "No"
               }
             ],
+            attributes: {
+              "data-js": "app-reveal",
+              "data-reveal": "creature-address",
+              "data-reveal-show": "yes",
+              "data-reveal-hide": "no"
+            },
             errorMessage: {
-              text: formErrors.realSighting.message
-            } if formErrors.realSighting.message,
-            value: formValues.realSighting
+              text: formErrors.dreamSighting.message
+            } if formErrors.dreamSighting.message,
+            value: formValues.dreamSighting
           }) }}
 
-          {% call govukFieldset({
-            legend: {
-              text: "Address of sighting",
-              classes: "govuk-fieldset__legend--m",
-              isPageHeading: true
-            }
-          }) %}
+          <div id="creature-address" class="js-hidden">
+            {% call govukFieldset({
+              legend: {
+                text: "Address",
+                classes: "govuk-fieldset__legend--m"
+              }
+            }) %}
 
-            {{ govukInput({
-              label: {
-                text: "Address line 1"
-              },
-              id: "address-line-1",
-              name: "addressLine1",
-              autocomplete: "address-line1",
-              errorMessage: {
-                text: formErrors.addressLine1.message
-              } if formErrors.addressLine1.message,
-              value: formValues.addressLine1
-            }) }}
+              {{ govukInput({
+                label: {
+                  text: "Address line 1"
+                },
+                id: "address-line-1",
+                name: "addressLine1",
+                autocomplete: "address-line1",
+                errorMessage: {
+                  text: formErrors.addressLine1.message
+                } if formErrors.addressLine1.message,
+                value: formValues.addressLine1
+              }) }}
 
-            {{ govukInput({
-              label: {
-                text: "Address line 2 (optional)"
-              },
-              id: "address-line-2",
-              name: "addressLine2",
-              autocomplete: "address-line2",
-              value: formValues.addressLine2
-            }) }}
+              {{ govukInput({
+                label: {
+                  text: "Address line 2 (optional)"
+                },
+                id: "address-line-2",
+                name: "addressLine2",
+                autocomplete: "address-line2",
+                value: formValues.addressLine2
+              }) }}
 
-            {{ govukInput({
-              label: {
-                text: "Town or city"
-              },
-              classes: "govuk-!-width-two-thirds",
-              id: "address-town",
-              name: "addressTown",
-              autocomplete: "address-level2",
-              errorMessage: {
-                text: formErrors.addressTown.message
-              } if formErrors.addressTown.message,
-              value: formValues.addressTown
+              {{ govukInput({
+                label: {
+                  text: "Town or city"
+                },
+                classes: "govuk-!-width-two-thirds",
+                id: "address-town",
+                name: "addressTown",
+                autocomplete: "address-level2",
+                errorMessage: {
+                  text: formErrors.addressTown.message
+                } if formErrors.addressTown.message,
+                value: formValues.addressTown
 
-            }) }}
+              }) }}
 
-            {{ govukInput({
-              label: {
-                text: "Postcode"
-              },
-              classes: "govuk-input--width-10",
-              id: "address-postcode",
-              name: "addressPostcode",
-              autocomplete: "postal-code",
-              errorMessage: {
-                text: formErrors.addressPostcode.message
-              } if formErrors.addressPostcode.message,
-              value: formValues.addressPostcode
-            }) }}
+              {{ govukInput({
+                label: {
+                  text: "Postcode"
+                },
+                classes: "govuk-input--width-10",
+                id: "address-postcode",
+                name: "addressPostcode",
+                autocomplete: "postal-code",
+                errorMessage: {
+                  text: formErrors.addressPostcode.message
+                } if formErrors.addressPostcode.message,
+                value: formValues.addressPostcode
+              }) }}
 
-          {% endcall %}
+            {% endcall %}
+          </div>
 
           {{ govukFileUpload({
             id: "evidenceFiles",
             name: "evidenceFiles",
             label: {
-              text: "Supporting evidence",
+              text: "Supporting evidence images",
               classes: "govuk-label--m"
             },
             hint: {
-              text: "Filetypes of .jpeg with a max size of 100kb"
+              text: "One or more images with a filetype of .jpeg with a max size of 100kb"
             },
             attributes: {
               multiple: "multiple"

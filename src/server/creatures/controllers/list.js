@@ -5,8 +5,8 @@ const creatureListController = {
     const json = await getCreatures()
 
     return h.view('creatures/views/list', {
-      pageTitle: 'Creatures Sightings',
-      heading: 'Mythical Creature Sightings',
+      pageTitle: 'Creatures',
+      heading: 'Creatures',
       creatures: json?.creatures ?? []
     })
   }

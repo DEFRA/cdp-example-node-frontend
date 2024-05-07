@@ -26,18 +26,27 @@ const uploadFormValidation = Joi.object({
   }).messages({
     'date.format': errorMessages.date
   }),
-  realSighting: Joi.string().valid('yes', 'no').required().messages({
+  dreamSighting: Joi.string().valid('yes', 'no').required().messages({
     'any.only': errorMessages.choose,
     'any.required': errorMessages.choose
   }),
-  addressLine1: Joi.string().required().messages({
+  addressLine1: Joi.when('dreamSighting', {
+    is: 'yes',
+    then: Joi.string().required()
+  }).messages({
     'any.required': errorMessages.required
   }),
   addressLine2: Joi.string().optional(),
-  addressTown: Joi.string().required().messages({
+  addressTown: Joi.when('dreamSighting', {
+    is: 'yes',
+    then: Joi.string().required()
+  }).messages({
     'any.required': errorMessages.required
   }),
-  addressPostcode: Joi.string().required().messages({
+  addressPostcode: Joi.when('dreamSighting', {
+    is: 'yes',
+    then: Joi.string().required()
+  }).messages({
     'any.required': errorMessages.required
   }),
   creatureFiles: Joi.any(), // These are checked elsewhere

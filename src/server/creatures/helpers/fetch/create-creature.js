@@ -27,12 +27,12 @@ async function createCreature(creature) {
       kind: creature.fields.kind,
       creatureFiles,
       date,
-      dream: creature.fields.realSighting === 'yes',
+      dream: creature.fields.dreamSighting === 'yes',
       address: {
-        addressLine1: creature.fields.addressLine1,
+        addressLine1: creature.fields?.addressLine1,
         addressLine2: creature.fields?.addressLine2,
-        townOrCity: creature.fields.addressTown,
-        postCode: creature.fields.addressPostcode
+        townOrCity: creature.fields?.addressTown,
+        postCode: creature.fields?.addressPostcode
       },
       evidenceFiles
     })
