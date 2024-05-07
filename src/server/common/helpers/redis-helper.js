@@ -1,18 +1,45 @@
 class RedisHelper {
-  constructor(redis) {
+  constructor(redis, server) {
     this.client = redis
+    this.server = server
   }
 
-  async storeCreatureId(creatureId, uploadId) {
-    return await this.client.set(creatureId, JSON.stringify({ uploadId }))
+  async storeData(id, data) {
+    const storedData = await this.getData(id)
+
+    await this.client.set(
+      id,
+      JSON.stringify({
+        ...(storedData && storedData),
+        ...data
+      })
+    )
+
+    this.server.logger.debug(
+      {
+        ...(storedData && storedData),
+        ...data
+      },
+      'Redis store data'
+    )
+
+    return await this.getData(id)
   }
 
-  async findCreatureId(creatureId) {
-    const uploadDetails = await this.client.get(creatureId)
+  async getData(id) {
+    const data = await this.client.get(id)
+    const response = data ? JSON.parse(data) : null
 
-    if (uploadDetails) {
-      return JSON.parse(uploadDetails)
-    }
+    this.server.logger.debug({ data: response }, 'Redis get data')
+
+    return response
+  }
+
+  async removeData(id) {
+    await this.client.del(id)
+
+    this.server.logger.info(`Redis store data: ${id} removed`)
+    return id
   }
 }
 
