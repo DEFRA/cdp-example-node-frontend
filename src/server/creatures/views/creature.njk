@@ -2,7 +2,7 @@
 {% extends 'layouts/page.njk' %}
 
 {% set captionText %}
-  {{ creature.kind }} sighted on {{ creature.date }}
+  {{ creature.kind }} sighted on {{ creature.date | formatDate }}
 {% endset %}
 
 {% set isDream = 'yes' if creature.dream else 'no' %}
@@ -23,7 +23,7 @@
 {% endif %}
 
 {% set captionText %}
-  {{ creature.kind }} sighted on {{ creature.date }}
+  {{ creature.kind | capitalize }} sighted on {{ creature.date | formatDate }}
 {% endset %}
 
 {% block content %}
@@ -39,17 +39,17 @@
         }) }}
 
         <h2 class="govuk-heading-m govuk-!-margin-0 govuk-!-margin-right-2">Images</h2>
-        {% for file in creature.creatureFileUrls %}
+        {% for file in creature.creatureFiles %}
           <img class="app-img"
-               src="/file/{{ file }}"
+               src="/file/{{ file.fileUrl }}"
                alt="{{ creature.kind }} picture">
         {% endfor %}
 
-        {% if creature.evidenceFileUrls|length > 0 %}
+        {% if creature.evidenceFiles | length %}
           <h2 class="govuk-heading-m govuk-!-margin-0 govuk-!-margin-right-2">Supporting evidence</h2>
-          {% for file in creature.evidenceFileUrls %}
+          {% for file in creature.evidenceFiles %}
             <img class="app-img"
-                 src="/file/{{ file }}"
+                 src="/file/{{ file.fileUrl }}"
                  alt="{{ creature.kind }} picture">
           {% endfor %}
         {% endif %}

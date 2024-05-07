@@ -4,6 +4,12 @@ import { joiValidationErrorDetailsFixture } from '~/src/__fixtures__/joi-validat
 describe('#buildErrorDetails', () => {
   test('Should provide expected error details', () => {
     expect(buildErrorDetails(joiValidationErrorDetailsFixture)).toEqual({
+      date: {
+        message: "'Day' should be a number",
+        day: {
+          message: "'Day' should be a number"
+        }
+      },
       environment: {
         message: 'Choose an entry'
       },

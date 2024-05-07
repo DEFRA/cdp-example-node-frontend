@@ -5,13 +5,7 @@ const provideCreature = {
     const { creature } = (await getCreature(request.params.creatureId)) ?? {}
 
     if (creature) {
-      const fileUrl = '/file/' + creature.fileUrl
-      delete creature.creatureId
-
-      return {
-        ...creature,
-        fileUrl
-      }
+      return creature
     }
 
     return null

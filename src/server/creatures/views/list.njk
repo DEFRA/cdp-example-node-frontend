@@ -2,7 +2,7 @@
 
 {% set asideHtml %}
   <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
-    <a class="govuk-link govuk-link--text-colour" href="/creatures/upload">Add sighting</a>
+    <a class="govuk-link govuk-link--text-colour" href="/creatures/add">Add sighting</a>
   </h2>
 {% endset %}
 
@@ -25,7 +25,9 @@
           {% for creature in creatures %}
             <li class="govuk-!-margin-bottom-1">
               <a class="govuk-link govuk-link--no-visited-state"
-                 href="creatures/{{ creature.creatureId }}">{{ creature.date }} - {{ creature.kind }} in {{ creature.address.townOrCity }}</a>
+                 href="/creatures/{{ creature.creatureId }}">
+                {{ creature.date | formatDate }} - {{ creature.kind | capitalize }} in {{ creature.address.townOrCity }}
+              </a>
             </li>
           {% else %}
               <li class="govuk-!-margin-bottom-1">No creatures uploaded.</li>

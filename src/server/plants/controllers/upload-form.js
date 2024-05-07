@@ -12,7 +12,7 @@ const uploadFormController = {
     const appBaseUrl = config.get('appBaseUrl')
 
     const uploadDetail = await initUpload({
-      redirect: `${appBaseUrl}/plants/add/status-poller`,
+      redirect: `${appBaseUrl}/plants/add/upload-status-poller`,
       destinationBucket,
       destinationPath: 'plants',
       scanResultCallbackUrl: `${config.get('appBaseUrl')}/plants/callback/${plantSession?.plantId}`,

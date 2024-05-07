@@ -1,62 +1,47 @@
-import Joi from 'joi'
+import JoiBase from 'joi'
+import JoiDateFactory from '@joi/date'
+
+import { creatureNames } from '~/src/server/creatures/constants/creature-names'
+
+const Joi = JoiBase.extend(JoiDateFactory)
+
+const errorMessages = {
+  required: 'Enter a value',
+  choose: 'Choose an entry',
+  date: 'Enter a valid date'
+}
 
 const uploadFormValidation = Joi.object({
   kind: Joi.string()
     .required()
-    .valid(
-      'Dragon',
-      'Werewolf',
-      'Vampire',
-      'Mermaid',
-      'Unicorn',
-      'Fairy',
-      'Leprechaun',
-      'Gnome'
-    )
+    .valid(...creatureNames)
     .messages({
-      'any.message': 'Choose an entry',
-      'any.required': 'Choose an entry'
+      'any.message': errorMessages.choose,
+      'any.required': errorMessages.choose
     }),
-  // todo use date validation
-  day: Joi.number().required().min(1).max(31).messages({
-    'any.only': 'Choose an entry',
-    'any.required': "'Day' required",
-    'number.base': "'Day' should be a number",
-    'number.min': "'Day' should be 1 or above",
-    'number.max': "'Day' cant be greater than 31"
+  date: Joi.object({
+    day: Joi.date().utc().format(['DD', 'D']), // Non-Zero and Zero based days accepted
+    month: Joi.date().utc().format(['MM', 'M']), // Non-Zero and Zero based months accepted
+    year: Joi.date().utc().format('YYYY')
+  }).messages({
+    'date.format': errorMessages.date
   }),
-  month: Joi.number().required().positive().max(12).message({
-    'any.only': 'Choose an entry',
-    'any.required': "'Month' required",
-    'number.base': "'Month' must be a number",
-    'number.min': "'Month' must be 1 or above",
-    'number.max': "'Month' must not be greater than 12"
-  }),
-  year: Joi.number().required().greater(2000).less(2030).messages({
-    'any.only': 'Choose an entry',
-    'any.required': "'Year' required",
-    'number.base': "'Year' must be a number",
-    'number.min': "'Year' must be between 2000 and 2030",
-    'number.max': "'Year' must be between 2000 and 2030"
-  }),
-  realSighting: Joi.string().required().valid('yes', 'no').messages({
-    'any.only': "Select 'yes' or 'no'",
-    'any.required': "Select 'yes' or 'no'"
+  realSighting: Joi.string().valid('yes', 'no').required().messages({
+    'any.only': errorMessages.choose,
+    'any.required': errorMessages.choose
   }),
   addressLine1: Joi.string().required().messages({
-    'any.required': "'Address line 1' required"
+    'any.required': errorMessages.required
   }),
+  addressLine2: Joi.string().optional(),
   addressTown: Joi.string().required().messages({
-    'any.required': "'Town or city' required"
+    'any.required': errorMessages.required
   }),
   addressPostcode: Joi.string().required().messages({
-    'any.required': "'Postcode' required"
+    'any.required': errorMessages.required
   }),
-  creatureFiles: Joi.any().required().messages({
-    'any.only': 'Choose an entry',
-    'any.required': 'Choose an entry'
-  }),
-  evidenceFiles: Joi.any()
+  creatureFiles: Joi.any(), // These are checked elsewhere
+  evidenceFiles: Joi.any() // These are checked elsewhere
 })
 
 export { uploadFormValidation }

@@ -1,23 +1,23 @@
 import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
-import { provideStatus } from '~/src/server/common/helpers/pre/provide-status'
+import { provideUploadStatus } from '~/src/server/common/helpers/pre/provide-upload-status'
 import { populateErrorFlashMessage } from '~/src/server/common/helpers/form/populate-error-flash-message'
 
-const statusPollerController = {
+const uploadStatusPollerController = {
   options: {
-    pre: [provideStatus]
+    pre: [provideUploadStatus]
   },
   handler: async (request, h) => {
     const setError = populateErrorFlashMessage(request)
-    const status = request.pre.status
-    const fileUpload = status.files.at(0)
+    const uploadStatus = request.pre.uploadStatus
+    const fileUpload = uploadStatus.files.at(0)
     const acceptedMimeTypes = ['image/png', 'image/jpeg']
     const maxFileSize = 100
-    const hasUploadedFile = status?.fields?.file?.contentLength > 0
-    const hasBeenVirusChecked = status?.uploadStatus === 'ready'
-    const hasRejectedFiles = status?.numberOfRejectedFiles > 0
+    const hasUploadedFile = uploadStatus?.fields?.file?.contentLength > 0
+    const hasBeenVirusChecked = uploadStatus?.uploadStatus === 'ready'
+    const hasRejectedFiles = uploadStatus?.numberOfRejectedFiles > 0
     const fileUploadSizeMb = fileUpload?.contentLength / 1024 / 1024
     const fileSizeLimitExceeded = fileUploadSizeMb > maxFileSize
-    const fileInputStatus = status?.fields?.file
+    const fileInputStatus = uploadStatus?.fields?.file
     const fileInputHasError = fileInputStatus?.hasError
     const hasCorrectMimeType = acceptedMimeTypes.includes(
       fileUpload?.contentType
@@ -70,7 +70,7 @@ const statusPollerController = {
     }
 
     // Virus check polling page
-    return h.view('animals/views/status-poller', {
+    return h.view('animals/views/upload-status-poller', {
       pageTitle: 'Virus check',
       heading: 'Scanning your files',
       breadcrumbs: [
@@ -94,4 +94,4 @@ const statusPollerController = {
   }
 }
 
-export { statusPollerController }
+export { uploadStatusPollerController }

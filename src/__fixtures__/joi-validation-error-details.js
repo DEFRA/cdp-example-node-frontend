@@ -54,6 +54,36 @@ const joiValidationErrorDetailsFixture = [
       value: '',
       key: 'environment'
     }
+  },
+  {
+    message: "'Day' should be a number",
+    path: ['date', 'day'],
+    type: 'number.base',
+    context: {
+      label: 'date.day',
+      value: '',
+      key: 'day'
+    }
+  },
+  {
+    message: "'Month' should be 1 or above",
+    path: ['date', 'month'],
+    type: 'number.base',
+    context: {
+      label: 'date.month',
+      value: '',
+      key: 'month'
+    }
+  },
+  {
+    message: "'Year' should be a number",
+    path: ['date', 'year'],
+    type: 'number.base',
+    context: {
+      label: 'date.year',
+      value: '',
+      key: 'year'
+    }
   }
 ]
 
