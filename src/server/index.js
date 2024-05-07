@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import hapi from '@hapi/hapi'
 import { Engine as CatboxRedis } from '@hapi/catbox-redis'
 
@@ -56,7 +56,7 @@ async function createServer() {
     await server.register(secureContext)
   }
 
-  const redisHelper = new RedisHelper(redisClient)
+  const redisHelper = new RedisHelper(redisClient, server)
   server.decorate('request', 'redis', redisHelper)
   server.decorate('server', 'redis', redisHelper)
 
