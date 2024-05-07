@@ -29,7 +29,7 @@ const showTrackingUploadController = {
       return h.redirect('/birds')
     }
 
-    const tracking = await findTracking(bird, trackingId)
+    const { tracking } = await findTracking(bird, trackingId)
 
     if (!tracking) {
       request.logger.info({ birdId, trackingId }, 'Tracking not found')
@@ -58,7 +58,7 @@ const showTrackingUploadController = {
       action: secureUpload.uploadAndScanUrl,
       bird,
       birdId,
-      tracking,
+      spotter: tracking.spotter,
       trackingId,
       breadcrumbs: [
         {

@@ -37,8 +37,6 @@ const showTrackingController = {
     const fileDetails = tracking.fileDetails ?? {}
     request.logger.debug({ bird, tracking, fileDetails }, 'Find tracking')
 
-    let locations = []
-
     const breadcrumbs = [
       {
         text: 'Birds',
@@ -62,16 +60,20 @@ const showTrackingController = {
       tracking,
       spotter,
       trackingId,
-      locations,
       breadcrumbs
     }
 
     if (tracking.trackingStatus && isStatusReady(tracking.trackingStatus)) {
-      const trackingLocations = await findTrackingLocations(tracking)
-
-      locations = trackingLocations.map((location) => [
+      const trackingLocations = await findTrackingLocations(
+        tracking,
+        request.logger
+      )
+      const locations = trackingLocations.map((location) => [
         {
           text: location.date
+        },
+        {
+          text: location.time
         },
         {
           text: location.latitude,
@@ -80,6 +82,9 @@ const showTrackingController = {
         {
           text: location.longitude,
           format: 'numeric'
+        },
+        {
+          text: `www.latlong.net/c/?lat=${location.latitude}&long=${location.longitude}`
         }
       ])
       return h.view('birds/views/tracking/show-tracking', {
