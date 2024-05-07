@@ -104,7 +104,8 @@ const showTrackingController = {
 
     if (tracking.trackingStatus && isStatusRejected(tracking.trackingStatus)) {
       return h.view('birds/views/tracking/show-tracking-rejected', {
-        ...context
+        ...context,
+        action: `/birds/${birdId}/tracking/spotter`
       })
     }
 

@@ -17,8 +17,8 @@
         </p>
 
           <p>
-        {% if tracking?.spotter %}
-            Spotter: {{ tracking?.spotter }}
+        {% if spotter %}
+            Spotter: {{ spotter }}
         {% else %}
             Spotter: No spotter
         {% endif %}
@@ -35,7 +35,20 @@
          <p>
 
 
+        {% if spotter %}
 
+         <form action="{{ action }}" method="post">
+            <input type="hidden" name="spotter" value="{{ spotter }}">
+
+            {{ govukButton({
+               text: "Try again"
+            }) }}
+
+         </form>
+
+        {% else %}
+         <a class="govuk-link" href="/birds/{{ bird.id }}/tracking">Try again</a>
+        {% endif %}
         </p>
       </div>
     </div>
