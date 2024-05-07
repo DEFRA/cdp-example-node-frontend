@@ -26,24 +26,24 @@ const uploadFormValidation = Joi.object({
   }).messages({
     'date.format': errorMessages.date
   }),
-  dreamSighting: Joi.string().valid('yes', 'no').required().messages({
+  realLifeSighting: Joi.string().valid('yes', 'no').required().messages({
     'any.only': errorMessages.choose,
     'any.required': errorMessages.choose
   }),
-  addressLine1: Joi.when('dreamSighting', {
+  addressLine1: Joi.when('realLifeSighting', {
     is: 'yes',
     then: Joi.string().required()
   }).messages({
     'any.required': errorMessages.required
   }),
   addressLine2: Joi.string().optional(),
-  addressTown: Joi.when('dreamSighting', {
+  addressTown: Joi.when('realLifeSighting', {
     is: 'yes',
     then: Joi.string().required()
   }).messages({
     'any.required': errorMessages.required
   }),
-  addressPostcode: Joi.when('dreamSighting', {
+  addressPostcode: Joi.when('realLifeSighting', {
     is: 'yes',
     then: Joi.string().required()
   }).messages({

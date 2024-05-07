@@ -23,14 +23,24 @@
 
         <ul class="govuk-list govuk-list--spaced">
           {% for creature in creatures %}
-            <li class="govuk-!-margin-bottom-1">
-              <a class="govuk-link govuk-link--no-visited-state"
-                 href="/creatures/{{ creature.creatureId }}">
-                {{ creature.date | formatDate }} - {{ creature.kind | capitalize }} in {{ creature.address.townOrCity }}
+            <li>
+              <a class="govuk-link govuk-link--no-visited-state" href="/creatures/{{ creature.creatureId }}">
+                {{ creature.kind | capitalize }}
               </a>
+              <ul class="govuk-list govuk-body-s govuk-list--bullet">
+                <li>Seen: {{ creature.date | formatDate }}</li>
+
+                {% if creature.address | length %}
+                  <li>Address:
+                      {% for addressKey, addressValue in creature.address %}
+                        {{ addressValue }}{% if not loop.last %}, {% endif %}
+                      {% endfor %}
+                  </li>
+                {% endif %}
+              </ul>
             </li>
           {% else %}
-              <li class="govuk-!-margin-bottom-1">No creatures uploaded.</li>
+            <li class="govuk-!-margin-bottom-1">No creatures uploaded.</li>
           {% endfor %}
         </ul>
 
