@@ -7,7 +7,6 @@ import { createController } from '~/src/server/plants/controllers/create'
 import { detailsFormController } from '~/src/server/plants/controllers/details-form'
 import { detailsController } from '~/src/server/plants/controllers/details'
 import { uploadStatusPollerController } from '~/src/server/plants/controllers/upload-status-poller'
-import { callbackController } from '~/src/server/plants/controllers/callback'
 
 export {
   startController,
@@ -18,6 +17,5 @@ export {
   plantController,
   detailsFormController,
   detailsController,
-  uploadStatusPollerController,
-  callbackController
+  uploadStatusPollerController
 }

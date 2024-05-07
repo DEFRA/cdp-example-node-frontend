@@ -7,8 +7,7 @@ import {
   plantController,
   detailsFormController,
   detailsController,
-  uploadStatusPollerController,
-  callbackController
+  uploadStatusPollerController
 } from '~/src/server/plants/controllers'
 import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
 import { sessionNames } from '~/src/server/common/constants/session-names'
@@ -33,11 +32,6 @@ const plants = {
           method: 'GET',
           path: '/plants',
           ...plantListController
-        },
-        {
-          method: 'POST',
-          path: '/plants/callback/{plantId}',
-          ...callbackController
         },
         {
           method: 'GET',
