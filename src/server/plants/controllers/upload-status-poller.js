@@ -1,13 +1,13 @@
 import Joi from 'joi'
 
 import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
-import { provideStatus } from '~/src/server/common/helpers/pre/provide-status'
 import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
+import { provideUploadStatus } from '~/src/server/common/helpers/pre/provide-upload-status'
 import { populateErrorFlashMessage } from '~/src/server/common/helpers/form/populate-error-flash-message'
 
-const statusPollerController = {
+const uploadStatusPollerController = {
   options: {
-    pre: [providePlantSession, provideStatus],
+    pre: [providePlantSession, provideUploadStatus],
     validate: {
       query: Joi.object({
         uploadId: Joi.string().guid().required()
@@ -16,16 +16,16 @@ const statusPollerController = {
   },
   handler: async (request, h) => {
     const setError = populateErrorFlashMessage(request)
-    const status = request.pre.status
-    const fileUpload = status.files.at(0)
+    const uploadStatus = request.pre.uploadStatus
+    const fileUpload = uploadStatus.files.at(0)
     const acceptedMimeTypes = ['image/png', 'image/jpeg']
     const maxFileSize = 100
-    const hasUploadedFile = status?.fields?.file?.contentLength > 0
-    const hasBeenVirusChecked = status?.uploadStatus === 'ready'
-    const hasRejectedFiles = status?.numberOfRejectedFiles > 0
+    const hasUploadedFile = uploadStatus?.fields?.file?.contentLength > 0
+    const hasBeenVirusChecked = uploadStatus?.uploadStatus === 'ready'
+    const hasRejectedFiles = uploadStatus?.numberOfRejectedFiles > 0
     const fileUploadSizeMb = fileUpload?.contentLength / 1024 / 1024
     const fileSizeLimitExceeded = fileUploadSizeMb > maxFileSize
-    const fileInputStatus = status?.fields?.file
+    const fileInputStatus = uploadStatus?.fields?.file
     const fileInputHasError = fileInputStatus?.hasError
     const hasCorrectMimeType = acceptedMimeTypes.includes(
       fileUpload?.contentType
@@ -66,7 +66,7 @@ const statusPollerController = {
     // File is ready to be used
     if (hasBeenVirusChecked && !hasRejectedFiles) {
       const previouslyUploadFiles = request.pre.plantSession?.files ?? []
-      const fileUpload = status?.files?.at(0)
+      const fileUpload = uploadStatus?.files?.at(0)
 
       await saveToPlant(request, h, {
         files: [
@@ -84,7 +84,7 @@ const statusPollerController = {
     }
 
     // Virus check polling page
-    return h.view('plants/views/status-poller', {
+    return h.view('plants/views/upload-status-poller', {
       pageTitle: 'Virus check',
       heading: 'Scanning your file',
       breadcrumbs: [
@@ -104,4 +104,4 @@ const statusPollerController = {
   }
 }
 
-export { statusPollerController }
+export { uploadStatusPollerController }

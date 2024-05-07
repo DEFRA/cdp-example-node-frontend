@@ -1,9 +1,11 @@
 import Joi from 'joi'
 
+import { animalNames } from '~/src/server/animals/constants/animal-names'
+
 const kindValidation = Joi.object({
   kind: Joi.string()
     .required()
-    .valid('rabbit', 'cow', 'horse', 'otter', 'yak')
+    .valid(...animalNames)
     .messages({
       'any.only': 'Choose an entry',
       'any.required': 'Choose an entry'

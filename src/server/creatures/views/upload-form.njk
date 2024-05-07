@@ -7,7 +7,7 @@
 {% block content %}
   {{ appHeading({
     title: heading,
-    caption: "Upload all the details about your creature sighting."
+    caption: "Upload all the details about your mythical creature sighting."
   }) }}
 
   <div class="govuk-grid-row">
@@ -22,7 +22,7 @@
               name: "kind",
               label: {
                 text: "What kind of creature?",
-                classes: "govuk-label--s"
+                classes: "govuk-label--m"
               },
               items: kindsOfCreatures,
               errorMessage: {
@@ -57,30 +57,33 @@
               legend: {
                 text: "Date of sighting",
                 isPageHeading: true,
-                classes: "govuk-fieldset__legend--l"
+                classes: "govuk-fieldset__legend--m"
               }
             },
             hint: {
-              text: "For example, 27 3 2024"
+              text: "For example, 27/03/2024"
             },
             errorMessage: {
-              text: formErrors.day.message or formErrors.month.message or formErrors.year.message
-            } if formErrors.day.message or formErrors.month.message or formErrors.year.message,
+              text: formErrors.date.message
+            } if formErrors.date.message,
             items: [
               {
-                name: "day",
+                name: "date[day]",
+                label: "Day",
                 classes: "govuk-input--width-2",
-                value: formValues.day if formValues.day
+                value: formValues.date.day
               },
               {
-                name: "month",
+                name: "date[month]",
+                label: "Month",
                 classes: "govuk-input--width-2",
-                value: formValues.month if formValues.month
+                value: formValues.date.month
               },
               {
-                name: "year",
+                name: "date[year]",
+                label: "Year",
                 classes: "govuk-input--width-4",
-                value: formValues.year if formValues.year
+                value: formValues.date.year
               }
             ]
           }) }}
@@ -92,7 +95,7 @@
               legend: {
                 text: "Was this sighting in a dream?",
                 isPageHeading: true,
-                classes: "govuk-fieldset__legend--l"
+                classes: "govuk-fieldset__legend--m"
               }
             },
             value: formValue.realSighting,
@@ -109,13 +112,13 @@
             errorMessage: {
               text: formErrors.realSighting.message
             } if formErrors.realSighting.message,
-            value: formValues.realSighting if formValues.realSighting
+            value: formValues.realSighting
           }) }}
 
           {% call govukFieldset({
             legend: {
               text: "Address of sighting",
-              classes: "govuk-fieldset__legend--l",
+              classes: "govuk-fieldset__legend--m",
               isPageHeading: true
             }
           }) %}
@@ -130,7 +133,7 @@
               errorMessage: {
                 text: formErrors.addressLine1.message
               } if formErrors.addressLine1.message,
-              value: formValues.addressLine1 if formValues.addressLine1
+              value: formValues.addressLine1
             }) }}
 
             {{ govukInput({
@@ -140,7 +143,7 @@
               id: "address-line-2",
               name: "addressLine2",
               autocomplete: "address-line2",
-              value: formValues.addressLine2 if formValues.addressLine2
+              value: formValues.addressLine2
             }) }}
 
             {{ govukInput({
@@ -154,7 +157,7 @@
               errorMessage: {
                 text: formErrors.addressTown.message
               } if formErrors.addressTown.message,
-              value: formValues.addressTown if formValues.addressTown
+              value: formValues.addressTown
 
             }) }}
 
@@ -169,7 +172,7 @@
               errorMessage: {
                 text: formErrors.addressPostcode.message
               } if formErrors.addressPostcode.message,
-              value: formValues.addressPostcode if formValues.addressPostcode
+              value: formValues.addressPostcode
             }) }}
 
           {% endcall %}

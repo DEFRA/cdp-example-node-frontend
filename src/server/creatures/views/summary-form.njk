@@ -1,0 +1,33 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading,
+    caption: "Review your creature."
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+
+        <form action="{{ action }}" method="post">
+
+          <ul class="govuk-list govuk-list--bullet">
+            <li><strong>Kind:</strong> {{ creatureSession.fields.kind }}</li>
+            <li><strong>Kind:</strong> {{ creatureSession.fields.kind }}</li>
+          </ul>
+
+          {# TODO make nicer #}
+
+          {{ govukButton({
+            text: "Create"
+          }) }}
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

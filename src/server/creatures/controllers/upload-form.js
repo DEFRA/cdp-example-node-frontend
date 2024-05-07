@@ -1,64 +1,39 @@
-import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
+import { upperFirst } from 'lodash'
+
 import { config } from '~/src/config'
-import crypto from 'node:crypto'
+import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
+import { creatureNames } from '~/src/server/creatures/constants/creature-names'
+import { buildOptions } from '~/src/server/common/helpers/options/build-options'
+import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
+
+const destinationBucket = config.get('bucket')
+const appBaseUrl = config.get('appBaseUrl')
 
 const uploadFormController = {
+  options: {
+    ext: {
+      onPreHandler: [noSessionRedirect]
+    }
+  },
   handler: async (request, h) => {
-    const destinationBucket = config.get('bucket')
-    const appBaseUrl = config.get('appBaseUrl')
+    const creatureId = request.params.creatureId
 
-    const creatureId = crypto.randomUUID()
     const secureUpload = await initUpload({
-      redirect: `${appBaseUrl}/creatures/${creatureId}/add`, // map an id back to an upload id
+      redirect: `${appBaseUrl}/creatures/${creatureId}/upload-status-poller`,
       destinationBucket
     })
 
-    // store our id to uploadId mapping and use this for verification to ensure upload is genuine
-    await request.redis.storeCreatureId(creatureId, secureUpload.uploadId)
+    await request.redis.storeData(creatureId, {
+      uploadId: secureUpload.uploadId
+    })
 
     return h.view('creatures/views/upload-form', {
       pageTitle: 'Add creature',
       action: secureUpload.uploadAndScanUrl,
-      heading: 'Report mythical creature sighting',
-      kindsOfCreatures: [
-        {
-          text: ' - - select - - ',
-          disabled: true,
-          attributes: { selected: true }
-        },
-        {
-          value: 'Dragon',
-          text: 'Dragon'
-        },
-        {
-          value: 'Werewolf',
-          text: 'Werewolf'
-        },
-        {
-          value: 'Vampire',
-          text: 'Vampire'
-        },
-        {
-          value: 'Mermaid',
-          text: 'Mermaid'
-        },
-        {
-          value: 'Unicorn',
-          text: 'Unicorn'
-        },
-        {
-          value: 'Fairy',
-          text: 'Fairy'
-        },
-        {
-          value: 'Leprechaun',
-          text: 'Leprechaun'
-        },
-        {
-          value: 'Gnome',
-          text: 'Gnome'
-        }
-      ],
+      heading: 'Report creature sighting',
+      kindsOfCreatures: buildOptions(
+        creatureNames.map((name) => ({ value: name, text: upperFirst(name) }))
+      ),
       breadcrumbs: [
         {
           text: 'Creatures',

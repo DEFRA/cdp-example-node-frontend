@@ -1,38 +1,40 @@
 import { config } from '~/src/config'
 import { fetcher } from '~/src/server/common/helpers/fetch/fetcher'
 
-async function createCreature(creatureId, creature) {
+function buildFilesDetail(value) {
+  const files = Array.isArray(value) ? value : [value]
+
+  return files.map((file) => ({
+    filename: file.filename,
+    fileId: file.fileId,
+    fileUrl: file.s3Key
+  }))
+}
+
+async function createCreature(creature) {
   const endpoint = config.get('cdpExampleNodeBackendUrl') + '/creatures'
 
-  const creatureFiles = creature.creatureFiles
-  const creatureFileUrls = (
-    Array.isArray(creatureFiles) ? creatureFiles : [creatureFiles]
-  )
-    .map((f) => f?.s3Key)
-    .filter(Boolean)
+  const creatureFiles = buildFilesDetail(creature.fields.creatureFiles)
+  const evidenceFiles = buildFilesDetail(creature.fields.evidenceFiles)
 
-  const evidenceFiles = creature.evidenceFiles
-  const evidenceFileUrls = (
-    Array.isArray(evidenceFiles) ? evidenceFiles : [evidenceFiles]
-  )
-    .map((f) => f?.s3Key)
-    .filter(Boolean)
+  const { year, month, day } = creature.fields.date
+  const date = new Date(year, parseInt(month, 10) - 1, day).toISOString()
 
   const { json } = await fetcher(endpoint, {
     method: 'post',
     body: JSON.stringify({
-      creatureId,
-      kind: creature.kind,
-      ...(creatureFileUrls.length > 0 && { creatureFileUrls }),
-      date: `${creature.day}-${creature.month}-${creature.year}`,
-      dream: creature.realSighting === 'yes',
+      creatureId: creature.creatureId,
+      kind: creature.fields.kind,
+      creatureFiles,
+      date,
+      dream: creature.fields.realSighting === 'yes',
       address: {
-        addressLine1: creature.addressLine1,
-        addressLine2: creature.addressLine2,
-        townOrCity: creature.addressTown,
-        postCode: creature.addressPostcode
+        addressLine1: creature.fields.addressLine1,
+        addressLine2: creature.fields?.addressLine2,
+        townOrCity: creature.fields.addressTown,
+        postCode: creature.fields.addressPostcode
       },
-      ...(evidenceFileUrls.length > 0 && { evidenceFileUrls })
+      evidenceFiles
     })
   })
 

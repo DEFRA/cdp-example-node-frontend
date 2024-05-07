@@ -6,8 +6,7 @@ import { summaryFormController } from '~/src/server/plants/controllers/summary-f
 import { createController } from '~/src/server/plants/controllers/create'
 import { detailsFormController } from '~/src/server/plants/controllers/details-form'
 import { detailsController } from '~/src/server/plants/controllers/details'
-import { statusPollerController } from '~/src/server/plants/controllers/status-poller'
-import { callbackController } from '~/src/server/plants/controllers/callback'
+import { uploadStatusPollerController } from '~/src/server/plants/controllers/upload-status-poller'
 
 export {
   startController,
@@ -18,6 +17,5 @@ export {
   plantController,
   detailsFormController,
   detailsController,
-  statusPollerController,
-  callbackController
+  uploadStatusPollerController
 }
