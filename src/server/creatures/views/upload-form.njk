@@ -89,14 +89,17 @@
 
           {{ govukRadios({
             classes: "govuk-radios--inline",
-            name: "dreamSighting",
+            name: "realLifeSighting",
             fieldset: {
               legend: {
-                text: "Sighting was in a dream",
+                text: "Sighting was in real life",
                 classes: "govuk-fieldset__legend--m"
               }
             },
-            value: formValue.dreamSighting,
+            hint: {
+              text: "You actually saw this creature in real life, not just in a dream"
+            },
+            value: formValue.realLifeSighting,
             items: [
               {
                 value: "yes",
@@ -114,9 +117,9 @@
               "data-reveal-hide": "no"
             },
             errorMessage: {
-              text: formErrors.dreamSighting.message
-            } if formErrors.dreamSighting.message,
-            value: formValues.dreamSighting
+              text: formErrors.realLifeSighting.message
+            } if formErrors.realLifeSighting.message,
+            value: formValues.realLifeSighting
           }) }}
 
           <div id="creature-address" class="js-hidden">
