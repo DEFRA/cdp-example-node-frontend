@@ -14,19 +14,23 @@ function sessionToCreature(creature) {
 
   const { year, month, day } = creature.fields.date
   const date = new Date(year, parseInt(month, 10) - 1, day).toISOString()
+  const realLifeSighting = creature.fields.realLifeSighting === 'yes'
+  const address = realLifeSighting
+    ? {
+        addressLine1: creature.fields?.addressLine1,
+        addressLine2: creature.fields?.addressLine2,
+        townOrCity: creature.fields?.addressTown,
+        postCode: creature.fields?.addressPostcode
+      }
+    : {}
 
   return {
     creatureId: creature.creatureId,
     kind: creature.fields.kind,
     creatureFiles,
     date,
-    realLifeSighting: creature.fields.realLifeSighting === 'yes',
-    address: {
-      addressLine1: creature.fields?.addressLine1,
-      addressLine2: creature.fields?.addressLine2,
-      townOrCity: creature.fields?.addressTown,
-      postCode: creature.fields?.addressPostcode
-    },
+    realLifeSighting,
+    address,
     evidenceFiles
   }
 }
