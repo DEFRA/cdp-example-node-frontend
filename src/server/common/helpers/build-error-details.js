@@ -1,9 +1,18 @@
-function buildErrorDetails(errorDetails) {
+function buildErrorMessages(path, value) {
+  const object = {}
+  path.reduce((obj, item) => (obj[item] = { ...value }), object)
+
+  return object
+}
+
+function buildErrorDetails(errorDetails = []) {
   return errorDetails.reduce((errors, detail) => {
+    const errorMessages = buildErrorMessages(detail.path, {
+      message: detail.message
+    })
+
     return {
-      [detail.context.key]: {
-        message: detail.message
-      },
+      ...errorMessages,
       ...errors
     }
   }, {})
