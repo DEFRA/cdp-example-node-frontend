@@ -11,7 +11,6 @@ import {
   createController,
   animalListController,
   animalController,
-  callbackController,
   uploadStatusPollerController
 } from '~/src/server/animals/controllers'
 import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
@@ -37,11 +36,6 @@ const animals = {
           method: 'GET',
           path: '/animals',
           ...animalListController
-        },
-        {
-          method: 'POST',
-          path: '/animals/callback',
-          ...callbackController
         },
         {
           method: 'GET',

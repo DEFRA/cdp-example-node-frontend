@@ -1,36 +1,19 @@
+import { buildOptions } from '~/src/server/common/helpers/options/build-options'
+import { animalNames } from '~/src/server/animals/constants/animal-names'
+import { upperFirst } from 'lodash'
+
 const kindFormController = {
   handler: async (request, h) => {
     return h.view('animals/views/kind-form', {
       pageTitle: 'Kind',
       action: '/animals/add/kind',
       heading: 'Kind',
-      kindsOfAnimals: [
-        {
-          text: ' - - select - - ',
-          disabled: true,
-          attributes: { selected: true }
-        },
-        {
-          value: 'rabbit',
-          text: 'Rabbit'
-        },
-        {
-          value: 'cow',
-          text: 'Cow'
-        },
-        {
-          value: 'horse',
-          text: 'Horse'
-        },
-        {
-          value: 'otter',
-          text: 'Otter'
-        },
-        {
-          value: 'yak',
-          text: 'Yak'
-        }
-      ],
+      kindsOfAnimals: buildOptions(
+        animalNames.map((animal) => ({
+          value: animal,
+          text: upperFirst(animal)
+        }))
+      ),
       breadcrumbs: [
         {
           text: 'Animals',
