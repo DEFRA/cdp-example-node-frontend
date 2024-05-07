@@ -1,23 +1,29 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
-import { createCreature } from '~/src/server/creatures/helpers/fetch/create-creature'
-import { uploadFormValidation } from '~/src/server/creatures/helpers/schemas/upload-form-validation'
 import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
+import { hasUploadedFile } from '~/src/server/creatures/helpers/has-uploaded-file'
+import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
 import { provideUploadStatus } from '~/src/server/common/helpers/pre/provide-upload-status'
+import { getFileRejectionMessage } from '~/src/server/creatures/helpers/get-file-rejection-message'
+import { uploadFormValidation } from '~/src/server/creatures/helpers/schemas/upload-form-validation'
 
 const uploadStatusPollerController = {
   options: {
+    ext: {
+      onPreHandler: [noSessionRedirect]
+    },
     pre: [provideUploadStatus]
   },
   handler: async (request, h) => {
     const creatureId = request.params.creatureId
     const uploadStatus = request.pre.uploadStatus
-
-    const storedUploadId = await request.redis.findCreatureId(creatureId)
-    if (!storedUploadId) {
-      // todo add logic to show errors
-      request.logger.info('No creatureId found')
-      return h.redirect('/creatures/upload')
-    }
+    const hasBeenVirusChecked = uploadStatus?.uploadStatus === 'ready'
+    const hasRejectedFiles = uploadStatus?.numberOfRejectedFiles > 0
+    const hasUploadedCreatureFiles = hasUploadedFile(
+      uploadStatus?.fields?.creatureFiles
+    )
+    const hasUploadedEvidenceFiles = hasUploadedFile(
+      uploadStatus?.fields?.evidenceFiles
+    )
 
     const validationResult = uploadFormValidation.validate(
       uploadStatus.fields,
@@ -25,76 +31,67 @@ const uploadStatusPollerController = {
         abortEarly: false
       }
     )
-    if (validationResult?.error) {
-      const errorDetails = buildErrorDetails(validationResult.error.details)
 
+    if (
+      validationResult?.error ||
+      !hasUploadedCreatureFiles ||
+      !hasUploadedEvidenceFiles
+    ) {
+      const errorDetails = buildErrorDetails(validationResult?.error?.details)
+
+      // TODO abstract this
       request.yar.flash(sessionNames.validationFailure, {
-        formValues: uploadStatus.fields,
-        formErrors: errorDetails
-      })
-      request.logger.info(
-        validationResult,
-        `Validation Errors: ${errorDetails}`
-      )
-      return h.redirect('/creatures/upload')
-    }
-
-    const creatureFiles = uploadStatus.fields.creatureFiles
-    const missingCreatureFile =
-      !Array.isArray(creatureFiles) && creatureFiles.contentLength === 0
-
-    if (missingCreatureFile) {
-      request.yar.flash(sessionNames.validationFailure, {
-        formValues: uploadStatus.fields,
-        formErrors: { creatureFiles: { message: 'Choose a file' } }
-      })
-      request.logger.info('No creature files')
-      return h.redirect('/creatures/upload')
-    }
-
-    const evidenceFiles = uploadStatus.fields.evidenceFiles
-    const missingEvidenceFile =
-      !Array.isArray(evidenceFiles) && evidenceFiles.contentLength === 0
-
-    if (missingEvidenceFile) {
-      request.yar.flash(sessionNames.validationFailure, {
-        formValues: uploadStatus.fields,
-        formErrors: { evidenceFiles: { message: 'Choose a file' } }
-      })
-      request.logger.info('No evidence files')
-      return h.redirect('/creatures/upload')
-    }
-
-    // Virus check failed - Return to upload form with errors
-    const isReady = uploadStatus.uploadStatus === 'ready'
-    const uploadSuccessful = uploadStatus.numberOfRejectedFiles === 0
-
-    if (isReady && !uploadSuccessful) {
-      request.yar.flash(sessionNames.validationFailure, {
-        // todo add logic to show file errors
         formValues: uploadStatus.fields,
         formErrors: {
-          ...(isRejected(creatureFiles, request) && {
-            creatureFiles: { message: 'Virus check failed' }
+          ...errorDetails,
+          ...(!hasUploadedCreatureFiles && {
+            creatureFiles: { message: 'Choose a file' }
           }),
-          ...(isRejected(evidenceFiles, request) && {
-            evidenceFiles: { message: 'Virus check failed' }
+          ...(!hasUploadedEvidenceFiles && {
+            evidenceFiles: { message: 'Choose a file' }
           })
         }
       })
-      request.logger.info('Virus check failed')
-      return h.redirect('/creatures/upload')
+
+      return h.redirect(`/creatures/${creatureId}/upload`)
     }
 
-    // TODO we need to discuss this UX. You upload a file but its automatically saved without a summary. Feels like
-    //  a step is missing
-    if (isReady && uploadSuccessful) {
-      await createCreature(creatureId, uploadStatus.fields)
-      return h.redirect(`/creatures/${creatureId}`)
+    // Errors from cdp-uploader
+    if (hasRejectedFiles) {
+      const creatureFilesErrorMessage = getFileRejectionMessage(
+        uploadStatus.fields.creatureFiles
+      )
+      const evidenceFilesErrorMessage = getFileRejectionMessage(
+        uploadStatus.fields.evidenceFiles
+      )
+
+      // TODO abstract this
+      request.yar.flash(sessionNames.validationFailure, {
+        formValues: uploadStatus.fields,
+        formErrors: {
+          ...(creatureFilesErrorMessage && {
+            creatureFiles: { message: creatureFilesErrorMessage }
+          }),
+          ...(evidenceFilesErrorMessage && {
+            evidenceFiles: { message: evidenceFilesErrorMessage }
+          })
+        }
+      })
+
+      return h.redirect(`/creatures/${creatureId}/upload`)
+    }
+
+    // Success
+    if (hasBeenVirusChecked && !hasRejectedFiles) {
+      await request.redis.storeData(creatureId, {
+        fields: uploadStatus.fields
+      })
+
+      return h.redirect(`/creatures/${creatureId}/summary`)
     }
 
     // Virus check polling page
-    return h.view('creatures/views/status-poller', {
+    return h.view('creatures/views/upload-status-poller', {
       pageTitle: 'Virus check',
       heading: 'Scanning your files',
       breadcrumbs: [
@@ -104,7 +101,7 @@ const uploadStatusPollerController = {
         },
         {
           text: 'Add creature sighting',
-          href: '/creatures/upload'
+          href: `/creatures/${creatureId}/upload`
         },
         {
           text: 'Upload creature sighting'
@@ -112,12 +109,6 @@ const uploadStatusPollerController = {
       ]
     })
   }
-}
-
-function isRejected(fileField, request) {
-  const files = Array.isArray(fileField) ? fileField : [fileField]
-  request.logger.info(files, 'files')
-  return files.some((f) => f.fileStatus === 'rejected')
 }
 
 export { uploadStatusPollerController }
