@@ -30,7 +30,7 @@ const uploadFormController = {
     return h.view('creatures/views/upload-form', {
       pageTitle: 'Add creature',
       action: secureUpload.uploadAndScanUrl,
-      heading: 'Report creature sighting',
+      heading: 'Creature sighting',
       kindsOfCreatures: buildOptions(
         creatureNames.map((name) => ({ value: name, text: upperFirst(name) }))
       ),

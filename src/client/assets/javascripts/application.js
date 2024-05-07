@@ -2,6 +2,7 @@ import { initAll } from 'govuk-frontend'
 
 import { initModule } from '~/src/client/common/helpers/init-module'
 import { banner } from '~/src/server/common/components/banner/banner'
+import { reveal } from '~/src/client/common/helpers/reveal'
 
 import '../stylesheets/application.scss'
 
@@ -16,3 +17,6 @@ initAll()
 
 // Notification banner
 initModule('app-notification', banner)
+
+// Reveal
+initModule('app-reveal', reveal)
