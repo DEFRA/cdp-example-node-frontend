@@ -21,22 +21,18 @@ async function findTrackingLocations(tracking, logger) {
     return []
   }
   let locations = {}
+  const headers = 'date,time,latitude,longitude'
   try {
-    locations = parse(csvBody, { header: false, skipEmptyLines: true })
+    locations = parse(`${headers}\n${csvBody}`, {
+      header: true,
+      skipEmptyLines: true
+    })
     logger.debug({ locations }, 'Locations')
   } catch (err) {
     logger.error(err)
     return []
   }
-  const trackingLocations = locations.data.map((location) => {
-    return {
-      date: location[0],
-      time: location[1],
-      latitude: location[2],
-      longitude: location[3]
-    }
-  })
-  return trackingLocations
+  return locations.data
 }
 
 export { findTrackingLocations }
