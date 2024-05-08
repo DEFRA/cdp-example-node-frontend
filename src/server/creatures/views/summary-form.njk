@@ -12,12 +12,64 @@
 
         <form action="{{ action }}" method="post">
 
-          <ul class="govuk-list govuk-list--bullet">
-            <li><strong>Kind:</strong> {{ creatureSession.fields.kind }}</li>
-            <li><strong>Kind:</strong> {{ creatureSession.fields.kind }}</li>
+          <ul class="govuk-list">
+            <li>
+              <strong>Name:</strong> {{ creature.name | capitalize }}
+            </li>
+
+            <li>
+              <strong>Kind:</strong> {{ creature.kind | capitalize }}
+            </li>
+
+            <li>
+              <strong>Seen:</strong> {{ creature.date | formatDate }}
+            </li>
+
+            <li>
+              <strong>Seen in real life:</strong> {{ creature.realLifeSighting }}
+            </li>
+
+            {% if creature.address | length %}
+              <li>
+                <strong>Address:</strong>
+                {% for addressKey, addressValue in creature.address %}
+                  {{ addressValue }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+              </li>
+            {% endif %}
           </ul>
 
-          {# TODO make nicer #}
+          {% if creature.creatureFiles | length %}
+            <ul class="govuk-list govuk-list--spaced">
+              <li>
+                <strong>Images</strong>
+              </li>
+              {% for file in creature.creatureFiles %}
+                <li>
+                  <img class="app-img" src="/file/{{ file.fileUrl }}" alt="{{ file.filename }} picture">
+                </li>
+
+              {% else %}
+                <li>No files available for your creature.</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if creature.evidenceFiles | length %}
+            <ul class="govuk-list govuk-list--spaced">
+              <li>
+                <strong>Supporting evidence images</strong>
+              </li>
+              {% for file in creature.evidenceFiles %}
+                <li>
+                  <img class="app-img" src="/file/{{ file.fileUrl }}" alt="{{ file.filename }} picture">
+                </li>
+              {% else %}
+                <li>No evidence files available for your creature.</li>
+              {% endfor %}
+            </ul>
+
+          {% endif %}
 
           {{ govukButton({
             text: "Create"

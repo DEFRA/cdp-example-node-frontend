@@ -1,5 +1,6 @@
 import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
 import { provideCreatureSession } from '~/src/server/creatures/helpers/pre/provide-creature-session'
+import { sessionToCreature } from '~/src/server/creatures/transformers/session-to-creature'
 
 const summaryFormController = {
   options: {
@@ -16,7 +17,7 @@ const summaryFormController = {
       pageTitle: 'Summary',
       action: `/creatures/${creatureId}/create`,
       heading: 'Summary',
-      creatureSession,
+      creature: sessionToCreature(creatureSession),
       breadcrumbs: [
         {
           text: 'Creatures',

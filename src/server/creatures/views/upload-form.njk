@@ -17,6 +17,22 @@
         <form action="{{ action }}" method="post" enctype="multipart/form-data">
           {% call govukFieldset() %}
 
+            {{ govukInput({
+              label: {
+                text: "Name",
+                classes: "govuk-label--m"
+              },
+              id: "name",
+              name: "name",
+              hint: {
+                text: "The creatures name"
+              },
+              value: formValues.name,
+              errorMessage: {
+                text: formErrors.name.message
+              } if formErrors.name.message
+            }) }}
+
             {{ govukSelect({
               id: "kind",
               name: "kind",
@@ -24,11 +40,14 @@
                 text: "Kind",
                 classes: "govuk-label--m"
               },
+              hint: {
+                text: "What kind of creature did you see"
+              },
               items: kindsOfCreatures,
+              value: formValues.kind,
               errorMessage: {
                 text: formErrors.kind.message
-              } if formErrors.kind.message,
-              value: formValues.kind if formValues.kind
+              } if formErrors.kind.message
             }) }}
 
             {{ govukFileUpload({
