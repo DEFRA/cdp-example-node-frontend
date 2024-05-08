@@ -26,6 +26,7 @@ function sessionToCreature(creature) {
 
   return {
     creatureId: creature.creatureId,
+    name: creature.fields.name,
     kind: creature.fields.kind,
     creatureFiles,
     date,

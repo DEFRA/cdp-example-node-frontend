@@ -12,6 +12,10 @@ const errorMessages = {
 }
 
 const uploadFormValidation = Joi.object({
+  name: Joi.string().required().messages({
+    'any.message': errorMessages.choose,
+    'any.required': errorMessages.choose
+  }),
   kind: Joi.string()
     .required()
     .valid(...creatureNames)

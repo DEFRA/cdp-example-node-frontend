@@ -12,7 +12,11 @@
 
         <form action="{{ action }}" method="post">
 
-          <ul class="govuk-list govuk-list--bullet">
+          <ul class="govuk-list">
+            <li>
+              <strong>Name:</strong> {{ creature.name | capitalize }}
+            </li>
+
             <li>
               <strong>Kind:</strong> {{ creature.kind | capitalize }}
             </li>
