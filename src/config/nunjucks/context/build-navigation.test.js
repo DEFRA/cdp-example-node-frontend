@@ -26,6 +26,11 @@ describe('#buildNavigation', () => {
         isActive: false,
         text: 'Plants',
         url: '/plants'
+      },
+      {
+        isActive: false,
+        text: 'Birds',
+        url: '/birds'
       }
     ])
   })

@@ -1,0 +1,57 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+        <p>
+          Tracking locations for a {{ bird.name }}.
+        </p>
+        <p>
+           Genus: {{ bird.genus }}<br>
+           Species: {{ bird.species }}
+        </p>
+
+          <p>
+        {% if spotter %}
+            Spotter: {{ spotter }}
+        {% else %}
+            Spotter: No spotter
+        {% endif %}
+          </p>
+
+
+         {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
+
+         {{ govukErrorMessage({
+         text: "Tracking locations upload was rejected. Please check the file and try again.",
+         visuallyHiddenText: "Rejected"
+         }) }}
+
+         <p>
+
+
+        {% if spotter %}
+
+         <form action="{{ action }}" method="post">
+            <input type="hidden" name="spotter" value="{{ spotter }}">
+
+            {{ govukButton({
+               text: "Try again"
+            }) }}
+
+         </form>
+
+        {% else %}
+         <a class="govuk-link" href="/birds/{{ bird.id }}/tracking">Try again</a>
+        {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

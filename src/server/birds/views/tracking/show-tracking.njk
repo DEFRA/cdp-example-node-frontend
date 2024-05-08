@@ -1,0 +1,64 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    title: heading
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+        <p>
+          Tracking locations for a {{ bird.name }}.
+        </p>
+        <p>
+           Genus: {{ bird.genus }}<br>
+           Species: {{ bird.species }}
+        </p>
+
+          <p>
+        {% if spotter %}
+            Spotter: {{ spotter }}
+        {% else %}
+            Spotter: No spotter
+        {% endif %}
+          </p>
+
+         {% if locations.length > 0 %}
+            {% from "govuk/components/table/macro.njk" import govukTable %}
+
+            {{ govukTable({
+            caption: "Locations tracked",
+            captionClasses: "govuk-table__caption--m",
+            firstCellIsHeader: false,
+            head: [
+               {
+                  text: "Date"
+               },
+               {
+                  text: "Time"
+               },
+               {
+                  text: "Latitude",
+                  format: "numeric"
+               },
+               {
+                  text: "Longtitude",
+                  format: "numeric"
+               },
+               {
+                  text: "Map"
+               }
+            ],
+            rows: locations
+            }) }}
+
+         {% else %}
+            <p>No locations tracked yet.</p>
+         {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

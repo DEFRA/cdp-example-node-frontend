@@ -1,0 +1,48 @@
+{% extends 'layouts/page.njk' %}
+
+
+{% block content %}
+  {{ appHeading({
+    title: heading,
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+
+        <form action="{{ action }}" method="post">
+
+          {% call govukFieldset() %}
+
+            {{ govukSelect({
+              id: "birdId",
+              name: "birdId",
+              label: {
+                text: "Bird",
+                classes: "govuk-label--m"
+              },
+              hint: {
+                text: "What kind of bird?"
+              },
+              items: birds,
+              errorMessage: {
+                text: formErrors.bird.message
+              } if formErrors.bird.message
+            }) }}
+
+
+          {% endcall %}
+
+          {{ govukButton({
+            text: "Next"
+          }) }}
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
