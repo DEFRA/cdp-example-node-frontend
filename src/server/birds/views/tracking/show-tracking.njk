@@ -33,10 +33,12 @@
             firstCellIsHeader: false,
             head: [
                {
-                  text: "Date"
+                  text: "Date",
+                  format: "numeric"
                },
                {
-                  text: "Time"
+                  text: "Time",
+                  format: "numeric"
                },
                {
                   text: "Latitude",
@@ -54,7 +56,7 @@
             }) }}
 
          {% else %}
-            <p>No locations tracked yet.</p>
+            <p>No locations tracked (data may be expired).</p>
          {% endif %}
 
       </div>

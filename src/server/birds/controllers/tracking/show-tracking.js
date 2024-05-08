@@ -70,10 +70,12 @@ const showTrackingController = {
       )
       const locations = trackingLocations.map((location) => [
         {
-          text: location.date
+          text: location.date,
+          format: 'numeric'
         },
         {
-          text: location.time
+          text: location.time,
+          format: 'numeric'
         },
         {
           text: location.latitude,
@@ -84,7 +86,7 @@ const showTrackingController = {
           format: 'numeric'
         },
         {
-          text: `www.latlong.net/c/?lat=${location.latitude}&long=${location.longitude}`
+          html: `<a href="https://www.latlong.net/c/?lat=${location.latitude}&long=${location.longitude}">view</a>`
         }
       ])
       return h.view('birds/views/tracking/show-tracking', {

@@ -18,6 +18,7 @@ const creaturesSessionFixture = {
         '7ca0496d-d7a7-40fc-aef4-2a46d1a9ce00/aa710148-ae23-4864-ac63-cf4698e4acd7',
       s3Bucket: 'cdp-example-node-frontend',
       fileStatus: 'complete',
+      checksumSha256: '123456',
       contentLength: 25624
     },
     evidenceFiles: {
@@ -28,6 +29,7 @@ const creaturesSessionFixture = {
       s3Key:
         '7ca0496d-d7a7-40fc-aef4-2a46d1a9ce00/e9963130-00cf-48e3-baa4-347670fff937',
       s3Bucket: 'cdp-example-node-frontend',
+      checksumSha256: '7654321',
       fileStatus: 'complete',
       contentLength: 57573
     },
