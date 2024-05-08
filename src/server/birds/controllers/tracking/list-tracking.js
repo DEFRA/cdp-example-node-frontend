@@ -19,13 +19,24 @@ const listTrackingController = {
       return h.redirect('/birds')
     }
 
-    const trackings = await findBirdTrackings(bird)
+    const { trackings } = await findBirdTrackings(bird)
+
+    const trackingList = trackings.map((tracking) => {
+      return {
+        trackingId: tracking.trackingId,
+        trackingStatus: tracking.trackingStatus,
+        spotter: tracking.spotter,
+        date: new Date(tracking.createdAt)
+      }
+    })
+
+    request.logger.debug({ bird, trackings }, 'Find tracking list')
 
     return h.view('birds/views/tracking/list-tracking', {
       pageTitle: 'Bird tracking',
       heading: 'Bird tracking',
       bird,
-      trackings,
+      trackings: trackingList,
       breadcrumbs: [
         {
           text: 'Birds',

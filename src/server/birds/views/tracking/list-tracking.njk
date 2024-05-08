@@ -29,8 +29,10 @@
           {% for tracking in trackings %}
             <li class="govuk-!-margin-bottom-1">
               <a class="govuk-link govuk-link--no-visited-state"
-                 href="/birds/{{ bird.birdId }}/tracking/{{ tracking.trackingId }}">{{ tracking.date }}</a>
-                 tracked by {{ tracking.spotter }}
+                 href="/birds/{{ bird.birdId }}/tracking/{{ tracking.trackingId }}">
+                 {{ tracking.date.toLocaleDateString() }}
+                 {{ tracking.date.toLocaleTimeString() }}</a>
+                 Tracked by {{ tracking.spotter }}
             </li>
 
           {% else %}
