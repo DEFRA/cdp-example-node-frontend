@@ -2,6 +2,15 @@ import { sessionToCreature } from '~/src/server/creatures/transformers/session-t
 import { creaturesSessionFixture } from '~/src/__fixtures__/creatures-session'
 
 describe('#sessionToCreature', () => {
+  beforeEach(() => {
+    jest.useFakeTimers('modern')
+    jest.setSystemTime(new Date('2023-05-29'))
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
+  })
+
   test('Should provide expected transformation', () => {
     expect(sessionToCreature(creaturesSessionFixture)).toEqual({
       address: {
@@ -19,7 +28,7 @@ describe('#sessionToCreature', () => {
         }
       ],
       creatureId: 'fedc8e3b-cfd1-4aec-b659-f949f65bedf9',
-      date: '1989-05-03T23:00:00.000Z',
+      date: '1989-05-04T00:00:00.000Z',
       evidenceFiles: [
         {
           fileId: 'e9963130-00cf-48e3-baa4-347670fff937',
