@@ -12,11 +12,6 @@ const errorMessages = {
   date: 'Enter a valid date'
 }
 
-const creaturesFileSchema = fileValidator
-  .file()
-  .maxSize(1024 * 10000)
-  .mimeType(['image/jpg', 'image/jpeg', 'image/png', 'image/gif'])
-
 const uploadFormValidation = Joi.object({
   name: Joi.string().required().messages({
     'any.message': errorMessages.choose,
@@ -59,22 +54,18 @@ const uploadFormValidation = Joi.object({
   }).messages({
     'any.required': errorMessages.required
   }),
-  creatureFiles: Joi.alternatives()
-    .try(
-      Joi.array().items(
-        fileValidator
-          .file()
-          .maxSize(1024 * 10000)
-          .mimeType(['image/jpg', 'image/jpeg', 'image/png', 'image/gif'])
-          .showFileName()
-      ),
-      fileValidator
-        .file()
-        .maxSize(1024 * 10000)
-        .mimeType(['image/jpg', 'image/jpeg', 'image/png', 'image/gif'])
+  creatureFiles: fileValidator
+    .alternatives(
+      Joi.array().items(fileValidator.file().showFileName()),
+      fileValidator.file()
     )
     .required(),
-  evidenceFiles: creaturesFileSchema
+  evidenceFiles: fileValidator
+    .alternatives(
+      Joi.array().items(fileValidator.file().showFileName()),
+      fileValidator.file()
+    )
+    .required()
 })
 
 export { uploadFormValidation }

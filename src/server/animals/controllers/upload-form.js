@@ -9,7 +9,9 @@ const uploadFormController = {
     const uploadDetail = await initUpload({
       redirect: `${appBaseUrl}/animals/add/upload-status-poller`,
       destinationBucket,
-      destinationPath: 'animals'
+      destinationPath: 'animals',
+      maxFileSize: 1024 * 100,
+      acceptedMimeTypes: ['image/png', 'image/jpeg', 'image/gif']
     })
 
     return h.view('animals/views/upload-form', {
