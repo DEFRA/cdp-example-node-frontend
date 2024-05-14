@@ -2,6 +2,7 @@ import JoiBase from 'joi'
 import JoiDateFactory from '@joi/date'
 
 import { creatureNames } from '~/src/server/creatures/constants/creature-names'
+import { fileValidator } from '~/src/server/creatures/helpers/schemas/file-validator'
 
 const Joi = JoiBase.extend(JoiDateFactory)
 
@@ -53,8 +54,24 @@ const uploadFormValidation = Joi.object({
   }).messages({
     'any.required': errorMessages.required
   }),
-  creatureFiles: Joi.any(), // These are checked elsewhere
-  evidenceFiles: Joi.any() // These are checked elsewhere
+  creatureFiles: fileValidator
+    .alternatives(
+      Joi.array().items(fileValidator.file().showFileName()),
+      fileValidator.file()
+    )
+    .required()
+    .messages({
+      'any.required': 'You must upload at least one file'
+    }),
+  evidenceFiles: fileValidator
+    .alternatives(
+      Joi.array().items(fileValidator.file().showFileName()),
+      fileValidator.file()
+    )
+    .required()
+    .messages({
+      'any.required': 'You must upload at least one file'
+    })
 })
 
 export { uploadFormValidation }

@@ -8,6 +8,8 @@ async function initUpload(options = {}) {
     scanResultCallbackUrl,
     destinationBucket,
     destinationPath,
+    acceptedMimeTypes,
+    maxFileSize,
     metadata
   } = options
 
@@ -20,6 +22,8 @@ async function initUpload(options = {}) {
       scanResultCallbackUrl,
       destinationBucket,
       destinationPath,
+      acceptedMimeTypes,
+      maxFileSize,
       metadata
     })
   })
