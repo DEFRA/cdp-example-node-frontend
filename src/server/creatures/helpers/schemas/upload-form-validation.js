@@ -59,13 +59,19 @@ const uploadFormValidation = Joi.object({
       Joi.array().items(fileValidator.file().showFileName()),
       fileValidator.file()
     )
-    .required(),
+    .required()
+    .messages({
+      'any.required': 'You must upload at least one file'
+    }),
   evidenceFiles: fileValidator
     .alternatives(
       Joi.array().items(fileValidator.file().showFileName()),
       fileValidator.file()
     )
     .required()
+    .messages({
+      'any.required': 'You must upload at least one file'
+    })
 })
 
 export { uploadFormValidation }

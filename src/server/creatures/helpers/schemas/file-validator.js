@@ -6,15 +6,7 @@ const fileValidator = Joi.extend((joi) => {
   return {
     type: 'file',
     base: joi.object(),
-    messages: {
-      'file.missing': 'A file is required.'
-    },
     validate(value, helpers) {
-      // Missing file
-      if (!value?.filename) {
-        return { value, errors: helpers.error('file.missing') }
-      }
-
       const filename = helpers.schema.$_getFlag('showFileName')
         ? value.filename
         : defaultFileName

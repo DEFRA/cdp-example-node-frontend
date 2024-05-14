@@ -38,20 +38,6 @@ describe('#file-validator', () => {
     expect(error.details[0].message).toEqual('a fake problem')
   })
 
-  test('fails when no file was supplied', () => {
-    const payload = {
-      fileId: '8b2acda5-4f47-4fa7-bccc-2476f5e3afaa',
-      actualContentType: 'image/jpeg',
-      contentType: 'application/octet-stream',
-      fileStatus: 'complete',
-      contentLength: 0
-    }
-
-    const { error } = fileValidator.file().validate(payload)
-
-    expect(error.details[0].message).toEqual('A file is required.')
-  })
-
   test('we can scan an array of files where one fails', () => {
     const payloadOk = {
       fileId: '8b2acda5-4f47-4fa7-bccc-2476f5e3afaa',
