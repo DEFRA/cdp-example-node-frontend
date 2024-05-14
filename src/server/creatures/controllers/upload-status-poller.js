@@ -28,7 +28,6 @@ const uploadStatusPollerController = {
       if (validationResult?.error) {
         const errorDetails = buildErrorDetails(validationResult?.error?.details)
 
-        // TODO abstract this
         request.yar.flash(sessionNames.validationFailure, {
           formValues: uploadStatus.fields,
           formErrors: errorDetails

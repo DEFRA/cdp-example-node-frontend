@@ -2,7 +2,7 @@ import Joi from 'joi'
 import { fileValidator } from '~/src/server/creatures/helpers/schemas/file-validator'
 
 describe('#file-validator', () => {
-  test('custom file validator works when theres no errors', () => {
+  test('should pass when file has no errors', () => {
     const payload = {
       fileId: '8b2acda5-4f47-4fa7-bccc-2476f5e3afaa',
       actualContentType: 'image/jpeg',
@@ -21,7 +21,7 @@ describe('#file-validator', () => {
     expect(error).toBeUndefined()
   })
 
-  test('fails when there is an error from the uploader', () => {
+  test('should fail when there is an error from the uploader', () => {
     const payload = {
       fileId: '8b2acda5-4f47-4fa7-bccc-2476f5e3afaa',
       actualContentType: 'image/jpeg',
@@ -38,7 +38,7 @@ describe('#file-validator', () => {
     expect(error.details[0].message).toEqual('a fake problem')
   })
 
-  test('we can scan an array of files where one fails', () => {
+  test('should fail when array contains one error', () => {
     const payloadOk = {
       fileId: '8b2acda5-4f47-4fa7-bccc-2476f5e3afaa',
       actualContentType: 'image/jpeg',
@@ -72,7 +72,7 @@ describe('#file-validator', () => {
     expect(error.details[0].message).toEqual('The selected file has a virus.')
   })
 
-  test('we can scan an array of files where one fails where it could also be an object', () => {
+  test('should validate when input can be single object or array', () => {
     const payloadOk = {
       fileId: '8b2acda5-4f47-4fa7-bccc-2476f5e3afaa',
       actualContentType: 'image/jpeg',
