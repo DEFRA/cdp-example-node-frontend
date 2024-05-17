@@ -19,7 +19,7 @@ const uploadStatusPollerController = {
     // Success
     if (hasBeenVirusChecked) {
       const validationResult = uploadFormValidation.validate(
-        uploadStatus.fields,
+        uploadStatus.form,
         {
           abortEarly: false
         }
@@ -29,7 +29,7 @@ const uploadStatusPollerController = {
         const errorDetails = buildErrorDetails(validationResult?.error?.details)
 
         request.yar.flash(sessionNames.validationFailure, {
-          formValues: uploadStatus.fields,
+          formValues: uploadStatus.form,
           formErrors: errorDetails
         })
 
@@ -37,7 +37,7 @@ const uploadStatusPollerController = {
       }
 
       await request.redis.storeData(creatureId, {
-        fields: uploadStatus.fields
+        fields: uploadStatus.form
       })
 
       return h.redirect(`/creatures/${creatureId}/summary`)

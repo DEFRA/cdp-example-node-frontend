@@ -3,20 +3,20 @@ import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
 
 const uploadFormController = {
   handler: async (request, h) => {
-    const destinationBucket = config.get('bucket')
+    const s3Bucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
 
     const uploadDetail = await initUpload({
       redirect: `${appBaseUrl}/animals/add/upload-status-poller`,
-      destinationBucket,
-      destinationPath: 'animals',
+      s3Bucket,
+      s3Path: 'animals',
       maxFileSize: 1024 * 100,
-      acceptedMimeTypes: ['image/png', 'image/jpeg', 'image/gif']
+      mimeTypes: ['image/png', 'image/jpeg', 'image/gif']
     })
 
     return h.view('animals/views/upload-form', {
       pageTitle: 'Add animal',
-      action: uploadDetail.uploadAndScanUrl,
+      action: uploadDetail.uploadUrl,
       heading: 'Seen an Animal?',
       breadcrumbs: [
         {

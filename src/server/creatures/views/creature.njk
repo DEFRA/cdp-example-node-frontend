@@ -38,7 +38,7 @@
             </li>
             {% for file in creature.creatureFiles %}
               <li>
-                <img class="app-img" src="/file/{{ file.fileUrl }}" alt="{{ file.filename }} picture">
+                <img class="app-img" src="/file/{{ file.fileUrl | urlencode }}" alt="{{ file.filename }} picture">
               </li>
 
             {% else %}
@@ -55,7 +55,7 @@
             </li>
             {% for file in creature.evidenceFiles %}
               <li>
-                <img class="app-img" src="/file/{{ file.fileUrl }}" alt="{{ file.filename }} picture">
+                <img class="app-img" src="/file/{{ file.fileUrl | urlencode }}" alt="{{ file.filename }} picture">
               </li>
 
             {% else %}

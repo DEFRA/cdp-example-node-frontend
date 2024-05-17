@@ -8,20 +8,20 @@ const uploadFormController = {
   },
   handler: async (request, h) => {
     const plantSession = request.pre.plantSession
-    const destinationBucket = config.get('bucket')
+    const s3Bucket = config.get('bucket')
     const appBaseUrl = config.get('appBaseUrl')
 
     const uploadDetail = await initUpload({
       redirect: `${appBaseUrl}/plants/add/upload-status-poller`,
-      destinationBucket,
-      destinationPath: 'plants',
+      s3Bucket,
+      s3Path: 'plants',
       metadata: { plantId: plantSession?.plantId }
     })
 
     return h.view('plants/views/upload-form', {
       pageTitle: 'Upload pictures',
       plantSession,
-      action: uploadDetail.uploadAndScanUrl,
+      action: uploadDetail.uploadUrl,
       heading: 'Upload pictures',
       breadcrumbs: [
         {

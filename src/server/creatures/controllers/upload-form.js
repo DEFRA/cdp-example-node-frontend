@@ -6,7 +6,7 @@ import { creatureNames } from '~/src/server/creatures/constants/creature-names'
 import { buildOptions } from '~/src/server/common/helpers/options/build-options'
 import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
 
-const destinationBucket = config.get('bucket')
+const s3Bucket = config.get('bucket')
 const appBaseUrl = config.get('appBaseUrl')
 
 const uploadFormController = {
@@ -20,7 +20,7 @@ const uploadFormController = {
 
     const secureUpload = await initUpload({
       redirect: `${appBaseUrl}/creatures/${creatureId}/upload-status-poller`,
-      destinationBucket
+      s3Bucket
     })
 
     await request.redis.storeData(creatureId, {
@@ -29,7 +29,7 @@ const uploadFormController = {
 
     return h.view('creatures/views/upload-form', {
       pageTitle: 'Add creature',
-      action: secureUpload.uploadAndScanUrl,
+      action: secureUpload.uploadUrl,
       heading: 'Creature sighting',
       kindsOfCreatures: buildOptions(
         creatureNames.map((name) => ({ value: name, text: upperFirst(name) }))
