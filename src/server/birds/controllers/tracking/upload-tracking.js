@@ -45,7 +45,8 @@ const showTrackingUploadController = {
       redirect,
       callback,
       s3Bucket,
-      s3Path: 'birds/tracking'
+      s3Path: 'birds/tracking',
+      mimeTypes: ['text/csv', 'text/plain']
     })
 
     request.logger.debug({ secureUpload }, 'Secure upload')
