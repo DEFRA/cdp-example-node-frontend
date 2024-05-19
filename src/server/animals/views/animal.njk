@@ -15,7 +15,7 @@
 
         <p><strong class="govuk-!-margin-right-1">Phone number:</strong>{{ animal.phoneNumber }}</p>
 
-        <img class="app-img" src="/file/animals/{{ animal.file.fileUrl }}" alt="{{ animal.name }} picture">
+        <img class="app-img" src="/file/{{ animal.file.fileUrl | urlencode }}" alt="{{ animal.name }} picture">
       </div>
     </div>
   </div>

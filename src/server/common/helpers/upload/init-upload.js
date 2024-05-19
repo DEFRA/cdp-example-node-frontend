@@ -5,10 +5,10 @@ import { config } from '~/src/config'
 async function initUpload(options = {}) {
   const {
     redirect,
-    scanResultCallbackUrl,
-    destinationBucket,
-    destinationPath,
-    acceptedMimeTypes,
+    callback,
+    s3Bucket,
+    s3Path,
+    mimeTypes,
     maxFileSize,
     metadata
   } = options
@@ -19,10 +19,10 @@ async function initUpload(options = {}) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       redirect,
-      scanResultCallbackUrl,
-      destinationBucket,
-      destinationPath,
-      acceptedMimeTypes,
+      callback,
+      s3Bucket,
+      s3Path,
+      mimeTypes,
       maxFileSize,
       metadata
     })

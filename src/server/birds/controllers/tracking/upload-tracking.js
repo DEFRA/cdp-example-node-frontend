@@ -7,7 +7,7 @@ import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
 import { findTracking } from '~/src/server/birds/helpers/fetch/find-tracking'
 import { setStatusTrackingUrl } from '~/src/server/birds/helpers/fetch/update-tracking-status-url'
 
-const destinationBucket = config.get('bucket')
+const s3Bucket = config.get('bucket')
 const appBaseUrl = config.get('appBaseUrl')
 const backendUrl = config.get('cdpExampleNodeBackendUrl')
 
@@ -38,14 +38,15 @@ const showTrackingUploadController = {
 
     request.logger.debug({ tracking }, 'Tracking found')
 
-    const redirectUrl = `${appBaseUrl}/birds/${birdId}/tracking/${trackingId}/uploaded`
-    const callbackUrl = `${backendUrl}/birds/${birdId}/tracking/${trackingId}/callback`
+    const redirect = `${appBaseUrl}/birds/${birdId}/tracking/${trackingId}/uploaded`
+    const callback = `${backendUrl}/birds/${birdId}/tracking/${trackingId}/callback`
 
     const secureUpload = await initUpload({
-      redirect: redirectUrl,
-      scanResultCallbackUrl: callbackUrl,
-      destinationBucket,
-      destinationPath: 'birds/tracking'
+      redirect,
+      callback,
+      s3Bucket,
+      s3Path: 'birds/tracking',
+      mimeTypes: ['text/csv', 'text/plain']
     })
 
     request.logger.debug({ secureUpload }, 'Secure upload')
@@ -55,7 +56,7 @@ const showTrackingUploadController = {
     return h.view('birds/views/tracking/upload-tracking', {
       pageTitle: `Tracking ${bird.name}`,
       heading: `Tracking ${bird.name}`,
-      action: secureUpload.uploadAndScanUrl,
+      action: secureUpload.uploadUrl,
       bird,
       birdId,
       spotter: tracking.spotter,

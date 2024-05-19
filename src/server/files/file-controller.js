@@ -6,30 +6,23 @@ import { s3Client } from '~/src/server/common/helpers/s3-client'
 
 /**
  * Provides access to files in the s3 bucket.
- * In a production system you may want to check the requester has permissions to access the file
- * since this example provides access to any file in the bucket if the requester knows the key.
+ * !! Note, this is NOT how you should do it in a real production system !!
+ * You should verify that the requester actually has permissions to access the requested
+ * resource before serving it up.
  */
 const fileController = {
   options: {
     validate: {
       params: Joi.object({
-        uploadId: Joi.string().required(),
-        fileId: Joi.string().required(),
-        destinationPath: Joi.string().default(null)
+        s3Key: Joi.string().required()
       })
     }
   },
   handler: async (request, h) => {
-    const uploadId = decodeURIComponent(request.params.uploadId)
-    const fileId = decodeURIComponent(request.params.fileId)
-    const destinationPath = request.params.destinationPath
-    const key = destinationPath
-      ? `${destinationPath}/${uploadId}/${fileId}`
-      : `${uploadId}/${fileId}`
-
+    const s3Key = decodeURIComponent(request.params.s3Key)
     const command = new GetObjectCommand({
       Bucket: config.get('bucket'),
-      Key: key
+      Key: s3Key
     })
 
     try {

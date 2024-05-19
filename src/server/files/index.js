@@ -7,12 +7,7 @@ const files = {
       server.route([
         {
           method: 'GET',
-          path: '/file/{uploadId}/{fileId}',
-          ...fileController
-        },
-        {
-          method: 'GET',
-          path: '/file/{destinationPath}/{uploadId}/{fileId}',
+          path: '/file/{s3Key}',
           ...fileController
         }
       ])

@@ -9,26 +9,22 @@ const uploadStatusPollerController = {
   handler: async (request, h) => {
     const setError = populateErrorFlashMessage(request)
     const uploadStatus = request.pre.uploadStatus
-    const fileUpload = uploadStatus.files.at(0)
     const hasBeenVirusChecked = uploadStatus?.uploadStatus === 'ready'
-    const fileInputStatus = uploadStatus?.fields?.file
+    const fileInputStatus = uploadStatus?.form?.file
     const fileInputHasError = fileInputStatus?.hasError
-
-    // Errors from cdp-uploader
-    if (fileInputHasError) {
-      setError(fileInputStatus.errorMessage)
-
-      return h.redirect('/animals/add/upload-picture')
-    }
 
     // File is ready to be used
     if (hasBeenVirusChecked) {
+      if (fileInputStatus && fileInputHasError) {
+        setError(fileInputStatus.errorMessage)
+        return h.redirect('/animals/add/upload-picture')
+      }
+
+      const file = uploadStatus?.form?.file
       await saveToAnimal(request, h, {
         file: {
-          filename: fileUpload.filename,
-          uploadId: fileUpload.uploadId,
-          fileId: fileUpload.fileId,
-          fileUrl: fileUpload.uploadId + '/' + fileUpload.fileId
+          filename: file.filename,
+          fileUrl: file.s3Key
         }
       })
 
