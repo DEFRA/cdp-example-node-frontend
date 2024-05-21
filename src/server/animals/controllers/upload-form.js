@@ -4,10 +4,9 @@ import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
 const uploadFormController = {
   handler: async (request, h) => {
     const s3Bucket = config.get('bucket')
-    const appBaseUrl = config.get('appBaseUrl')
 
     const uploadDetail = await initUpload({
-      redirect: `${appBaseUrl}/animals/add/upload-status-poller`,
+      redirect: `/animals/add/upload-status-poller`,
       s3Bucket,
       s3Path: 'animals',
       maxFileSize: 1024 * 100,

@@ -9,10 +9,9 @@ const uploadFormController = {
   handler: async (request, h) => {
     const plantSession = request.pre.plantSession
     const s3Bucket = config.get('bucket')
-    const appBaseUrl = config.get('appBaseUrl')
 
     const uploadDetail = await initUpload({
-      redirect: `${appBaseUrl}/plants/add/upload-status-poller`,
+      redirect: `/plants/add/upload-status-poller`,
       s3Bucket,
       s3Path: 'plants',
       metadata: { plantId: plantSession?.plantId }
