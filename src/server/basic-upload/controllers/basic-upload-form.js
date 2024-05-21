@@ -8,6 +8,7 @@ const basicUploadFormController = {
 
     // First, initiate the upload by calling the CDP-Uploader's initiate API.
     const endpointUrl = config.get('cdpUploaderUrl') + '/initiate'
+
     const response = await fetch(endpointUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
