@@ -13,7 +13,7 @@ const basicUploadFormController = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        redirect: `${config.get('appBaseUrl')}/basic/complete`,
+        redirect: '/basic/complete',
         s3Bucket: config.get('bucket')
       })
     })

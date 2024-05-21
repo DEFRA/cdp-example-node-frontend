@@ -9,7 +9,7 @@ const uploadFormController = {
       redirect: `/animals/add/upload-status-poller`,
       s3Bucket,
       s3Path: 'animals',
-      maxFileSize: 1024 * 100,
+      maxFileSize: 1024 * 1024 * 100,
       mimeTypes: ['image/png', 'image/jpeg', 'image/gif']
     })
 
