@@ -12,6 +12,7 @@ import { buildRedisClient } from '~/src/server/common/helpers/redis-client'
 import { sessionManager } from '~/src/server/common/helpers/session-manager'
 import { addFlashMessagesToContext } from '~/src/server/common/helpers/add-flash-messages-to-context'
 import { RedisHelper } from '~/src/server/common/helpers/redis-helper'
+import { csrf } from '~/src/server/common/helpers/csrf'
 
 const redisClient = buildRedisClient()
 const isProduction = config.get('isProduction')
@@ -60,7 +61,13 @@ async function createServer() {
   server.decorate('request', 'redis', redisHelper)
   server.decorate('server', 'redis', redisHelper)
 
-  await server.register([requestLogger, sessionManager, router, nunjucksConfig])
+  await server.register([
+    requestLogger,
+    sessionManager,
+    router,
+    nunjucksConfig,
+    csrf
+  ])
 
   server.ext('onPreResponse', addFlashMessagesToContext, {
     before: ['yar']

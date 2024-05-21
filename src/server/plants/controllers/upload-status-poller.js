@@ -20,6 +20,16 @@ const uploadStatusPollerController = {
     const hasBeenVirusChecked = uploadStatus?.uploadStatus === 'ready'
     const fileUpload = uploadStatus?.form?.file
 
+    const csrfToken = request.plugins.crumb
+
+    if (
+      !uploadStatus?.form?.csrfToken ||
+      csrfToken !== uploadStatus.form.csrfToken
+    ) {
+      setError('CSRF Token failed validation')
+      return h.redirect('/plants/add/upload-pictures')
+    }
+
     // File is ready to be used
     if (hasBeenVirusChecked) {
       // Errors from cdp-uploader
