@@ -7,7 +7,6 @@ import { buildOptions } from '~/src/server/common/helpers/options/build-options'
 import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
 
 const s3Bucket = config.get('bucket')
-const appBaseUrl = config.get('appBaseUrl')
 
 const uploadFormController = {
   options: {
@@ -19,7 +18,7 @@ const uploadFormController = {
     const creatureId = request.params.creatureId
 
     const secureUpload = await initUpload({
-      redirect: `${appBaseUrl}/creatures/${creatureId}/upload-status-poller`,
+      redirect: `/creatures/${creatureId}/upload-status-poller`,
       s3Bucket
     })
 

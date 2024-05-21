@@ -8,7 +8,6 @@ import { findTracking } from '~/src/server/birds/helpers/fetch/find-tracking'
 import { setStatusTrackingUrl } from '~/src/server/birds/helpers/fetch/update-tracking-status-url'
 
 const s3Bucket = config.get('bucket')
-const appBaseUrl = config.get('appBaseUrl')
 const backendUrl = config.get('cdpExampleNodeBackendUrl')
 
 const showTrackingUploadController = {
@@ -38,7 +37,7 @@ const showTrackingUploadController = {
 
     request.logger.debug({ tracking }, 'Tracking found')
 
-    const redirect = `${appBaseUrl}/birds/${birdId}/tracking/${trackingId}/uploaded`
+    const redirect = `/birds/${birdId}/tracking/${trackingId}/uploaded`
     const callback = `${backendUrl}/birds/${birdId}/tracking/${trackingId}/callback`
 
     const secureUpload = await initUpload({
