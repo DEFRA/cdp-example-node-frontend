@@ -15,6 +15,7 @@ const uploadFormController = {
       redirect: `/plants/add/upload-status-poller`,
       s3Bucket,
       s3Path: 'plants',
+      mimeTypes: ['image/png', 'image/jpeg'],
       metadata: { plantId: plantSession?.plantId }
     })
 
