@@ -11,6 +11,7 @@
       <div class="govuk-body" data-testid="app-page-body">
 
         <form action="{{ action }}" method="post">
+          <input type="hidden" name="csrfToken" value="{{ csrfToken }}"/>
 
           <ul class="govuk-list govuk-list--bullet">
             <li><strong>Name:</strong> {{ plantSession.name }}</li>

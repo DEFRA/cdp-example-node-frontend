@@ -16,9 +16,12 @@ const uploadStatusPollerController = {
     const uploadStatus = request.pre.uploadStatus
     const hasBeenVirusChecked = uploadStatus?.uploadStatus === 'ready'
 
+    // uses the crumb key to find the right cookie
+    const csrfToken = request.plugins.crumb
+
     // Success
     if (hasBeenVirusChecked) {
-      const validationResult = uploadFormValidation.validate(
+      const validationResult = uploadFormValidation(csrfToken).validate(
         uploadStatus.form,
         {
           abortEarly: false

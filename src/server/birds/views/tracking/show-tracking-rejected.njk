@@ -38,6 +38,7 @@
         {% if spotter %}
 
          <form action="{{ action }}" method="post">
+            <input type="hidden" name="csrfToken" value="{{ csrfToken }}"/>
             <input type="hidden" name="spotter" value="{{ spotter }}">
 
             {{ govukButton({
