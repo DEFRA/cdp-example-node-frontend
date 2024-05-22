@@ -4,6 +4,7 @@ import { sessionNames } from '~/src/server/common/constants/session-names'
 
 const startController = {
   handler: async (request, h) => {
+    request.yar.clear(sessionNames.creatures)
     request.yar.clear(sessionNames.validationFailure)
 
     const creatureId = crypto.randomUUID()

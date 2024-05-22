@@ -2,12 +2,16 @@ import Joi from 'joi'
 
 import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
 import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
-import { provideUploadStatus } from '~/src/server/common/helpers/pre/provide-upload-status'
+import { provideUploadStatusFromSession } from '~/src/server/common/helpers/pre/provide-upload-status'
 import { populateErrorFlashMessage } from '~/src/server/common/helpers/form/populate-error-flash-message'
+import { sessionNames } from '~/src/server/common/constants/session-names'
 
 const uploadStatusPollerController = {
   options: {
-    pre: [providePlantSession, provideUploadStatus],
+    pre: [
+      providePlantSession,
+      provideUploadStatusFromSession(sessionNames.plants)
+    ],
     validate: {
       query: Joi.object({
         uploadId: Joi.string().guid().required()
@@ -18,10 +22,10 @@ const uploadStatusPollerController = {
     const setError = populateErrorFlashMessage(request)
     const uploadStatus = request.pre.uploadStatus
     const hasBeenVirusChecked = uploadStatus?.uploadStatus === 'ready'
-    const fileUpload = uploadStatus?.form?.file
 
     // File is ready to be used
     if (hasBeenVirusChecked) {
+      const fileUpload = uploadStatus?.form?.file
       // Errors from cdp-uploader
       if (fileUpload && fileUpload?.hasError) {
         setError(fileUpload.errorMessage)
