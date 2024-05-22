@@ -1,7 +1,7 @@
 import { sessionNames } from '~/src/server/common/constants/session-names'
 import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
 import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
-import { provideUploadStatus } from '~/src/server/common/helpers/pre/provide-upload-status'
+import { provideUploadStatusFromSession } from '~/src/server/common/helpers/pre/provide-upload-status'
 import { uploadFormValidation } from '~/src/server/creatures/helpers/schemas/upload-form-validation'
 
 const uploadStatusPollerController = {
@@ -9,7 +9,7 @@ const uploadStatusPollerController = {
     ext: {
       onPreHandler: [noSessionRedirect]
     },
-    pre: [provideUploadStatus]
+    pre: [provideUploadStatusFromSession(sessionNames.creatures)]
   },
   handler: async (request, h) => {
     const creatureId = request.params.creatureId

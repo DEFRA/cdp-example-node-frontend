@@ -1,5 +1,6 @@
 import { config } from '~/src/config'
 import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
+import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
 
 const uploadFormController = {
   handler: async (request, h) => {
@@ -12,6 +13,8 @@ const uploadFormController = {
       maxFileSize: 1024 * 1024 * 100,
       mimeTypes: ['image/png', 'image/jpeg', 'image/gif']
     })
+
+    await saveToAnimal(request, h, uploadDetail)
 
     return h.view('animals/views/upload-form', {
       pageTitle: 'Add animal',

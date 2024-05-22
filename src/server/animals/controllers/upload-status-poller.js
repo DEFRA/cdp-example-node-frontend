@@ -1,20 +1,22 @@
 import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
-import { provideUploadStatus } from '~/src/server/common/helpers/pre/provide-upload-status'
+import { provideUploadStatusFromSession } from '~/src/server/common/helpers/pre/provide-upload-status'
 import { populateErrorFlashMessage } from '~/src/server/common/helpers/form/populate-error-flash-message'
+import { sessionNames } from '~/src/server/common/constants/session-names'
 
 const uploadStatusPollerController = {
   options: {
-    pre: [provideUploadStatus]
+    pre: [provideUploadStatusFromSession(sessionNames.animals)]
   },
   handler: async (request, h) => {
     const setError = populateErrorFlashMessage(request)
     const uploadStatus = request.pre.uploadStatus
     const hasBeenVirusChecked = uploadStatus?.uploadStatus === 'ready'
-    const fileInputStatus = uploadStatus?.form?.file
-    const fileInputHasError = fileInputStatus?.hasError
 
     // File is ready to be used
     if (hasBeenVirusChecked) {
+      const fileInputStatus = uploadStatus?.form?.file
+      const fileInputHasError = fileInputStatus?.hasError
+
       if (fileInputStatus && fileInputHasError) {
         setError(fileInputStatus.errorMessage)
         return h.redirect('/animals/add/upload-picture')
