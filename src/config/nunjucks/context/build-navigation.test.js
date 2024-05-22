@@ -14,6 +14,11 @@ describe('#buildNavigation', () => {
       },
       {
         isActive: false,
+        text: 'Basic Upload',
+        url: '/basic'
+      },
+      {
+        isActive: false,
         text: 'Animals',
         url: '/animals'
       },

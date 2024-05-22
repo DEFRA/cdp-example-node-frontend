@@ -6,6 +6,11 @@ function buildNavigation(request) {
       isActive: request.path === '/'
     },
     {
+      text: 'Basic Upload',
+      url: '/basic',
+      isActive: request.path.startsWith('/basic')
+    },
+    {
       text: 'Animals',
       url: '/animals',
       isActive: request.path.startsWith('/animals')
