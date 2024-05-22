@@ -15,6 +15,7 @@
       <div class="govuk-body" data-testid="app-page-body">
 
         <form action="{{ action }}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="csrfToken" value="{{ csrfToken }}"/>
           {% call govukFieldset() %}
 
             {{ govukInput({
