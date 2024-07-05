@@ -1,4 +1,4 @@
-class RedisHelper {
+class RedisService {
   constructor(redis, server) {
     this.client = redis
     this.server = server
@@ -43,4 +43,4 @@ class RedisHelper {
   }
 }
 
-export { RedisHelper }
+export { RedisService }
