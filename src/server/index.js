@@ -13,6 +13,7 @@ import { sessionManager } from '~/src/server/common/helpers/session-manager'
 import { addFlashMessagesToContext } from '~/src/server/common/helpers/add-flash-messages-to-context'
 import { csrf } from '~/src/server/common/helpers/csrf'
 import { redis } from '~/src/server/common/helpers/redis/redis'
+import { pulse } from '~/src/server/common/helpers/pulse'
 
 const redisClient = buildRedisClient(config.get('redis'))
 const isProduction = config.get('isProduction')
@@ -61,6 +62,7 @@ async function createServer() {
 
   await server.register([
     requestLogger,
+    pulse,
     redis,
     sessionManager,
     router,
