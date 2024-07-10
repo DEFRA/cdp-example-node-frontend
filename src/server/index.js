@@ -8,13 +8,14 @@ import { router } from './router'
 import { requestLogger } from '~/src/server/common/helpers/logging/request-logger'
 import { catchAll } from '~/src/server/common/helpers/errors'
 import { secureContext } from '~/src/server/common/helpers/secure-context'
-import { buildRedisClient } from '~/src/server/common/helpers/redis-client'
+import { buildRedisClient } from '~/src/server/common/helpers/redis/redis-client'
 import { sessionManager } from '~/src/server/common/helpers/session-manager'
 import { addFlashMessagesToContext } from '~/src/server/common/helpers/add-flash-messages-to-context'
-import { RedisHelper } from '~/src/server/common/helpers/redis-helper'
 import { csrf } from '~/src/server/common/helpers/csrf'
+import { redis } from '~/src/server/common/helpers/redis/redis'
+import { pulse } from '~/src/server/common/helpers/pulse'
 
-const redisClient = buildRedisClient()
+const redisClient = buildRedisClient(config.get('redis'))
 const isProduction = config.get('isProduction')
 
 async function createServer() {
@@ -57,12 +58,12 @@ async function createServer() {
     await server.register(secureContext)
   }
 
-  const redisHelper = new RedisHelper(redisClient, server)
-  server.decorate('request', 'redis', redisHelper)
-  server.decorate('server', 'redis', redisHelper)
+  server.decorate('server', 'redisClient', redisClient)
 
   await server.register([
     requestLogger,
+    pulse,
+    redis,
     sessionManager,
     router,
     nunjucksConfig,
