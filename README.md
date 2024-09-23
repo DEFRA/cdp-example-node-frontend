@@ -72,21 +72,6 @@ ncu -i
 ### AWS CLI
 
 - Install the AWS CLI https://aws.amazon.com/cli/
-
-### AWS Local
-
-- _awslocal_ is a wrapper around the _AWS CLI_ that talks to your local _localstack_
-- You can install a PIP https://github.com/localstack/awscli-local
-  But note it only works with the older v1 of _AWS CLI_
-
-#### AWS local alias
-
-- Alternatively just alias it locally:
-
-```bash
-alias awslocal='aws --profile localstack $argv --endpoint-url http://localhost:4566'
-```
-
 - And add to your `.aws/credentials`
 
 ```bash
