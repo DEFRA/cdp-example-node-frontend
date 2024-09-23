@@ -50,7 +50,6 @@ Install application dependencies:
 ```bash
 npm install
 ```
-
 ### Development
 
 To run the application in `development` mode run:
