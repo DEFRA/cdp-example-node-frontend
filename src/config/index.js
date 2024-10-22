@@ -71,6 +71,7 @@ const config = convict({
       'dev',
       'test',
       'perf-test',
+      'ext-test',
       'prod'
     ],
     default: process.env.ENVIRONMENT ?? 'local'
