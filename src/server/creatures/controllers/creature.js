@@ -13,15 +13,15 @@ const creatureController = {
   handler: async (request, h) => {
     const creature = request.pre.creature
     return h.view('creatures/views/creature', {
-      pageTitle: 'Creature',
-      heading: 'Creature',
+      pageTitle: 'Creatures',
+      heading: 'Creatures',
       breadcrumbs: [
         {
           text: 'Creatures',
           href: '/creatures'
         },
         {
-          text: 'Creature'
+          text: 'Creatures'
         }
       ],
       creature
