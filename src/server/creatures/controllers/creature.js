@@ -17,8 +17,8 @@ const creatureController = {
       heading: 'Creature',
       breadcrumbs: [
         {
-          text: 'Creatures',
-          href: '/creatures'
+          text: 'Creature',
+          href: '/creature'
         },
         {
           text: 'Creature'
