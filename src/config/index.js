@@ -109,10 +109,16 @@ const config = convict({
       env: 'REDIS_TTL'
     },
     useSingleInstanceCache: {
-      doc: 'Enable the use of a single instance Redis Cache',
+      doc: 'Connect to a single instance of redis instead of a cluster.',
       format: Boolean,
       default: process.env.NODE_ENV !== 'production',
       env: 'USE_SINGLE_INSTANCE_CACHE'
+    },
+    useTLS: {
+      doc: 'Connect to redis using TLS',
+      format: Boolean,
+      default: process.env.NODE_ENV === 'production',
+      env: 'REDIS_TLS'
     }
   },
   sessionCookiePassword: {
