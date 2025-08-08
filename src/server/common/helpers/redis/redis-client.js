@@ -1,5 +1,6 @@
 import { Cluster, Redis } from 'ioredis'
 import { createLogger } from '~/src/server/common/helpers/logging/logger'
+import { generateAuthToken } from '~/src/server/common/helpers/redis/iam'
 
 /**
  * Setup Redis and provide a redis client
@@ -7,8 +8,33 @@ import { createLogger } from '~/src/server/common/helpers/logging/logger'
  * Local development - 1 Redis instance
  * Environments - Elasticache / Redis Cluster with username and password
  */
-export function buildRedisClient(redisConfig) {
+export async function buildRedisClient(redisConfig) {
   const logger = createLogger()
+
+  let redisClient = await buildClient(redisConfig)
+
+  redisClient.on('connect', () => {
+    logger.info('Connected to Redis server')
+  })
+
+  redisClient.on('error', (error) => {
+    logger.error(`Redis connection error ${error}`)
+  })
+
+  redisClient.on('end', async () => {
+    logger.warn('Redis connection ended. Reconnecting...')
+    try {
+      redisClient.disconnect()
+      redisClient = await buildClient()
+    } catch (e) {
+      logger.error('Failed to reconnect:', e)
+    }
+  })
+
+  return redisClient
+}
+
+async function buildClient(redisConfig) {
   const port = 6379
   const db = 0
   const keyPrefix = redisConfig.keyPrefix
@@ -20,7 +46,7 @@ export function buildRedisClient(redisConfig) {
       ? {}
       : {
           username: redisConfig.username,
-          password: redisConfig.password
+          password: await generateAuthToken({ region: 'eu-west-2', host })
         }
   const tls = redisConfig.useTLS ? { tls: {} } : {}
 
@@ -44,6 +70,8 @@ export function buildRedisClient(redisConfig) {
       {
         keyPrefix,
         slotsRefreshTimeout: 10000,
+        lazyConnect: true,
+        clusterRetryStrategy: (times) => Math.min(times * 1000, 30000),
         dnsLookup: (address, callback) => callback(null, address),
         redisOptions: {
           db,
@@ -53,14 +81,6 @@ export function buildRedisClient(redisConfig) {
       }
     )
   }
-
-  redisClient.on('connect', () => {
-    logger.info('Connected to Redis server')
-  })
-
-  redisClient.on('error', (error) => {
-    logger.error(`Redis connection error ${error}`)
-  })
 
   return redisClient
 }

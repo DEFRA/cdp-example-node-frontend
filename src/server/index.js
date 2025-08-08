@@ -15,10 +15,11 @@ import { csrf } from '~/src/server/common/helpers/csrf'
 import { redis } from '~/src/server/common/helpers/redis/redis'
 import { pulse } from '~/src/server/common/helpers/pulse'
 
-const redisClient = buildRedisClient(config.get('redis'))
 const isProduction = config.get('isProduction')
 
 async function createServer() {
+  const redisClient = await buildRedisClient(config.get('redis'))
+
   const server = hapi.server({
     port: config.get('port'),
     routes: {
