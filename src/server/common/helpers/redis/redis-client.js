@@ -8,10 +8,10 @@ import { generateAuthToken } from '~/src/server/common/helpers/redis/iam'
  * Local development - 1 Redis instance
  * Environments - Elasticache / Redis Cluster with username and password
  */
-export function buildRedisClient(redisConfig) {
+export async function buildRedisClient(redisConfig) {
   const logger = createLogger()
 
-  let redisClient = buildClient(redisConfig)
+  let redisClient = await buildClient(redisConfig)
 
   redisClient.on('connect', () => {
     logger.info('Connected to Redis server')
