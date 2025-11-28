@@ -22,7 +22,7 @@ try {
 
 function context(request) {
   return {
-    serviceName: config.get('serviceName'),
+    serviceName: config.get('service.name'),
     breadcrumbs: [],
     navigation: buildNavigation(request),
     getAssetPath: function (asset) {
