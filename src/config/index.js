@@ -4,31 +4,7 @@ import path from 'path'
 const oneDay = 1000 * 60 * 60 * 24
 const oneWeek = 7 * 24 * 60 * 60 * 1000
 
-const isProduction = process.env.NODE_ENV === 'production'
-const isTest = process.env.NODE_ENV === 'test'
-
 const config = convict({
-  service: {
-    name: {
-      doc: 'Applications Service Name',
-      format: String,
-      default: 'cdp-example-node-frontend'
-    },
-    version: {
-      doc: 'The service version, this variable is injected into your docker container in CDP environments',
-      format: String,
-      nullable: true,
-      default: null,
-      env: 'SERVICE_VERSION'
-    },
-    environment: {
-      doc: 'The environment the app is running in',
-      format: String,
-      nullable: true,
-      default: null,
-      env: 'ENVIRONMENT'
-    }
-  },
   env: {
     doc: 'The application environment.',
     format: ['production', 'development', 'test'],
@@ -46,6 +22,11 @@ const config = convict({
     format: Number,
     default: oneWeek,
     env: 'STATIC_CACHE_TIMEOUT'
+  },
+  serviceName: {
+    doc: 'Applications Service Name',
+    format: String,
+    default: 'cdp-example-node-frontend'
   },
   root: {
     doc: 'Project root',
@@ -174,31 +155,11 @@ const config = convict({
     format: Boolean,
     default: process.env.NODE_ENV === 'test'
   },
-  log: {
-    enabled: {
-      doc: 'Is logging enabled',
-      format: Boolean,
-      default: !isTest,
-      env: 'LOG_ENABLED'
-    },
-    level: {
-      doc: 'Logging level',
-      format: ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'],
-      default: isProduction ? 'info' : 'debug',
-      env: 'LOG_LEVEL'
-    },
-    format: {
-      doc: 'Format to output logs in.',
-      format: ['ecs', 'pino-pretty'],
-      default: isProduction ? 'ecs' : 'pino-pretty',
-      env: 'LOG_FORMAT'
-    },
-    redact: {
-      doc: 'Log paths to redact',
-      format: Array,
-      default: ['res'],
-      env: 'LOG_REDACT'
-    }
+  logLevel: {
+    doc: 'Logging level',
+    format: ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'],
+    default: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
+    env: 'LOG_LEVEL'
   },
   httpProxy: {
     doc: 'HTTP Proxy',
@@ -213,14 +174,6 @@ const config = convict({
     nullable: true,
     default: null,
     env: 'CDP_HTTPS_PROXY'
-  },
-  tracing: {
-    header: {
-      doc: 'Which header to track',
-      format: String,
-      default: 'x-cdp-request-id',
-      env: 'TRACING_HEADER'
-    }
   }
 })
 
