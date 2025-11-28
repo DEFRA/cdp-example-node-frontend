@@ -1,48 +1,30 @@
-import { ecsFormat } from '@elastic/ecs-pino-format'
+import ecsFormat from '@elastic/ecs-pino-format'
+
 import { config } from '~/src/config'
-import { getTraceId } from '@defra/hapi-tracing'
 
-const logConfig = config.get('log')
-const serviceConfig = config.get('service')
+const isDevelopment = config.get('isDevelopment')
+const redactionPaths = [
+  'req.headers.authorization',
+  'req.headers.cookie',
+  'res.headers'
+]
 
-/**
- * @type {{ecs: Omit<import('pino').LoggerOptions, "mixin"|"transport">, "pino-pretty": {transport: {target: string}}}}
- */
-const formatters = {
-  ecs: {
-    ...ecsFormat(),
-    base: {
-      service: {
-        name: serviceConfig.name,
-        type: 'nodeJs',
-        version: serviceConfig.version,
-        environment: serviceConfig.environment
-      }
-    }
-  },
-  'pino-pretty': { transport: { target: 'pino-pretty' } }
+if (!isDevelopment) {
+  redactionPaths.push('sensitive')
 }
 
-/**
- * @satisfies {import('@hapi/hapi').Options}
- */
-export const loggerOptions = {
-  enabled: logConfig.enabled,
-  ignorePaths: ['/health'],
+if (isDevelopment) {
+  redactionPaths.push('req', 'res')
+}
+
+const loggerOptions = {
+  enabled: !config.get('isTest'),
   redact: {
-    paths: logConfig.redact,
+    paths: redactionPaths,
     remove: true
   },
-  level: logConfig.level,
-  ...formatters[logConfig.format],
-  mixin() {
-    const mixinValues = {}
-    const traceId = getTraceId()
-
-    if (traceId) {
-      mixinValues.trace = { id: traceId }
-    }
-
-    return mixinValues
-  }
+  level: config.get('logLevel'),
+  ...(isDevelopment ? { transport: { target: 'pino-pretty' } } : ecsFormat())
 }
+
+export { loggerOptions }
