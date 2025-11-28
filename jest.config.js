@@ -17,5 +17,11 @@ module.exports = {
     '<rootDir>/test-helpers',
     '<rootDir>/mock-api'
   ],
-  coverageDirectory: '<rootDir>/coverage'
+  coverageDirectory: '<rootDir>/coverage',
+  transform: {
+    '^.+\\.js$': 'babel-jest'
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(@defra/hapi-tracing|node-fetch)/)'
+  ]
 }
