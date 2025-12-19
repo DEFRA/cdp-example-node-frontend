@@ -75,6 +75,11 @@ async function createServer() {
   })
   server.ext('onPreResponse', catchAll)
 
+  redisClient.set('test-key', `hello from redis ${new Date().toISOString()}`)
+  server.logger.info(
+    `Redis read/write test: ${await redisClient.get('test-key')}`
+  )
+
   return server
 }
 
