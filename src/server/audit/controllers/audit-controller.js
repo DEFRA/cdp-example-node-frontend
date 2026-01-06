@@ -2,10 +2,18 @@ import pino from 'pino'
 
 export const auditController = {
   handler: async (request, h) => {
-    const sizeInBytes = request.query.size ?? 100
-    request.logger.info(`Auditing payload of ${sizeInBytes} bytes`)
-    audit('A'.repeat(sizeInBytes))
-    return h.response(`Auditing payload of ${sizeInBytes} bytes`).code(200)
+    const sizeInKB = request.query.size ?? 100
+    request.logger.info(`Auditing payload of ${sizeInKB} KB`)
+    const kb = 'A'.repeat(1024)
+    const auditPayload = {
+      foo: []
+    }
+
+    for (let i = 0; i < sizeInKB; i++) {
+      auditPayload.foo.push(kb)
+    }
+    audit(auditPayload)
+    return h.response(`Auditing payload of ${sizeInKB} bytes`).code(200)
   }
 }
 
