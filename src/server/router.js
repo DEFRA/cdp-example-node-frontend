@@ -9,6 +9,7 @@ import { birds } from '~/src/server/birds'
 import { serveStaticFiles } from '~/src/server/common/helpers/serve-static-files'
 import { files } from '~/src/server/files'
 import { basicUpload } from '~/src/server/basic-upload'
+import { auditingRoutes } from '~/src/server/audit'
 
 const router = {
   plugin: {
@@ -24,6 +25,7 @@ const router = {
         creatures,
         basicUpload,
         files,
+        auditingRoutes,
         serveStaticFiles
       ])
     }
