@@ -1,6 +1,7 @@
 import ecsFormat from '@elastic/ecs-pino-format'
 
 import { config } from '~/src/config'
+import pino from 'pino'
 
 const isDevelopment = config.get('isDevelopment')
 const redactionPaths = [
@@ -27,4 +28,6 @@ const loggerOptions = {
   ...(isDevelopment ? { transport: { target: 'pino-pretty' } } : ecsFormat())
 }
 
-export { loggerOptions }
+const loggerDestination = pino.destination({ fd: 1, sync: false })
+
+export { loggerOptions, loggerDestination }

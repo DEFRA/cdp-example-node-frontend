@@ -3,6 +3,9 @@ import path from 'path'
 
 const oneDay = 1000 * 60 * 60 * 24
 const oneWeek = 7 * 24 * 60 * 60 * 1000
+const fourHoursMs = 14400000
+
+const isProduction = process.env.NODE_ENV === 'production'
 
 const config = convict({
   env: {
@@ -75,6 +78,49 @@ const config = convict({
       'prod'
     ],
     default: process.env.ENVIRONMENT ?? 'local'
+  },
+  session: {
+    cache: {
+      engine: {
+        doc: 'backend cache is written to',
+        format: ['redis', 'memory'],
+        default: isProduction ? 'redis' : 'memory',
+        env: 'SESSION_CACHE_ENGINE'
+      },
+      name: {
+        doc: 'server side session cache name',
+        format: String,
+        default: 'session',
+        env: 'SESSION_CACHE_NAME'
+      },
+      ttl: {
+        doc: 'server side session cache ttl',
+        format: Number,
+        default: fourHoursMs,
+        env: 'SESSION_CACHE_TTL'
+      }
+    },
+    cookie: {
+      ttl: {
+        doc: 'Session cookie ttl',
+        format: Number,
+        default: fourHoursMs,
+        env: 'SESSION_COOKIE_TTL'
+      },
+      password: {
+        doc: 'session cookie password',
+        format: String,
+        default: 'the-password-must-be-at-least-32-characters-long',
+        env: 'SESSION_COOKIE_PASSWORD',
+        sensitive: true
+      },
+      secure: {
+        doc: 'set secure flag on cookie',
+        format: Boolean,
+        default: isProduction,
+        env: 'SESSION_COOKIE_SECURE'
+      }
+    }
   },
   redis: {
     host: {
