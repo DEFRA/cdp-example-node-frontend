@@ -1,10 +1,14 @@
 import pino from 'pino'
+import { loggerDestination } from '~/src/server/common/helpers/logging/logger-options'
 
 export const auditController = {
   handler: async (request, h) => {
     const sizeInKB = request.query.size ?? 100
+    const log = request.query.log ?? 'pino'
+    const fill = request.query.fill ?? 'A'
+
     request.logger.info(`Auditing payload of ${sizeInKB} KB`)
-    const kb = 'A'.repeat(1024)
+    const kb = fill.repeat(1024 / fill.length)
     const auditPayload = {
       foo: []
     }
@@ -12,8 +16,17 @@ export const auditController = {
     for (let i = 0; i < sizeInKB; i++) {
       auditPayload.foo.push(kb)
     }
-    audit(auditPayload)
-    return h.response(`Auditing payload of ${sizeInKB} bytes`).code(200)
+
+    if (log === 'pino') {
+      audit(auditPayload)
+    } else if (log === 'stdout' || log === 'console') {
+      auditPayload['log.level'] = 'audit'
+      process.stdout.write(JSON.stringify(auditPayload) + '\n')
+    } else if (log === 'shared') {
+      sharedAuditLogger.audit(auditPayload)
+    }
+
+    return h.response(`Auditing payload of ${sizeInKB} kb`).code(200)
   }
 }
 
@@ -29,6 +42,8 @@ const auditLoggerConfig = {
     }
   }
 }
+
+const sharedAuditLogger = pino(auditLoggerConfig, loggerDestination)
 
 const auditLogger = pino(auditLoggerConfig)
 
