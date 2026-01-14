@@ -24,6 +24,8 @@ export const auditController = {
       process.stdout.write(JSON.stringify(auditPayload) + '\n')
     } else if (log === 'shared') {
       sharedAuditLogger.audit(auditPayload)
+    } else if (log === 'sync') {
+      syncAuditLogger(auditPayload)
     }
 
     return h.response(`Auditing payload of ${sizeInKB} kb`).code(200)
@@ -44,8 +46,12 @@ const auditLoggerConfig = {
 }
 
 const sharedAuditLogger = pino(auditLoggerConfig, loggerDestination)
-
 const auditLogger = pino(auditLoggerConfig)
+
+const syncDest = pino.destination({ fd: 1, sync: true })
+const syncAuditLogger = pino(auditLoggerConfig, syncDest)
+
+
 
 if (process.env.CDP_AUDIT_ENABLED === 'false') {
   enableAuditing(false)
