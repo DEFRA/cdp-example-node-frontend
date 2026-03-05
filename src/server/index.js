@@ -16,6 +16,8 @@ import { getCacheEngine } from '~/src/server/common/helpers/session-cache/cache-
 const isProduction = config.get('isProduction')
 
 async function createServer() {
+  const redisClient = await buildRedisClient(config.get('redis'))
+
   const server = hapi.server({
     port: config.get('port'),
     routes: {
