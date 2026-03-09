@@ -1,4 +1,4 @@
-import { trackingGet } from '~/src/server/birds/helpers/fetch/tracking-fetcher'
+import { trackingGet } from './tracking-fetcher.js'
 
 async function findTracking(bird, trackingId) {
   const { tracking } = await trackingGet(bird, trackingId, '')

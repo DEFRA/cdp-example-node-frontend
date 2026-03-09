@@ -1,4 +1,4 @@
-import { getAnimal } from '~/src/server/animals/helpers/fetch/get-animal'
+import { getAnimal } from '../fetch/get-animal.js'
 
 const provideAnimal = {
   method: async (request, h) => {

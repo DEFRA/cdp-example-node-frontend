@@ -1,11 +1,11 @@
-import { config } from '~/src/config'
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { trackingValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
-import { birds } from '~/src/server/birds/data/birds'
-import { findBirdById } from '~/src/server/birds//helpers/find-bird'
-import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
-import { findTracking } from '~/src/server/birds/helpers/fetch/find-tracking'
-import { setStatusTrackingUrl } from '~/src/server/birds/helpers/fetch/update-tracking-status-url'
+import { config } from '../../../../config/config.js'
+import { sessionNames } from '../../../common/constants/session-names.js'
+import { trackingValidation } from '../../helpers/schemas/bird-validation.js'
+import { birds } from '../../data/birds.js'
+import { findBirdById } from '../../helpers/find-bird.js'
+import { initUpload } from '../../../common/helpers/upload/init-upload.js'
+import { findTracking } from '../../helpers/fetch/find-tracking.js'
+import { setStatusTrackingUrl } from '../../helpers/fetch/update-tracking-status-url.js'
 
 const s3Bucket = config.get('bucket')
 const backendUrl = config.get('cdpExampleNodeBackendUrl')

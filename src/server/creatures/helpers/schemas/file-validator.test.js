@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { fileValidator } from '~/src/server/creatures/helpers/schemas/file-validator'
+import { fileValidator } from './file-validator.js'
 
 describe('#file-validator', () => {
   test('should pass when file has no errors', () => {

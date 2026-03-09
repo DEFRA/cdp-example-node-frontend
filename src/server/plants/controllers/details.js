@@ -1,7 +1,7 @@
-import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { detailsValidation } from '~/src/server/plants/helpers/schemas/details-validation'
-import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
+import { buildErrorDetails } from '../../common/helpers/build-error-details.js'
+import { sessionNames } from '../../common/constants/session-names.js'
+import { detailsValidation } from '../helpers/schemas/details-validation.js'
+import { saveToPlant } from '../helpers/form/save-to-plant.js'
 
 const detailsController = {
   handler: async (request, h) => {

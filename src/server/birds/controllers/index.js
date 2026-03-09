@@ -1,13 +1,13 @@
-import { listBirdsController } from '~/src/server/birds/controllers/list-birds'
-import { listTrackingController } from '~/src/server/birds/controllers/tracking/list-tracking'
-import { createTrackingController } from '~/src/server/birds/controllers/tracking/create-tracking'
-import { createBirdTrackingController } from '~/src/server/birds/controllers/tracking/create-bird-tracking'
-import { newTrackingController } from '~/src/server/birds/controllers/tracking/new-tracking'
-import { newBirdTrackingController } from '~/src/server/birds/controllers/tracking/new-bird-tracking'
-import { processStatusController } from '~/src/server/birds/controllers/tracking/process-status'
-import { showTrackingUploadController } from '~/src/server/birds/controllers/tracking/upload-tracking'
-import { showTrackingController } from '~/src/server/birds/controllers/tracking/show-tracking'
-import { trackingUploadedController } from '~/src/server/birds/controllers/tracking/tracking-uploaded'
+import { listBirdsController } from './list-birds.js'
+import { listTrackingController } from './tracking/list-tracking.js'
+import { createTrackingController } from './tracking/create-tracking.js'
+import { createBirdTrackingController } from './tracking/create-bird-tracking.js'
+import { newTrackingController } from './tracking/new-tracking.js'
+import { newBirdTrackingController } from './tracking/new-bird-tracking.js'
+import { processStatusController } from './tracking/process-status.js'
+import { showTrackingUploadController } from './tracking/upload-tracking.js'
+import { showTrackingController } from './tracking/show-tracking.js'
+import { trackingUploadedController } from './tracking/tracking-uploaded.js'
 
 export {
   createTrackingController,

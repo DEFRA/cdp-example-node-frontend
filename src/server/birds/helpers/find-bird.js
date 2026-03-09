@@ -1,4 +1,4 @@
-import { birds } from '~/src/server/birds/data/birds'
+import { birds } from '../data/birds.js'
 
 function findBirdById(birdId) {
   return birds.find((bird) => bird.birdId === birdId)

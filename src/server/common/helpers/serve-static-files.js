@@ -1,9 +1,10 @@
-import { config } from '~/src/config'
+import { config } from '../../../config/config.js'
+import { statusCodes } from '../constants/status-codes.js'
 
-const serveStaticFiles = {
+export const serveStaticFiles = {
   plugin: {
     name: 'staticFiles',
-    register: async (server) => {
+    register(server) {
       server.route([
         {
           options: {
@@ -15,8 +16,8 @@ const serveStaticFiles = {
           },
           method: 'GET',
           path: '/favicon.ico',
-          handler: function (request, h) {
-            return h.response().code(204).type('image/x-icon')
+          handler(_request, h) {
+            return h.response().code(statusCodes.noContent).type('image/x-icon')
           }
         },
         {
@@ -40,5 +41,3 @@ const serveStaticFiles = {
     }
   }
 }
-
-export { serveStaticFiles }

@@ -1,10 +1,10 @@
-import { uploadFormController } from '~/src/server/creatures/controllers/upload-form'
-import { creatureListController } from '~/src/server/creatures/controllers/list'
-import { creatureController } from '~/src/server/creatures/controllers/creature'
-import { uploadStatusPollerController } from '~/src/server/creatures/controllers/upload-status-poller'
-import { createController } from '~/src/server/creatures/controllers/create'
-import { startController } from '~/src/server/creatures/controllers/start'
-import { summaryFormController } from '~/src/server/creatures/controllers/summary-form'
+import { uploadFormController } from './upload-form.js'
+import { creatureListController } from './list.js'
+import { creatureController } from './creature.js'
+import { uploadStatusPollerController } from './upload-status-poller.js'
+import { createController } from './create.js'
+import { startController } from './start.js'
+import { summaryFormController } from './summary-form.js'
 
 export {
   uploadFormController,

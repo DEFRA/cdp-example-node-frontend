@@ -1,17 +1,25 @@
-import { healthController } from '~/src/server/health/controller'
+import { createServer } from '../server.js'
+import { statusCodes } from '../common/constants/status-codes.js'
 
 describe('#healthController', () => {
-  const mockViewHandler = {
-    response: jest.fn().mockReturnThis(),
-    code: jest.fn().mockReturnThis()
-  }
+  let server
 
-  test('Should provide expected response', () => {
-    healthController.handler(null, mockViewHandler)
+  beforeAll(async () => {
+    server = await createServer()
+    await server.initialize()
+  })
 
-    expect(mockViewHandler.response).toHaveBeenCalledWith({
-      message: 'success'
+  afterAll(async () => {
+    await server.stop({ timeout: 0 })
+  })
+
+  test('Should provide expected response', async () => {
+    const { result, statusCode } = await server.inject({
+      method: 'GET',
+      url: '/health'
     })
-    expect(mockViewHandler.code).toHaveBeenCalledWith(200)
+
+    expect(result).toEqual({ message: 'success' })
+    expect(statusCode).toBe(statusCodes.ok)
   })
 })

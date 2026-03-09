@@ -1,12 +1,12 @@
-import { uploadFormController } from '~/src/server/plants/controllers/upload-form'
-import { plantListController } from '~/src/server/plants/controllers/list'
-import { plantController } from '~/src/server/plants/controllers/plant'
-import { startController } from '~/src/server/plants/controllers/start'
-import { summaryFormController } from '~/src/server/plants/controllers/summary-form'
-import { createController } from '~/src/server/plants/controllers/create'
-import { detailsFormController } from '~/src/server/plants/controllers/details-form'
-import { detailsController } from '~/src/server/plants/controllers/details'
-import { uploadStatusPollerController } from '~/src/server/plants/controllers/upload-status-poller'
+import { uploadFormController } from './upload-form.js'
+import { plantListController } from './list.js'
+import { plantController } from './plant.js'
+import { startController } from './start.js'
+import { summaryFormController } from './summary-form.js'
+import { createController } from './create.js'
+import { detailsFormController } from './details-form.js'
+import { detailsController } from './details.js'
+import { uploadStatusPollerController } from './upload-status-poller.js'
 
 export {
   startController,

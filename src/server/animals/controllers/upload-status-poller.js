@@ -1,7 +1,7 @@
-import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
-import { provideUploadStatusFromSession } from '~/src/server/common/helpers/pre/provide-upload-status'
-import { populateErrorFlashMessage } from '~/src/server/common/helpers/form/populate-error-flash-message'
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { saveToAnimal } from '../helpers/form/save-to-animal.js'
+import { provideUploadStatusFromSession } from '../../common/helpers/pre/provide-upload-status.js'
+import { populateErrorFlashMessage } from '../../common/helpers/form/populate-error-flash-message.js'
+import { sessionNames } from '../../common/constants/session-names.js'
 
 const uploadStatusPollerController = {
   options: {

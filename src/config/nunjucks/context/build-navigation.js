@@ -1,36 +1,34 @@
-function buildNavigation(request) {
+export function buildNavigation(request) {
   return [
     {
       text: 'Home',
-      url: '/',
-      isActive: request.path === '/'
+      href: '/',
+      current: request.path === '/'
     },
     {
       text: 'Basic Upload',
-      url: '/basic',
-      isActive: request.path.startsWith('/basic')
+      href: '/basic',
+      current: request.path.startsWith('/basic')
     },
     {
       text: 'Animals',
-      url: '/animals',
-      isActive: request.path.startsWith('/animals')
+      href: '/animals',
+      current: request.path.startsWith('/animals')
     },
     {
       text: 'Creatures',
-      url: '/creatures',
-      isActive: request.path.startsWith('/creatures')
+      href: '/creatures',
+      current: request.path.startsWith('/creatures')
     },
     {
       text: 'Plants',
-      url: '/plants',
-      isActive: request.path.startsWith('/plants')
+      href: '/plants',
+      current: request.path.startsWith('/plants')
     },
     {
       text: 'Birds',
-      url: '/birds',
-      isActive: request.path.startsWith('/birds')
+      href: '/birds',
+      current: request.path.startsWith('/birds')
     }
   ]
 }
-
-export { buildNavigation }

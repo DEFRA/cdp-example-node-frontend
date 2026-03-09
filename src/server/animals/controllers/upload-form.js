@@ -1,6 +1,6 @@
-import { config } from '~/src/config'
-import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
-import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
+import { config } from '../../../config/config.js'
+import { initUpload } from '../../common/helpers/upload/init-upload.js'
+import { saveToAnimal } from '../helpers/form/save-to-animal.js'
 
 const uploadFormController = {
   handler: async (request, h) => {

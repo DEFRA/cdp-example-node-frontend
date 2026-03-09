@@ -1,7 +1,7 @@
-import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { detailsValidation } from '~/src/server/animals/helpers/schemas/details-validation'
-import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
+import { buildErrorDetails } from '../../common/helpers/build-error-details.js'
+import { sessionNames } from '../../common/constants/session-names.js'
+import { detailsValidation } from '../helpers/schemas/details-validation.js'
+import { saveToAnimal } from '../helpers/form/save-to-animal.js'
 
 const detailsController = {
   handler: async (request, h) => {

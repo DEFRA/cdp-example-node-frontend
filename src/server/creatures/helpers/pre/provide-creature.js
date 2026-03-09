@@ -1,4 +1,4 @@
-import { getCreature } from '~/src/server/creatures/helpers/fetch/get-creature'
+import { getCreature } from '../fetch/get-creature.js'
 
 const provideCreature = {
   method: async (request, h) => {

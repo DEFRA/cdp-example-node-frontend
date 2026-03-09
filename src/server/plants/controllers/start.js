@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
+import { sessionNames } from '../../common/constants/session-names.js'
+import { saveToPlant } from '../helpers/form/save-to-plant.js'
 
 const startController = {
   handler: async (request, h) => {

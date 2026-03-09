@@ -1,4 +1,4 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { sessionNames } from '../../../common/constants/session-names.js'
 
 const provideAnimalSession = {
   method: async (request, h) => request.yar.get(sessionNames.animals),

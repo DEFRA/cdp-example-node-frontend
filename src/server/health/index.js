@@ -1,9 +1,9 @@
-import { healthController } from '~/src/server/health/controller'
+import { healthController } from './controller.js'
 
-const health = {
+export const health = {
   plugin: {
     name: 'health',
-    register: async (server) => {
+    register(server) {
       server.route({
         method: 'GET',
         path: '/health',
@@ -12,5 +12,3 @@ const health = {
     }
   }
 }
-
-export { health }

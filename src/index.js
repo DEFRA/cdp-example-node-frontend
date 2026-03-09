@@ -1,9 +1,9 @@
 import process from 'node:process'
 
-import { createLogger } from '~/src/server/common/helpers/logging/logger'
-import { startServer } from '~/src/server/common/helpers/start-server'
+import { startServer } from './server/common/helpers/start-server.js'
+import { createLogger } from './server/common/helpers/logging/logger.js'
 
-startServer()
+await startServer()
 
 process.on('unhandledRejection', (error) => {
   const logger = createLogger()

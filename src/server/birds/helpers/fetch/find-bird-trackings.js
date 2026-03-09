@@ -1,4 +1,4 @@
-import { birdGet } from '~/src/server/birds/helpers/fetch/bird-fetcher'
+import { birdGet } from './bird-fetcher.js'
 
 async function findBirdTrackings(bird) {
   return await birdGet(bird, '/trackings')

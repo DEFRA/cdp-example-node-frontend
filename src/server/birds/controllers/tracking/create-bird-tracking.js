@@ -1,12 +1,12 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
+import { sessionNames } from '../../../common/constants/session-names.js'
+import { buildErrorDetails } from '../../../common/helpers/build-error-details.js'
 import {
   birdValidation,
   spotterValidation
-} from '~/src/server/birds/helpers/schemas/bird-validation'
-import { birds } from '~/src/server/birds/data/birds'
-import { findBirdById } from '~/src/server/birds//helpers/find-bird'
-import { createTracking } from '~/src/server/birds/helpers/fetch/create-tracking'
+} from '../../helpers/schemas/bird-validation.js'
+import { birds } from '../../data/birds.js'
+import { findBirdById } from '../../helpers/find-bird.js'
+import { createTracking } from '../../helpers/fetch/create-tracking.js'
 
 const createBirdTrackingController = {
   options: {

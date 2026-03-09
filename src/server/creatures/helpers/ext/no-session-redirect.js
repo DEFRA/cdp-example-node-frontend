@@ -1,4 +1,4 @@
-import { isNull } from 'lodash'
+import _ from 'lodash'
 
 // TODO check this
 const noSessionRedirect = {
@@ -7,7 +7,7 @@ const noSessionRedirect = {
       request.params.creatureId
     )
 
-    if (isNull(creatureSession)) {
+    if (_.isNull(creatureSession)) {
       return h.redirect('/creatures/add').takeover()
     }
 

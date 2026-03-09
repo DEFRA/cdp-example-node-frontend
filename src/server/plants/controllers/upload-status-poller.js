@@ -1,10 +1,10 @@
 import Joi from 'joi'
 
-import { saveToPlant } from '~/src/server/plants/helpers/form/save-to-plant'
-import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
-import { provideUploadStatusFromSession } from '~/src/server/common/helpers/pre/provide-upload-status'
-import { populateErrorFlashMessage } from '~/src/server/common/helpers/form/populate-error-flash-message'
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { saveToPlant } from '../helpers/form/save-to-plant.js'
+import { providePlantSession } from '../helpers/pre/provide-plant-session.js'
+import { provideUploadStatusFromSession } from '../../common/helpers/pre/provide-upload-status.js'
+import { populateErrorFlashMessage } from '../../common/helpers/form/populate-error-flash-message.js'
+import { sessionNames } from '../../common/constants/session-names.js'
 
 const uploadStatusPollerController = {
   options: {
