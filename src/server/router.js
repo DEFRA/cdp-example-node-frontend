@@ -1,35 +1,37 @@
 import inert from '@hapi/inert'
 
-import { health } from '~/src/server/health'
-import { home } from '~/src/server/home'
-import { creatures } from '~/src/server/creatures'
-import { animals } from '~/src/server/animals'
-import { plants } from '~/src/server/plants'
-import { birds } from '~/src/server/birds'
-import { serveStaticFiles } from '~/src/server/common/helpers/serve-static-files'
-import { files } from '~/src/server/files'
-import { basicUpload } from '~/src/server/basic-upload'
-import { auditingRoutes } from '~/src/server/audit'
+import { home } from './home/index.js'
+import { health } from './health/index.js'
+import { serveStaticFiles } from './common/helpers/serve-static-files.js'
+import { basicUpload } from "./basic-upload/index.js";
+import { files } from "./files/index.js";
+import { animals } from "./animals/index.js";
+import {birds} from "./birds/index.js";
+import {plants} from "./plants/index.js";
+import {creatures} from "./creatures/index.js";
 
-const router = {
+export const router = {
   plugin: {
     name: 'router',
-    register: async (server) => {
+    async register(server) {
       await server.register([inert])
+
+      // Health-check route. Used by platform to check if service is running, do not remove!
+      await server.register([health])
+
+      // Application specific routes, add your own routes here
       await server.register([
-        health,
         home,
         animals,
-        birds,
-        plants,
-        creatures,
         basicUpload,
-        files,
-        auditingRoutes,
-        serveStaticFiles
+        birds,
+        creatures,
+        plants,
+        files
       ])
+
+      // Static assets
+      await server.register([serveStaticFiles])
     }
   }
 }
-
-export { router }

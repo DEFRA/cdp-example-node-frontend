@@ -6,8 +6,8 @@ import {
   createController,
   startController,
   summaryFormController
-} from '~/src/server/creatures/controllers'
-import { provideFormContextValues } from '~/src/server/creatures/helpers/form/provide-form-context-values'
+} from './controllers/index.js'
+import { provideFormContextValues } from './helpers/form/provide-form-context-values.js'
 
 const creatures = {
   plugin: {

@@ -1,4 +1,4 @@
-function formatCurrency(value, locale = 'en-GB', currency = 'GBP') {
+export function formatCurrency(value, locale = 'en-GB', currency = 'GBP') {
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency
@@ -6,5 +6,3 @@ function formatCurrency(value, locale = 'en-GB', currency = 'GBP') {
 
   return formatter.format(value)
 }
-
-export { formatCurrency }

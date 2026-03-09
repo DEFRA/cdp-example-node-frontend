@@ -1,6 +1,6 @@
-import { pickBy } from 'lodash'
+import _ from 'lodash'
 
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { sessionNames } from '../../../common/constants/session-names.js'
 
 function provideFormContextValues() {
   return async (request, h) => {
@@ -36,7 +36,7 @@ function provideFormContextValues() {
       response.source.context.formValues = {
         ...(response.source.context?.formValues &&
           response.source.context.formValues),
-        ...(sessionValue?.fields && pickBy(sessionValue.fields)),
+        ...(sessionValue?.fields && _.pickBy(sessionValue.fields)),
         ...(validationFailure?.formValues && validationFailure.formValues)
       }
 

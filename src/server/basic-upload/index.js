@@ -1,5 +1,5 @@
-import { basicUploadFormController } from '~/src/server/basic-upload/controllers/basic-upload-form'
-import { baseUploadCompleteController } from '~/src/server/basic-upload/controllers/basic-upload-complete'
+import { basicUploadFormController } from './controllers/basic-upload-form.js'
+import { baseUploadCompleteController } from './controllers/basic-upload-complete.js'
 
 const basicUpload = {
   plugin: {

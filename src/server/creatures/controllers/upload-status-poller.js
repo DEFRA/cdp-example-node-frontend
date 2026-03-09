@@ -1,8 +1,8 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
-import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
-import { provideUploadStatusFromSession } from '~/src/server/common/helpers/pre/provide-upload-status'
-import { uploadFormValidation } from '~/src/server/creatures/helpers/schemas/upload-form-validation'
+import { sessionNames } from '../../common/constants/session-names.js'
+import { buildErrorDetails } from '../../common/helpers/build-error-details.js'
+import { noSessionRedirect } from '../helpers/ext/no-session-redirect.js'
+import { provideUploadStatusFromSession } from '../../common/helpers/pre/provide-upload-status.js'
+import { uploadFormValidation } from '../helpers/schemas/upload-form-validation.js'
 
 const uploadStatusPollerController = {
   options: {

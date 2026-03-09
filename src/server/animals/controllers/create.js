@@ -1,6 +1,6 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { createAnimal } from '~/src/server/animals/helpers/fetch/create-animal'
-import { provideAnimalSession } from '~/src/server/animals/helpers/pre/provide-animal-session'
+import { sessionNames } from '../../common/constants/session-names.js'
+import { createAnimal } from '../helpers/fetch/create-animal.js'
+import { provideAnimalSession } from '../helpers/pre/provide-animal-session.js'
 
 const createController = {
   options: {

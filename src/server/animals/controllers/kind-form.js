@@ -1,6 +1,6 @@
-import { buildOptions } from '~/src/server/common/helpers/options/build-options'
-import { animalNames } from '~/src/server/animals/constants/animal-names'
-import { upperFirst } from 'lodash'
+import { buildOptions } from '../../common/helpers/options/build-options.js'
+import { animalNames } from '../constants/animal-names.js'
+import _ from 'lodash'
 
 const kindFormController = {
   handler: async (request, h) => {
@@ -11,7 +11,7 @@ const kindFormController = {
       kindsOfAnimals: buildOptions(
         animalNames.map((animal) => ({
           value: animal,
-          text: upperFirst(animal)
+          text: _.upperFirst(animal)
         }))
       ),
       breadcrumbs: [

@@ -1,14 +1,14 @@
-import { sessionToCreature } from '~/src/server/creatures/transformers/session-to-creature'
-import { creaturesSessionFixture } from '~/src/__fixtures__/creatures-session'
+import { sessionToCreature } from './session-to-creature.js'
+import { creaturesSessionFixture } from '../../../__fixtures__/creatures-session.js'
 
 describe('#sessionToCreature', () => {
   beforeEach(() => {
-    jest.useFakeTimers('modern')
-    jest.setSystemTime(new Date('2023-05-29'))
+    vitest.useFakeTimers('modern')
+    vitest.setSystemTime(new Date('2023-05-29'))
   })
 
   afterAll(() => {
-    jest.useRealTimers()
+    vitest.useRealTimers()
   })
 
   test('Should provide expected transformation', () => {

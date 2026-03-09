@@ -1,4 +1,4 @@
-import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
+import { providePlantSession } from '../helpers/pre/provide-plant-session.js'
 
 const summaryFormController = {
   options: {

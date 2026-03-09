@@ -12,9 +12,9 @@ import {
   animalListController,
   animalController,
   uploadStatusPollerController
-} from '~/src/server/animals/controllers'
-import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
-import { sessionNames } from '~/src/server/common/constants/session-names'
+} from './controllers/index.js'
+import { provideFormContextValues } from '../common/helpers/form/provide-form-context-values.js'
+import { sessionNames } from '../common/constants/session-names.js'
 
 const animals = {
   plugin: {

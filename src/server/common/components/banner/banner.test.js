@@ -1,11 +1,11 @@
-import { renderTestComponent } from '~/test-helpers/component-helpers'
-import { banner } from '~/src/server/common/components/banner/banner'
+import { renderTestComponent } from '../../../../../test-helpers/component-helpers.js'
+import { banner } from './banner.js'
 
 describe('#banner', () => {
   let bannerElem
 
   beforeEach(() => {
-    jest.useFakeTimers()
+    vitest.useFakeTimers()
 
     const $component = renderTestComponent('banner', {
       text: 'Total and utter success!',
@@ -29,7 +29,7 @@ describe('#banner', () => {
   })
 
   afterEach(() => {
-    jest.useRealTimers()
+    vitest.useRealTimers()
   })
 
   test('Should display the banner', () => {
@@ -40,7 +40,7 @@ describe('#banner', () => {
   test('Should not display the banner after removal period', () => {
     expect(bannerElem.textContent.trim()).toEqual('Total and utter success!')
 
-    jest.advanceTimersByTime(40000)
+    vitest.advanceTimersByTime(40000)
 
     expect(document.querySelector('[data-testid="app-banner"]')).toBeNull()
   })

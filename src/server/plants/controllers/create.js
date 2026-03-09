@@ -1,6 +1,6 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { createPlant } from '~/src/server/plants/helpers/fetch/create-plant'
-import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
+import { sessionNames } from '../../common/constants/session-names.js'
+import { createPlant } from '../helpers/fetch/create-plant.js'
+import { providePlantSession } from '../helpers/pre/provide-plant-session.js'
 
 const createController = {
   options: {

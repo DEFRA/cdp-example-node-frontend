@@ -1,4 +1,4 @@
-import { fetchStatus } from '~/src/server/common/helpers/upload/fetch-status'
+import { fetchStatus } from '../upload/fetch-status.js'
 import Boom from '@hapi/boom'
 
 const provideUploadStatus = {

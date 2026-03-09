@@ -1,6 +1,6 @@
-import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
-import { provideCreatureSession } from '~/src/server/creatures/helpers/pre/provide-creature-session'
-import { sessionToCreature } from '~/src/server/creatures/transformers/session-to-creature'
+import { noSessionRedirect } from '../helpers/ext/no-session-redirect.js'
+import { provideCreatureSession } from '../helpers/pre/provide-creature-session.js'
+import { sessionToCreature } from '../transformers/session-to-creature.js'
 
 const summaryFormController = {
   options: {

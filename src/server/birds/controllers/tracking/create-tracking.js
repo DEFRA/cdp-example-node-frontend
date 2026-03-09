@@ -1,6 +1,6 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { buildErrorDetails } from '~/src/server/common/helpers/build-error-details'
-import { birdValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
+import { sessionNames } from '../../../common/constants/session-names.js'
+import { buildErrorDetails } from '../../../common/helpers/build-error-details.js'
+import { birdValidation } from '../../helpers/schemas/bird-validation.js'
 
 const createTrackingController = {
   handler: async (request, h) => {

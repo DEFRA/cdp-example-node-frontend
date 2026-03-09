@@ -1,6 +1,6 @@
-import { config } from '~/src/config'
-import { fetcher } from '~/src/server/common/helpers/fetch/fetcher'
-import { sessionToCreature } from '~/src/server/creatures/transformers/session-to-creature'
+import { config } from '../../../../config/config.js'
+import { fetcher } from '../../../common/helpers/fetch/fetcher.js'
+import { sessionToCreature } from '../../transformers/session-to-creature.js'
 
 async function createCreature(creatureSession) {
   const endpoint = config.get('cdpExampleNodeBackendUrl') + '/creatures'

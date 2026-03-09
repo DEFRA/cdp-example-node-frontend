@@ -1,6 +1,6 @@
 import crumb from '@hapi/crumb'
 
-import { config } from '~/src/config'
+import { config } from '../../../config/config.js'
 
 const eightHours = 1000 * 60 * 60 * 8
 

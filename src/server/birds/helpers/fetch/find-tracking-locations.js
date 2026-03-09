@@ -1,7 +1,9 @@
 import { GetObjectCommand } from '@aws-sdk/client-s3'
-import { parse } from 'papaparse'
+import csvParser from 'papaparse'
+import { s3Client } from '../../../common/helpers/s3-client.js'
 
-import { s3Client } from '~/src/server/common/helpers/s3-client'
+const parse = csvParser.parse
+
 
 async function findTrackingLocations(tracking, logger) {
   const { s3Bucket, s3Key } = tracking.fileDetails

@@ -1,5 +1,5 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { birds } from '~/src/server/birds/data/birds'
+import { sessionNames } from '../../../common/constants/session-names.js'
+import { birds } from '../../data/birds.js'
 
 const newTrackingController = {
   handler: async (request, h) => {

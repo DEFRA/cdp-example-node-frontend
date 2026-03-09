@@ -1,7 +1,7 @@
-import { config } from '~/src/config'
-import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
-import { providePlantSession } from '~/src/server/plants/helpers/pre/provide-plant-session'
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { config } from '../../../config/config.js'
+import { initUpload } from '../../common/helpers/upload/init-upload.js'
+import { providePlantSession } from '../helpers/pre/provide-plant-session.js'
+import { sessionNames } from '../../common/constants/session-names.js'
 
 const uploadFormController = {
   options: {

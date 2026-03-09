@@ -1,29 +1,33 @@
+import { statusCodes } from '../constants/status-codes.js'
+
 function statusCodeMessage(statusCode) {
-  switch (true) {
-    case statusCode === 404:
+  switch (statusCode) {
+    case statusCodes.notFound:
       return 'Page not found'
-    case statusCode === 403:
+    case statusCodes.forbidden:
       return 'Forbidden'
-    case statusCode === 401:
+    case statusCodes.unauthorized:
       return 'Unauthorized'
-    case statusCode === 400:
+    case statusCodes.badRequest:
       return 'Bad Request'
     default:
       return 'Something went wrong'
   }
 }
 
-function catchAll(request, h) {
+export function catchAll(request, h) {
   const { response } = request
 
-  if (!response.isBoom) {
+  if (!('isBoom' in response)) {
     return h.continue
   }
 
-  request.logger.error(response?.stack)
-
   const statusCode = response.output.statusCode
   const errorMessage = statusCodeMessage(statusCode)
+
+  if (statusCode >= statusCodes.internalServerError) {
+    request.logger.error(response?.stack)
+  }
 
   return h
     .view('error/index', {
@@ -33,5 +37,3 @@ function catchAll(request, h) {
     })
     .code(statusCode)
 }
-
-export { catchAll }

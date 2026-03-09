@@ -1,8 +1,8 @@
 import JoiBase from 'joi'
 import JoiDateFactory from '@joi/date'
 
-import { creatureNames } from '~/src/server/creatures/constants/creature-names'
-import { fileValidator } from '~/src/server/creatures/helpers/schemas/file-validator'
+import { creatureNames } from '../../constants/creature-names.js'
+import { fileValidator } from './file-validator.js'
 
 const Joi = JoiBase.extend(JoiDateFactory)
 
