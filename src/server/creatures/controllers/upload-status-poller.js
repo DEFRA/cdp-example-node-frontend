@@ -29,6 +29,7 @@ const uploadStatusPollerController = {
       )
 
       if (validationResult?.error) {
+        request.logger.error(validationResult?.error)
         const errorDetails = buildErrorDetails(validationResult?.error?.details)
 
         request.yar.flash(sessionNames.validationFailure, {
@@ -36,6 +37,7 @@ const uploadStatusPollerController = {
           formErrors: errorDetails
         })
 
+        request.logger.info('redirecting back to upload form')
         return h.redirect(`/creatures/${creatureId}/upload`)
       }
 
@@ -43,6 +45,7 @@ const uploadStatusPollerController = {
         fields: uploadStatus.form
       })
 
+      request.logger.info('upload complete, redirecting to summary')
       return h.redirect(`/creatures/${creatureId}/summary`)
     }
 

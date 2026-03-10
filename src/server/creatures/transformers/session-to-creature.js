@@ -12,8 +12,6 @@ function sessionToCreature(creature) {
   const creatureFiles = buildFilesDetail(creature.fields.creatureFiles)
   const evidenceFiles = buildFilesDetail(creature.fields.evidenceFiles)
 
-  const { year, month, day } = creature.fields.date
-  const date = new Date(year, parseInt(month, 10) - 1, day).toISOString()
   const realLifeSighting = creature.fields.realLifeSighting === 'yes'
   const address = realLifeSighting
     ? {
@@ -29,7 +27,7 @@ function sessionToCreature(creature) {
     name: creature.fields.name,
     kind: creature.fields.kind,
     creatureFiles,
-    date,
+    date: new Date().toISOString(),
     realLifeSighting,
     address,
     evidenceFiles

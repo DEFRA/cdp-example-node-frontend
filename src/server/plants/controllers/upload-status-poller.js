@@ -1,5 +1,3 @@
-import Joi from 'joi'
-
 import { saveToPlant } from '../helpers/form/save-to-plant.js'
 import { providePlantSession } from '../helpers/pre/provide-plant-session.js'
 import { provideUploadStatusFromSession } from '../../common/helpers/pre/provide-upload-status.js'
@@ -11,12 +9,7 @@ const uploadStatusPollerController = {
     pre: [
       providePlantSession,
       provideUploadStatusFromSession(sessionNames.plants)
-    ],
-    validate: {
-      query: Joi.object({
-        uploadId: Joi.string().guid().required()
-      })
-    }
+    ]
   },
   handler: async (request, h) => {
     const setError = populateErrorFlashMessage(request)
