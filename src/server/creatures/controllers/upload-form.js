@@ -23,7 +23,7 @@ const uploadFormController = {
       s3Bucket
     })
 
-    await request.yar.set(sessionNames.creatures, uploadDetail)
+    request.yar.set(sessionNames.creatures, uploadDetail)
 
     return h.view('creatures/views/upload-form', {
       pageTitle: 'Add creature',

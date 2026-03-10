@@ -3,12 +3,12 @@ import inert from '@hapi/inert'
 import { home } from './home/index.js'
 import { health } from './health/index.js'
 import { serveStaticFiles } from './common/helpers/serve-static-files.js'
-import { basicUpload } from "./basic-upload/index.js";
-import { files } from "./files/index.js";
-import { animals } from "./animals/index.js";
-import {birds} from "./birds/index.js";
-import {plants} from "./plants/index.js";
-import {creatures} from "./creatures/index.js";
+import { basicUpload } from './basic-upload/index.js'
+import { files } from './files/index.js'
+import { animals } from './animals/index.js'
+import { birds } from './birds/index.js'
+import { plants } from './plants/index.js'
+import { creatures } from './creatures/index.js'
 
 export const router = {
   plugin: {

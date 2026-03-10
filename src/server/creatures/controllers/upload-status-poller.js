@@ -39,7 +39,7 @@ const uploadStatusPollerController = {
         return h.redirect(`/creatures/${creatureId}/upload`)
       }
 
-      await request.redis.storeData(creatureId, {
+      request.yar.set(creatureId, {
         fields: uploadStatus.form
       })
 

@@ -2,24 +2,20 @@ import crumb from '@hapi/crumb'
 
 import { config } from '../../../config/config.js'
 
-const eightHours = 1000 * 60 * 60 * 8
+const sessionCookieConfig = config.get('session.cookie')
 
 const csrf = {
   plugin: {
     name: 'csrf',
-    register: async (server) => {
-      await server.register({
-        plugin: crumb,
-        options: {
-          key: 'csrfToken',
-          cookieOptions: {
-            path: '/',
-            password: config.get('sessionCookiePassword'),
-            isSecure: config.get('isProduction'),
-            ttl: eightHours
-          }
-        }
-      })
+    ...crumb
+  },
+  options: {
+    key: 'csrfToken',
+    cookieOptions: {
+      path: '/',
+      password: sessionCookieConfig.password,
+      isSecure: sessionCookieConfig.isSecure,
+      ttl: sessionCookieConfig.ttl
     }
   }
 }
