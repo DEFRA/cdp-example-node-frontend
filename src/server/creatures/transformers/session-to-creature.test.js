@@ -28,7 +28,7 @@ describe('#sessionToCreature', () => {
         }
       ],
       creatureId: 'fedc8e3b-cfd1-4aec-b659-f949f65bedf9',
-      date: '1989-05-04T00:00:00.000Z',
+      date: '2023-05-29T00:00:00.000Z',
       evidenceFiles: [
         {
           fileId: 'e9963130-00cf-48e3-baa4-347670fff937',
