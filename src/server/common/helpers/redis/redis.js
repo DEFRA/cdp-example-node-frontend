@@ -7,7 +7,7 @@ const redis = {
     version: '0.1.0',
     register: async (server, options) => {
       const client = server.redisClient
-      const redisService = new RedisService(client, options.config.ttl)
+      const redisService = new RedisService(client, server)
 
       server.decorate('request', 'redis', redisService)
       server.decorate('server', 'redis', redisService)
