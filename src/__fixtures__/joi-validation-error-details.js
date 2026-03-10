@@ -5,7 +5,7 @@ const joiValidationErrorDetailsFixture = [
     type: 'any.only',
     context: {
       valids: [
-        'cdp-node-frontend-template',
+        'cdp-example-node-frontend',
         'cdp-portal-frontend',
         'cdp-teams-and-repositories'
       ],

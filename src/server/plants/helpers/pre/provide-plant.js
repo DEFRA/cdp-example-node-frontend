@@ -1,4 +1,4 @@
-import { getPlant } from '~/src/server/plants/helpers/fetch/get-plant'
+import { getPlant } from '../fetch/get-plant.js'
 
 const providePlant = {
   method: async (request) => await getPlant(request.params.plantId),

@@ -1,11 +1,11 @@
-import { upperFirst } from 'lodash'
+import _ from 'lodash'
 
-import { config } from '~/src/config'
-import { initUpload } from '~/src/server/common/helpers/upload/init-upload'
-import { creatureNames } from '~/src/server/creatures/constants/creature-names'
-import { buildOptions } from '~/src/server/common/helpers/options/build-options'
-import { noSessionRedirect } from '~/src/server/creatures/helpers/ext/no-session-redirect'
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { config } from '../../../config/config.js'
+import { initUpload } from '../../common/helpers/upload/init-upload.js'
+import { creatureNames } from '../constants/creature-names.js'
+import { buildOptions } from '../../common/helpers/options/build-options.js'
+import { noSessionRedirect } from '../helpers/ext/no-session-redirect.js'
+import { sessionNames } from '../../common/constants/session-names.js'
 
 const s3Bucket = config.get('bucket')
 
@@ -23,14 +23,14 @@ const uploadFormController = {
       s3Bucket
     })
 
-    await request.yar.set(sessionNames.creatures, uploadDetail)
+    request.yar.set(sessionNames.creatures, uploadDetail)
 
     return h.view('creatures/views/upload-form', {
       pageTitle: 'Add creature',
       action: uploadDetail.uploadUrl,
       heading: 'Creature sighting',
       kindsOfCreatures: buildOptions(
-        creatureNames.map((name) => ({ value: name, text: upperFirst(name) }))
+        creatureNames.map((name) => ({ value: name, text: _.upperFirst(name) }))
       ),
       breadcrumbs: [
         {

@@ -1,15 +1,11 @@
-import JoiBase from 'joi'
-import JoiDateFactory from '@joi/date'
+import Joi from 'joi'
 
-import { creatureNames } from '~/src/server/creatures/constants/creature-names'
-import { fileValidator } from '~/src/server/creatures/helpers/schemas/file-validator'
-
-const Joi = JoiBase.extend(JoiDateFactory)
+import { creatureNames } from '../../constants/creature-names.js'
+import { fileValidator } from './file-validator.js'
 
 const errorMessages = {
   required: 'Enter a value',
-  choose: 'Choose an entry',
-  date: 'Enter a valid date'
+  choose: 'Choose an entry'
 }
 
 const uploadFormValidation = function (csrfToken) {
@@ -25,13 +21,6 @@ const uploadFormValidation = function (csrfToken) {
         'any.message': errorMessages.choose,
         'any.required': errorMessages.choose
       }),
-    date: Joi.object({
-      day: Joi.date().utc().format(['DD', 'D']), // Non-Zero and Zero based days accepted
-      month: Joi.date().utc().format(['MM', 'M']), // Non-Zero and Zero based months accepted
-      year: Joi.date().utc().format('YYYY')
-    }).messages({
-      'date.format': errorMessages.date
-    }),
     realLifeSighting: Joi.string().valid('yes', 'no').required().messages({
       'any.only': errorMessages.choose,
       'any.required': errorMessages.choose
@@ -42,7 +31,7 @@ const uploadFormValidation = function (csrfToken) {
     }).messages({
       'any.required': errorMessages.required
     }),
-    addressLine2: Joi.string().optional(),
+    addressLine2: Joi.string().default('').optional(),
     addressTown: Joi.when('realLifeSighting', {
       is: 'yes',
       then: Joi.string().required()

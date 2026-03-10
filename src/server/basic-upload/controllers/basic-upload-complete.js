@@ -1,4 +1,4 @@
-import { s3Client } from '~/src/server/common/helpers/s3-client'
+import { s3Client } from '../../common/helpers/s3-client.js'
 import { HeadObjectCommand } from '@aws-sdk/client-s3'
 
 const baseUploadCompleteController = {

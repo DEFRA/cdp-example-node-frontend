@@ -1,11 +1,11 @@
 import { Engine as CatboxRedis } from '@hapi/catbox-redis'
 import { Engine as CatboxMemory } from '@hapi/catbox-memory'
 
-import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
-import { buildRedisClient } from '~/src/server/common/helpers/redis/redis-client'
-import { config } from '~/src/config'
+import { createLogger } from '../logging/logger.js'
+import { buildRedisClient } from '../redis-client.js'
+import { config } from '../../../../config/config.js'
 
-export function getCacheEngine(engine) {
+export function getCacheEngine(engine, server) {
   const logger = createLogger()
 
   if (engine === 'redis') {

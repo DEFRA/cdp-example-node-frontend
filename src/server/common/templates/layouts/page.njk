@@ -1,5 +1,8 @@
 {% extends "govuk/template.njk" %}
 
+{# Import GOVUK components globally #}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
@@ -12,30 +15,30 @@
 {% from "heading/macro.njk" import appHeading %}
 {% from "loader/macro.njk" import appLoader %}
 
+
+{# Import custom components globally #}
+{% from "heading/macro.njk" import appHeading %}
+
 {% set mainClasses = "app-main-wrapper" %}
 
-{% block headIcons %}
-  <link rel="icon" sizes="48x48" href="{{ getAssetPath("images/favicon.ico") }}">
-  <link rel="icon" sizes="any" href="{{ getAssetPath("images/favicon.svg") }}" type="image/svg+xml">
-  <link rel="mask-icon" href="{{ getAssetPath("images/govuk-icon-mask.svg") }}"
-        color="{{ themeColor | default("#0b0c0c") }}"> {#- Hardcoded value of $govuk-black #}
-  <link rel="apple-touch-icon" href="{{ getAssetPath("images/govuk-icon-180.png") }}">
-{% endblock %}
-
 {% block head %}
-  <link href="{{ getAssetPath('application.css') }}" rel="stylesheet">
+  <link href="{{ getAssetPath('stylesheets/application.scss') }}" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
+  {# serviceName being used in govukHeader will be @deprecated in v6. It has moved to govukServiceNavigation - https://github.com/alphagov/govuk-frontend/blob/main/CHANGELOG.md#move-service-name-and-navigation-links-from-the-govuk-header-to-service-navigation-component #}
   {{ govukHeader({
     homepageUrl: "https://www.gov.uk/",
     classes: "app-header",
     containerClasses: "govuk-width-container",
     serviceName: serviceName,
-    serviceUrl: "/",
+    serviceUrl: serviceUrl,
     useTudorCrown: true
   }) }}
-  {% include "partials/navigation.njk" %}
+
+  {{ govukServiceNavigation({
+    navigation: navigation
+  }) }}
 {% endblock %}
 
 {% block pageTitle %}
@@ -43,27 +46,8 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if notifications | length %}
-    {% for notification in notifications %}
-      {{ appBanner({
-        text: notification.text,
-        type: notification.type,
-        js: 'app-notification'
-      }) }}
-    {% endfor %}
-  {% endif %}
-
-  {% if globalValidationFailures | length %}
-    {% for globalValidationFailure in globalValidationFailures %}
-      {{ appBanner({
-        text: globalValidationFailure,
-        type: "error"
-      }) }}
-    {% endfor %}
-  {% endif %}
-
   {% if breadcrumbs.length > 1 %}
-    {{ appBreadcrumbs({
+    {{ govukBreadcrumbs({
       items: breadcrumbs
     }) }}
   {% endif %}
@@ -93,5 +77,5 @@
 {% endblock %}
 
 {% block bodyEnd %}
-  <script src="{{ getAssetPath('application.js') }}"></script>
+  <script type="module" src="{{ getAssetPath('application.js') }}"></script>
 {% endblock %}

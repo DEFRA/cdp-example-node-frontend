@@ -1,6 +1,6 @@
 import { S3Client } from '@aws-sdk/client-s3'
 import { fromNodeProviderChain } from '@aws-sdk/credential-providers'
-import { config } from '~/src/config'
+import { config } from '../../../config/config.js'
 
 const s3Client = new S3Client({
   credentials: fromNodeProviderChain(),

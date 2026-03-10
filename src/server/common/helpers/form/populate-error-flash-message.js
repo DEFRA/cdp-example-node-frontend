@@ -1,4 +1,4 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { sessionNames } from '../../constants/session-names.js'
 
 const populateErrorFlashMessage = (request) => (message) =>
   request.yar.flash(sessionNames.validationFailure, {

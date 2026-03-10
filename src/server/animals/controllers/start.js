@@ -1,5 +1,5 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { saveToAnimal } from '~/src/server/animals/helpers/form/save-to-animal'
+import { sessionNames } from '../../common/constants/session-names.js'
+import { saveToAnimal } from '../helpers/form/save-to-animal.js'
 
 const startController = {
   handler: async (request, h) => {

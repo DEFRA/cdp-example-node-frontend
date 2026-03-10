@@ -1,6 +1,5 @@
 {% extends 'layouts/page.njk' %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
@@ -70,42 +69,6 @@
             }) }}
 
           {% endcall %}
-
-          {{ govukDateInput({
-            id: "sighting-date",
-            fieldset: {
-              legend: {
-                text: "Date",
-                classes: "govuk-fieldset__legend--m"
-              }
-            },
-            hint: {
-              text: "For example, 27/03/2024"
-            },
-            errorMessage: {
-              text: formErrors.date.message
-            } if formErrors.date.message,
-            items: [
-              {
-                name: "date[day]",
-                label: "Day",
-                classes: "govuk-input--width-2",
-                value: formValues.date.day
-              },
-              {
-                name: "date[month]",
-                label: "Month",
-                classes: "govuk-input--width-2",
-                value: formValues.date.month
-              },
-              {
-                name: "date[year]",
-                label: "Year",
-                classes: "govuk-input--width-4",
-                value: formValues.date.year
-              }
-            ]
-          }) }}
 
           {{ govukRadios({
             classes: "govuk-radios--inline",

@@ -1,6 +1,6 @@
 import crypto from 'node:crypto'
 
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { sessionNames } from '../../common/constants/session-names.js'
 
 const startController = {
   handler: async (request, h) => {
@@ -9,7 +9,7 @@ const startController = {
 
     const creatureId = crypto.randomUUID()
 
-    await request.redis.storeData(creatureId, {
+    request.yar.set(creatureId, {
       creatureId
     })
 

@@ -1,5 +1,5 @@
-import { config } from '~/src/config'
-import { fetcher } from '~/src/server/common/helpers/fetch/fetcher'
+import { config } from '../../../../config/config.js'
+import { fetcher } from '../../../common/helpers/fetch/fetcher.js'
 
 async function getPlant(plantId) {
   const endpoint = config.get('cdpExampleNodeBackendUrl') + `/plants/${plantId}`

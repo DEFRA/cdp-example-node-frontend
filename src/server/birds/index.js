@@ -9,9 +9,9 @@ import {
   showTrackingController,
   showTrackingUploadController,
   trackingUploadedController
-} from '~/src/server/birds/controllers'
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { provideFormContextValues } from '~/src/server/common/helpers/form/provide-form-context-values'
+} from './controllers/index.js'
+import { sessionNames } from '../common/constants/session-names.js'
+import { provideFormContextValues } from '../common/helpers/form/provide-form-context-values.js'
 
 const birds = {
   plugin: {

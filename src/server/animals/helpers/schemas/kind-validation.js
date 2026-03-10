@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-import { animalNames } from '~/src/server/animals/constants/animal-names'
+import { animalNames } from '../../constants/animal-names.js'
 
 const kindValidation = Joi.object({
   kind: Joi.string()

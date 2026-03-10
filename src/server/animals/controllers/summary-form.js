@@ -1,4 +1,4 @@
-import { provideAnimalSession } from '~/src/server/animals/helpers/pre/provide-animal-session'
+import { provideAnimalSession } from '../helpers/pre/provide-animal-session.js'
 
 const summaryFormController = {
   options: {

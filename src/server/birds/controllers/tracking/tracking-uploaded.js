@@ -1,7 +1,7 @@
-import { trackingValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
-import { birds } from '~/src/server/birds/data/birds'
-import { findBirdById } from '~/src/server/birds//helpers/find-bird'
-import { findTracking } from '~/src/server/birds/helpers/fetch/find-tracking'
+import { trackingValidation } from '../../helpers/schemas/bird-validation.js'
+import { birds } from '../../data/birds.js'
+import { findBirdById } from '../../helpers/find-bird.js'
+import { findTracking } from '../../helpers/fetch/find-tracking.js'
 
 const trackingUploadedController = {
   options: {

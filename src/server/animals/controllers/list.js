@@ -1,4 +1,4 @@
-import { getAnimals } from '~/src/server/animals/helpers/fetch/get-animals'
+import { getAnimals } from '../helpers/fetch/get-animals.js'
 
 const animalListController = {
   handler: async (request, h) => {

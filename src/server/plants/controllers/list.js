@@ -1,4 +1,4 @@
-import { getPlants } from '~/src/server/plants/helpers/fetch/get-plants'
+import { getPlants } from '../helpers/fetch/get-plants.js'
 
 const plantListController = {
   handler: async (request, h) => {

@@ -1,13 +1,12 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { sessionNames } from '../../../common/constants/session-names.js'
 
 async function saveToPlant(request, h, valueObj) {
   const key = sessionNames.plants
   const plants = request.yar.get(key)
+  const plantsSessionObj = { ...plants, ...valueObj }
 
-  request.yar.set(key, { ...plants, ...valueObj })
+  request.yar.set(key, plantsSessionObj)
   await request.yar.commit(h)
-
-  const plantsSessionObj = request.yar.get(key)
 
   request.logger.debug({ sensitive: plantsSessionObj }, 'Plant Session info:')
 

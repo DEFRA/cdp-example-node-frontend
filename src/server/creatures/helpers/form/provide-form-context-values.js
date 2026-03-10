@@ -1,6 +1,6 @@
-import { pickBy } from 'lodash'
+import _ from 'lodash'
 
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { sessionNames } from '../../../common/constants/session-names.js'
 
 function provideFormContextValues() {
   return async (request, h) => {
@@ -9,8 +9,7 @@ function provideFormContextValues() {
     if (response.variety === 'view') {
       // Pull session from Redis directly using creatureId
       const sessionValue =
-        request.params?.creatureId &&
-        (await request.redis.getData(request.params.creatureId))
+        request.params?.creatureId && request.yar.get(request.params.creatureId)
 
       if (sessionValue) {
         request.logger.debug({ sessionValue }, 'Session context info:')
@@ -36,7 +35,7 @@ function provideFormContextValues() {
       response.source.context.formValues = {
         ...(response.source.context?.formValues &&
           response.source.context.formValues),
-        ...(sessionValue?.fields && pickBy(sessionValue.fields)),
+        ...(sessionValue?.fields && _.pickBy(sessionValue.fields)),
         ...(validationFailure?.formValues && validationFailure.formValues)
       }
 

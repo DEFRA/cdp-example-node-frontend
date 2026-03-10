@@ -1,7 +1,7 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { findBirdById } from '~/src/server/birds/helpers/find-bird'
-import { birdValidation } from '~/src/server/birds/helpers/schemas/bird-validation'
-import { findBirdTrackings } from '~/src/server/birds/helpers/fetch/find-bird-trackings'
+import { sessionNames } from '../../../common/constants/session-names.js'
+import { findBirdById } from '../../helpers/find-bird.js'
+import { birdValidation } from '../../helpers/schemas/bird-validation.js'
+import { findBirdTrackings } from '../../helpers/fetch/find-bird-trackings.js'
 
 const listTrackingController = {
   options: {

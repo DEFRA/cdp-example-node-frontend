@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { provideCreature } from '~/src/server/creatures/helpers/pre/provide-creature'
+import { provideCreature } from '../helpers/pre/provide-creature.js'
 
 const creatureController = {
   options: {

@@ -1,7 +1,7 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
+import { sessionNames } from '../../../common/constants/session-names.js'
 
 const providePlantSession = {
-  method: async (request, h) => await request.yar.get(sessionNames.plants),
+  method: (request, h) => request.yar.get(sessionNames.plants),
   assign: 'plantSession'
 }
 

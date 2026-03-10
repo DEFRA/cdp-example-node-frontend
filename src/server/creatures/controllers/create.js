@@ -1,6 +1,6 @@
-import { sessionNames } from '~/src/server/common/constants/session-names'
-import { provideCreatureSession } from '~/src/server/creatures/helpers/pre/provide-creature-session'
-import { createCreature } from '~/src/server/creatures/helpers/fetch/create-creature'
+import { sessionNames } from '../../common/constants/session-names.js'
+import { provideCreatureSession } from '../helpers/pre/provide-creature-session.js'
+import { createCreature } from '../helpers/fetch/create-creature.js'
 
 const createController = {
   options: {
@@ -18,7 +18,7 @@ const createController = {
       type: 'success'
     })
 
-    await request.redis.removeData(creatureSession.creatureId)
+    request.yar.get(creatureSession.creatureId, true)
 
     return h.redirect('/creatures')
   }

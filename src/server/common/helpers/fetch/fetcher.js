@@ -1,8 +1,8 @@
 import fetch from 'node-fetch'
 import Boom from '@hapi/boom'
 
-import { createLogger } from '~/src/server/common/helpers/logging/logger'
-import { throwHttpError } from '~/src/server/common/helpers/fetch/throw-http-error'
+import { createLogger } from '../logging/logger.js'
+import { throwHttpError } from './throw-http-error.js'
 
 /**
  *

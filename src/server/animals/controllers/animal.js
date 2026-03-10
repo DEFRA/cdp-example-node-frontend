@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-import { provideAnimal } from '~/src/server/animals/helpers/pre/provide-animal'
+import { provideAnimal } from '../helpers/pre/provide-animal.js'
 
 const animalController = {
   options: {

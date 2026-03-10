@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-import { providePlant } from '~/src/server/plants/helpers/pre/provide-plant'
+import { providePlant } from '../helpers/pre/provide-plant.js'
 
 const plantController = {
   options: {
