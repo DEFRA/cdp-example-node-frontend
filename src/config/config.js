@@ -96,7 +96,7 @@ export const config = convict({
       format: Array,
       default: isProduction
         ? ['req.headers.authorization', 'req.headers.cookie', 'res.headers']
-        : []
+        : ['req.headers', 'res.headers']
     }
   },
   httpProxy: {
@@ -255,7 +255,7 @@ export const config = convict({
   localstackEndpoint: {
     doc: 'Local stack endpoint',
     format: String,
-    default: 'http://localhost:4566',
+    default: 'http://localhost:4566'
   }
 })
 

@@ -18,7 +18,7 @@ const createController = {
       type: 'success'
     })
 
-    await request.redis.removeData(creatureSession.creatureId)
+    request.yar.get(creatureSession.creatureId, true)
 
     return h.redirect('/creatures')
   }

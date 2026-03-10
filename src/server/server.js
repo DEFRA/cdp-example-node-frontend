@@ -15,6 +15,7 @@ import { getCacheEngine } from './common/helpers/session-cache/cache-engine.js'
 import { secureContext } from '@defra/hapi-secure-context'
 import { contentSecurityPolicy } from './common/helpers/content-security-policy.js'
 import { metrics } from '@defra/cdp-metrics'
+import { csrf } from './common/helpers/csrf.js'
 
 export async function createServer() {
   setupProxy()
@@ -55,14 +56,15 @@ export async function createServer() {
     }
   })
   await server.register([
+    secureContext,
     requestLogger,
     requestTracing,
     metrics,
-    secureContext,
     pulse,
     sessionCache,
     nunjucksConfig,
     Scooter,
+    csrf,
     contentSecurityPolicy,
     router // Register all the controllers/routes defined in src/server/router.js
   ])

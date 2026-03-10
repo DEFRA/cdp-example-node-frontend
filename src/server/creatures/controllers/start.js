@@ -9,7 +9,7 @@ const startController = {
 
     const creatureId = crypto.randomUUID()
 
-    await request.redis.storeData(creatureId, {
+    request.yar.set(creatureId, {
       creatureId
     })
 

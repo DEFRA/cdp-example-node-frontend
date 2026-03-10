@@ -18,7 +18,7 @@ async function fetcher(url, options = {}) {
     headers: {
       ...(options?.headers && options?.headers),
       'Content-Type': 'application/json'
-    },
+    }
   })
 
   try {

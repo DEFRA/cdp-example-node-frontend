@@ -9,8 +9,7 @@ function provideFormContextValues() {
     if (response.variety === 'view') {
       // Pull session from Redis directly using creatureId
       const sessionValue =
-        request.params?.creatureId &&
-        (await request.redis.getData(request.params.creatureId))
+        request.params?.creatureId && request.yar.get(request.params.creatureId)
 
       if (sessionValue) {
         request.logger.debug({ sessionValue }, 'Session context info:')
