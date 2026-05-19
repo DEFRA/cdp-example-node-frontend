@@ -9,7 +9,6 @@ import { animals } from './animals/index.js'
 import { birds } from './birds/index.js'
 import { plants } from './plants/index.js'
 import { creatures } from './creatures/index.js'
-import { auditingRoutes } from './audit/index.js'
 
 export const router = {
   plugin: {
@@ -28,8 +27,7 @@ export const router = {
         birds,
         creatures,
         plants,
-        files,
-        auditingRoutes
+        files
       ])
 
       // Static assets
