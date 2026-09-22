@@ -35,7 +35,7 @@ jobs:
           npm test
 
       - name: Publish Hot Fix
-        uses: DEFRA/cdp-build-action/build-hotfix@c7e726264e72772285d8f28314e6a5fce8a65f33 # v1.0.0
+        uses: DEFRA/cdp-build-action/build-hotfix@dfb527d1bca7591fbbfd32ac007557745e888cf2 # v1.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
