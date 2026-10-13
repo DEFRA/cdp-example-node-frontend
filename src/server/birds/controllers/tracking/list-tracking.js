@@ -14,6 +14,8 @@ const listTrackingController = {
     const { birdId } = request.params
     const bird = findBirdById(birdId)
 
+    request.logger.info({ user: { id: birdId } }, 'User logged in')
+
     if (!bird) {
       request.logger.warn({ birdId }, 'Bird not found')
       return h.redirect('/birds')
