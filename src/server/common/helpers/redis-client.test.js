@@ -2,7 +2,7 @@ import { vi } from 'vitest'
 
 import { Cluster, Redis } from 'ioredis'
 
-import { config } from '../../../config/config.js'
+import { config } from '#/config/config.js'
 import { buildRedisClient } from './redis-client.js'
 
 vi.mock('ioredis', () => ({
@@ -24,6 +24,7 @@ describe('#buildRedisClient', () => {
     test('Should instantiate a single Redis client', () => {
       expect(Redis).toHaveBeenCalledWith({
         db: 0,
+        enableReadyCheck: false,
         host: '127.0.0.1',
         keyPrefix: 'cdp-example-node-frontend:',
         port: 6379
@@ -48,7 +49,13 @@ describe('#buildRedisClient', () => {
         {
           dnsLookup: expect.any(Function),
           keyPrefix: 'cdp-example-node-frontend:',
-          redisOptions: { db: 0, password: 'pass', tls: {}, username: 'user' },
+          redisOptions: {
+            db: 0,
+            enableReadyCheck: false,
+            password: 'pass',
+            tls: {},
+            username: 'user'
+          },
           slotsRefreshTimeout: 10000
         }
       )

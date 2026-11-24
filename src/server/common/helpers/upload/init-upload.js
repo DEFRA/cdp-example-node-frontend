@@ -1,5 +1,3 @@
-import fetch from 'node-fetch'
-
 import { config } from '../../../../config/config.js'
 
 async function initUpload(options = {}) {

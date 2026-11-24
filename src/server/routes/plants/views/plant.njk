@@ -1,0 +1,32 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+
+        <h2 class="govuk-heading-m">
+          {{ plant.name }} the plant🌵
+        </h2>
+
+        <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-7">
+
+          {% for file in plant.files %}
+
+            <li>
+              <img class="app-img" src="/file/{{ file.fileUrl | urlencode }}" alt="{{ file.filename }} picture">
+            </li>
+
+          {% else %}
+            <li>No files for your plant uploaded yet.</li>
+          {% endfor %}
+        </ul>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

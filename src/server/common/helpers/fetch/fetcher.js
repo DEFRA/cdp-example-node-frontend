@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import Boom from '@hapi/boom'
 
 import { createLogger } from '../logging/logger.js'

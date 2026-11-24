@@ -1,0 +1,102 @@
+services:
+  floci:
+    image: hectorvent/floci:latest-aws
+    ports:
+      - '4566:4566'
+    env_file:
+      - 'compose/aws.env'
+    environment:
+      FLOCI_DEFAULT_REGION: eu-west-2
+    volumes:
+      - ./compose/floci/start.d:/etc/floci/init/start.d:ro
+    networks:
+      - cdp-tenant
+
+  redis:
+    image: redis:7.2.3-alpine3.18
+    ports:
+      - '6379:6379'
+    networks:
+      - cdp-tenant
+
+  # Upload, virus scan (mocked) and move files into this service's bucket
+  # https://github.com/DEFRA/cdp-uploader
+  cdp-uploader:
+    image: defradigital/cdp-uploader:${CDP_UPLOADER_VERSION:-latest}
+    ports:
+      - '7337:7337'
+    depends_on:
+      floci:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - 'compose/aws.env'
+    environment:
+      PORT: 7337
+      NODE_ENV: development
+      AWS_EMF_ENVIRONMENT: Local
+      AWS_ENDPOINT_URL: http://floci:4566
+      S3_ENDPOINT: http://floci:4566
+      SQS_ENDPOINT: http://floci:4566
+      # Floci needs full queue URLs, it does not resolve bare queue names like LocalStack does
+      SQS_SCAN_RESULTS: http://floci:4566/000000000000/cdp-clamav-results
+      SQS_SCAN_RESULTS_CALLBACK: http://floci:4566/000000000000/cdp-uploader-scan-results-callback.fifo
+      SQS_DOWNLOAD_REQUESTS: http://floci:4566/000000000000/cdp-uploader-download-requests
+      SQS_MOCK_CLAMAV: http://floci:4566/000000000000/mock-clamav
+      REDIS_HOST: redis
+      USE_SINGLE_INSTANCE_CACHE: true
+      MOCK_VIRUS_SCAN_ENABLED: true
+      MOCK_VIRUS_RESULT_DELAY: 3
+      CONSUMER_BUCKETS: cdp-example-node-frontend
+    networks:
+      - cdp-tenant
+
+  ################################################################################
+  # Optional: the backend used by the Animals, Creatures, Plants and Birds examples
+  # Start with: docker compose --profile backend up -d
+
+  mongodb:
+    image: mongo:7.0.28
+    profiles:
+      - backend
+    networks:
+      - cdp-tenant
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./compose/mongo:/docker-entrypoint-initdb.d:ro
+      - mongodb-data:/data
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.hello().ok']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  cdp-example-node-backend:
+    image: defradigital/cdp-example-node-backend:${CDP_EXAMPLE_NODE_BACKEND_VERSION:-latest}
+    profiles:
+      - backend
+    ports:
+      - '3049:3049'
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      PORT: 3049
+      # The published image only has production dependencies (no pino-pretty)
+      NODE_ENV: production
+      AWS_EMF_ENVIRONMENT: Local
+      MONGO_URI: mongodb://mongodb:27017/
+    networks:
+      - cdp-tenant
+
+################################################################################
+
+volumes:
+  mongodb-data:
+
+networks:
+  cdp-tenant:
+    driver: bridge
