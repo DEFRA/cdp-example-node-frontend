@@ -2,12 +2,7 @@ import inert from '@hapi/inert'
 
 import { home } from '../routes/home/index.js'
 import { health } from '../routes/health/index.js'
-import { animals } from '../routes/animals/index.js'
-import { basicUpload } from '../routes/basic-upload/index.js'
-import { birds } from '../routes/birds/index.js'
-import { creatures } from '../routes/creatures/index.js'
-import { files } from '../routes/files/index.js'
-import { plants } from '../routes/plants/index.js'
+import { uploads } from '../routes/uploads/index.js'
 import { cookies } from '../routes/cookies/controller.js'
 import { serveStaticFiles } from './serve-static-files.js'
 import { config } from '#/config/config.js'
@@ -23,15 +18,7 @@ export const router = {
       await server.register([cookies])
 
       // Application specific routes, add your own routes here
-      await server.register([
-        home,
-        animals,
-        basicUpload,
-        birds,
-        creatures,
-        plants,
-        files
-      ])
+      await server.register([home, uploads])
 
       // Static assets
       if (!config.get('isProduction') && !config.get('isTest')) {

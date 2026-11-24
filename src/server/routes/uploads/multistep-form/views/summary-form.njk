@@ -1,0 +1,52 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Review your animal."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    <ul class="govuk-list govuk-list--bullet">
+      <li><strong>Name:</strong> {{ animalSession.name }}</li>
+      <li><strong>Kind:</strong> {{ animalSession.kind }}</li>
+      <li><strong>Upload file:</strong> {{ animalSession.file.filename }}</li>
+      <li><strong>Phone number:</strong> {{ animalSession.phoneNumber }}</li>
+    </ul>
+
+
+    {{ govukButton({
+      text: "Create"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Read every answer from the <code>animals</code> session. Nothing has been saved anywhere else yet." }
+        ]
+      },
+      {
+        heading: "When you press Create",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/multistep-form/add/create</code>." },
+          { html: "It calls the backend <code>POST /uploads/multistep-form/animals</code> with <code>name</code>, <code>kind</code>, <code>phoneNumber</code> and <code>file</code> (filename and S3 key), stored in Mongo." },
+          { html: "The <code>animals</code> session is cleared and you go back to the list." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multistep-form/controllers/summary-form.js",
+      "src/server/routes/uploads/multistep-form/controllers/create.js"
+    ]
+  }) }}
+{% endblock %}

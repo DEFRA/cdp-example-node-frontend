@@ -1,0 +1,52 @@
+import Joi from 'joi'
+
+import { sessionNames } from '#/server/common/constants/session-names.js'
+import { findBirdById } from '../../helpers/find-bird.js'
+
+const newBirdTrackingController = {
+  options: {
+    validate: {
+      params: Joi.object({
+        birdId: Joi.number().integer().positive().required()
+      })
+    }
+  },
+  handler: async (request, h) => {
+    request.yar.clear(sessionNames.validationFailure)
+    const { birdId } = request.params
+    const bird = findBirdById(birdId)
+
+    if (!bird) {
+      return h.redirect('/uploads/async-callbacks')
+    }
+
+    return h.view('uploads/async-callbacks/views/tracking/new-bird-tracking', {
+      pageTitle: `Tracking ${bird.name}`,
+      heading: `Tracking ${bird.name}`,
+      action: `/uploads/async-callbacks/${birdId}/tracking/spotter`,
+      bird,
+      breadcrumbs: [
+        {
+          text: 'File uploads',
+          href: '/uploads'
+        },
+        {
+          text: 'Async callbacks',
+          href: '/uploads/async-callbacks'
+        },
+        {
+          text: bird.name,
+          href: `/uploads/async-callbacks/${birdId}`
+        },
+        {
+          text: 'Tracking'
+        },
+        {
+          text: 'Spotter'
+        }
+      ]
+    })
+  }
+}
+
+export { newBirdTrackingController }

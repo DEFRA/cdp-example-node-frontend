@@ -1,0 +1,67 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Animal details."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    {% call govukFieldset() %}
+
+      {{ govukInput({
+        label: {
+          text: "Name",
+          classes: "govuk-label--m"
+        },
+        id: "name",
+        name: "name",
+        hint: {
+          text: "What is the animals name?"
+        },
+        attributes: {
+          "data-1p-ignore": ""
+        },
+        errorMessage: {
+          text: formErrors.name.message
+        } if formErrors.name.message
+      }) }}
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Next"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          "Nothing was called, this step is a plain form.",
+          { html: "Coming from Add animal, <code>start.js</code> started an empty <code>animals</code> session." }
+        ]
+      },
+      {
+        heading: "When you press Next",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/multistep-form/add/details</code>, with the CSRF <code>crumb</code>." },
+          { html: "<code>name</code> is validated with Joi. Errors are flashed to the session and you come back here." },
+          { html: "Otherwise the name is saved in the <code>animals</code> session and you go to Kind." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multistep-form/controllers/details-form.js",
+      "src/server/routes/uploads/multistep-form/controllers/details.js"
+    ]
+  }) }}
+{% endblock %}

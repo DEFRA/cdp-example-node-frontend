@@ -1,0 +1,78 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Tracking locations for a {{ bird.name }}.
+  </p>
+  <p>
+     Genus: {{ bird.genus }}<br>
+     Species: {{ bird.species }}
+  </p>
+
+    <p>
+  {% if spotter %}
+      Spotter: {{ spotter }}
+  {% else %}
+      Spotter: No spotter
+  {% endif %}
+    </p>
+
+
+   {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
+
+   {{ govukErrorMessage({
+   text: "Tracking locations upload was rejected. Please check the file and try again.",
+   visuallyHiddenText: "Rejected"
+   }) }}
+
+   <p>
+
+
+  {% if spotter %}
+
+   <form action="{{ action }}" method="post">
+      <input type="hidden" name="crumb" value="{{ crumb }}"/>
+      <input type="hidden" name="spotter" value="{{ spotter }}">
+
+      {{ govukButton({
+         text: "Try again"
+      }) }}
+
+   </form>
+
+  {% else %}
+   <a class="govuk-link" href="/uploads/async-callbacks/{{ bird.id }}/tracking">Try again</a>
+  {% endif %}
+  </p>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/async-callbacks/birds/{birdId}/tracking/{trackingId}</code>. The tracking is <code>rejected</code>." },
+          { html: "The backend set that when cdp-uploader's <code>callback</code> said the file was not <code>complete</code>: a virus, wrong type or empty file." }
+        ]
+      },
+      {
+        heading: "When you press Try again",
+        items: [
+          { html: "Posts the same spotter to <code>/uploads/async-callbacks/{birdId}/tracking/spotter</code>, which creates a new tracking and a new upload." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/show-tracking.js",
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/create-bird-tracking.js"
+    ]
+  }) }}
+{% endblock %}

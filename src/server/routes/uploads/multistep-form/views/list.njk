@@ -1,0 +1,59 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% set asideHtml %}
+  <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+    <a class="govuk-link govuk-link--text-colour" href="/uploads/multistep-form/add">Add animal</a>
+  </h2>
+{% endset %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads",
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Details of animals spotted in the UK.
+  </p>
+
+  <ul class="govuk-list govuk-list--spaced">
+    {% for animal in animals %}
+      <li class="govuk-!-margin-bottom-1">
+        <a class="govuk-link govuk-link--no-visited-state"
+           href="/uploads/multistep-form/{{ animal.animalId }}">{{ animal.name }} the {{ animal.kind }}</a>
+      </li>
+
+    {% else %}
+      <li class="govuk-!-margin-bottom-1">No animals uploaded.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/multistep-form/animals</code>, which reads the Mongo <code>animals</code> collection." }
+        ]
+      },
+      {
+        heading: "When you select Add animal",
+        items: [
+          { html: "<code>/uploads/multistep-form/add</code> clears and starts the <code>animals</code> session (yar: Redis on CDP, memory locally)." },
+          "It redirects to the first step, Details. The file upload is step 3 of 5."
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multistep-form/controllers/list.js",
+      "src/server/routes/uploads/multistep-form/controllers/start.js"
+    ]
+  }) }}
+{% endblock %}

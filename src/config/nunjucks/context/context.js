@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 
 import { config } from '#/config/config.js'
 import { buildNavigation } from './build-navigation.js'
+import { buildUploadsNavigation } from '#/server/routes/uploads/navigation.js'
 import { createLogger } from '#/server/common/helpers/logging/logger.js'
 
 const logger = createLogger()
@@ -36,6 +37,7 @@ export function context(request) {
     googleTagManagerKey,
     breadcrumbs: [],
     navigation: buildNavigation(request),
+    uploadsNavigation: buildUploadsNavigation(request),
     getAssetPath(asset) {
       if (!config.get('isProduction')) {
         return `${assetPath}/${asset}`

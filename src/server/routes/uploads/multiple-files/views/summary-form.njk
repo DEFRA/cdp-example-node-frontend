@@ -1,0 +1,103 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Review your creature."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    <ul class="govuk-list">
+      <li>
+        <strong>Name:</strong> {{ creature.name | capitalize }}
+      </li>
+
+      <li>
+        <strong>Kind:</strong> {{ creature.kind | capitalize }}
+      </li>
+
+      <li>
+        <strong>Seen:</strong> {{ creature.date | formatDate }}
+      </li>
+
+      <li>
+        <strong>Seen in real life:</strong> {{ creature.realLifeSighting }}
+      </li>
+
+      {% if creature.address | length %}
+        <li>
+          <strong>Address:</strong>
+          {% for addressKey, addressValue in creature.address %}
+            {{ addressValue }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </li>
+      {% endif %}
+    </ul>
+
+    {% if creature.creatureFiles | length %}
+      <ul class="govuk-list govuk-list--spaced">
+        <li>
+          <strong>Images</strong>
+        </li>
+        {% for file in creature.creatureFiles %}
+          <li>
+            <img class="app-img" src="/file/{{ file.fileUrl | urlencode }}" alt="{{ file.filename }} picture">
+          </li>
+
+        {% else %}
+          <li>No files available for your creature.</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if creature.evidenceFiles | length %}
+      <ul class="govuk-list govuk-list--spaced">
+        <li>
+          <strong>Supporting evidence images</strong>
+        </li>
+        {% for file in creature.evidenceFiles %}
+          <li>
+            <img class="app-img" src="/file/{{ file.fileUrl | urlencode }}" alt="{{ file.filename }} picture">
+          </li>
+        {% else %}
+          <li>No evidence files available for your creature.</li>
+        {% endfor %}
+      </ul>
+
+    {% endif %}
+
+    {{ govukButton({
+      text: "Create"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Read the session for this <code>creatureId</code> and turned the uploader's <code>form</code> into a creature (<code>transformers/session-to-creature.js</code>): each file keeps its <code>filename</code>, <code>fileId</code> and <code>s3Key</code>." },
+          { html: "The images are loaded from S3 through <code>/file/{s3Key}</code> on this frontend." }
+        ]
+      },
+      {
+        heading: "When you press Create",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/multiple-files/{creatureId}/create</code>." },
+          { html: "It calls the backend <code>POST /uploads/multiple-files/creatures</code>, stored in Mongo, and you go back to the list." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multiple-files/controllers/summary-form.js",
+      "src/server/routes/uploads/multiple-files/controllers/create.js"
+    ]
+  }) }}
+{% endblock %}

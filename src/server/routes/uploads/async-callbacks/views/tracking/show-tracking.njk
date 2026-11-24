@@ -1,0 +1,85 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Tracking locations for a {{ bird.name }}.
+  </p>
+  <p>
+     Genus: {{ bird.genus }}<br>
+     Species: {{ bird.species }}
+  </p>
+
+    <p>
+  {% if spotter %}
+      Spotter: {{ spotter }}
+  {% else %}
+      Spotter: No spotter
+  {% endif %}
+    </p>
+
+   {% if locations.length > 0 %}
+      {% from "govuk/components/table/macro.njk" import govukTable %}
+
+      {{ govukTable({
+      caption: "Locations tracked",
+      captionClasses: "govuk-table__caption--m",
+      firstCellIsHeader: false,
+      head: [
+         {
+            text: "Date",
+            format: "numeric"
+         },
+         {
+            text: "Time",
+            format: "numeric"
+         },
+         {
+            text: "Latitude",
+            format: "numeric"
+         },
+         {
+            text: "Longtitude",
+            format: "numeric"
+         },
+         {
+            text: "Map"
+         }
+      ],
+      rows: locations
+      }) }}
+
+   {% else %}
+      <p>No locations tracked (data may be expired).</p>
+   {% endif %}
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/async-callbacks/birds/{birdId}/tracking/{trackingId}</code>. The tracking is <code>ready</code>." },
+          { html: "Read the CSV from S3 (<code>GetObject</code> with the <code>s3Bucket</code> and <code>s3Key</code> the callback stored) and parsed it with papaparse." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          "Nothing, the example ends here. The upload, scan and processing all happened without the user waiting on a page."
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/show-tracking.js",
+      "src/server/routes/uploads/async-callbacks/helpers/fetch/find-tracking-locations.js"
+    ]
+  }) }}
+{% endblock %}

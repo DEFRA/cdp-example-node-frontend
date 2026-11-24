@@ -1,0 +1,66 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Plant details."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    {% call govukFieldset() %}
+
+      {{ govukInput({
+        label: {
+          text: "Name",
+          classes: "govuk-label--m"
+        },
+        id: "name",
+        name: "name",
+        hint: {
+          text: "What is the name of your plant?"
+        },
+        attributes: {
+          "data-1p-ignore": ""
+        },
+        errorMessage: {
+          text: formErrors.name.message
+        } if formErrors.name.message
+      }) }}
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Next"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          "Nothing was called, this step is a plain form.",
+          { html: "Coming from Add plant, <code>start.js</code> started the <code>plants</code> session with a new <code>plantId</code>." }
+        ]
+      },
+      {
+        heading: "When you press Next",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/add-another/add/details</code>, with the CSRF <code>crumb</code>." },
+          { html: "<code>name</code> is validated with Joi, saved in the <code>plants</code> session, and you go to Upload pictures." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/add-another/controllers/details-form.js",
+      "src/server/routes/uploads/add-another/controllers/details.js"
+    ]
+  }) }}
+{% endblock %}

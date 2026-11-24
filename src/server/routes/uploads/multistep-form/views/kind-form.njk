@@ -1,0 +1,65 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Type of animal."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    {% call govukFieldset() %}
+
+      {{ govukSelect({
+        id: "kind",
+        name: "kind",
+        label: {
+          text: "Kind",
+          classes: "govuk-label--m"
+        },
+        hint: {
+          text: "What kind of animal?"
+        },
+        items: kindsOfAnimals,
+        errorMessage: {
+          text: formErrors.kind.message
+        } if formErrors.kind.message
+      }) }}
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Next"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Details saved the name in the <code>animals</code> session." },
+          { html: "The options come from <code>constants/animal-names.js</code>, no backend call." }
+        ]
+      },
+      {
+        heading: "When you press Next",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/multistep-form/add/kind</code>." },
+          { html: "<code>kind</code> must be one of the animal names, otherwise you come back here with an error." },
+          { html: "The kind is saved in the <code>animals</code> session and you go to Upload picture." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multistep-form/controllers/kind-form.js",
+      "src/server/routes/uploads/multistep-form/controllers/kind.js"
+    ]
+  }) }}
+{% endblock %}

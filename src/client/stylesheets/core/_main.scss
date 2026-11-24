@@ -7,3 +7,15 @@
   padding-top: govuk-spacing(4);
   padding-bottom: govuk-spacing(3);
 }
+
+.app-code-block {
+  margin-top: 0;
+  margin-bottom: govuk-spacing(4);
+  padding: govuk-spacing(2);
+  overflow-x: auto;
+  background-color: govuk-functional-colour(surface-background);
+  font-family: ui-monospace, sfmono-regular, menlo, consolas, monospace;
+  font-size: 0.875rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

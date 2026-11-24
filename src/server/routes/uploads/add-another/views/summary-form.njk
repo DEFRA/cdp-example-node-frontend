@@ -1,0 +1,58 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Review your plant."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    <ul class="govuk-list govuk-list--bullet">
+      <li><strong>Name:</strong> {{ plantSession.name }}</li>
+      <li>
+        <strong>Files:</strong>
+        <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-7">
+          {% for file in plantSession.files %}
+            <li>{{ file.filename }}</li>
+          {% else %}
+            <li>No files for your plant uploaded yet.</li>
+          {% endfor %}
+        </ul>
+      </li>
+    </ul>
+
+    {{ govukButton({
+      text: "Create"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Read the name and the list of uploaded <code>files</code> from the <code>plants</code> session. Nothing has been saved anywhere else yet." }
+        ]
+      },
+      {
+        heading: "When you press Create",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/add-another/add/create</code>." },
+          { html: "It calls the backend <code>POST /uploads/add-another/plants</code> with <code>plantId</code>, <code>name</code> and <code>files</code> (filename and S3 key each), stored in Mongo." },
+          { html: "The <code>plants</code> session is cleared and you go back to the list." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/add-another/controllers/summary-form.js",
+      "src/server/routes/uploads/add-another/controllers/create.js"
+    ]
+  }) }}
+{% endblock %}

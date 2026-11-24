@@ -1,0 +1,63 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Your details."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    {% call govukFieldset() %}
+
+      {{ govukInput({
+        label: {
+          text: "Phone number",
+          classes: "govuk-label--m"
+        },
+        id: "phoneNumber",
+        name: "phoneNumber",
+        hint: {
+          text: "What is your phone number?"
+        },
+        errorMessage: {
+          text: formErrors.phoneNumber.message
+        } if formErrors.phoneNumber.message
+      }) }}
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Next"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "The upload status poller saw the scan was clean and saved the picture's <code>filename</code> and <code>s3Key</code> in the <code>animals</code> session." },
+          "The form carries on as normal after the upload: only the S3 key is kept, never the file."
+        ]
+      },
+      {
+        heading: "When you press Next",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/multistep-form/add/your-details</code>." },
+          { html: "<code>phoneNumber</code> is validated with Joi, saved in the session, and you go to Summary." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multistep-form/controllers/your-details-form.js",
+      "src/server/routes/uploads/multistep-form/controllers/your-details.js"
+    ]
+  }) }}
+{% endblock %}

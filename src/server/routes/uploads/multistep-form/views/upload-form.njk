@@ -1,0 +1,75 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Upload a picture."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post" enctype="multipart/form-data">
+    {% call govukFieldset() %}
+
+      {{ govukFileUpload({
+        id: "file",
+        name: "file",
+        label: {
+          text: "Picture",
+          classes: "govuk-label--m"
+        },
+        hint: {
+          text: "File types of .png or .jpeg with a max size of 100 MB"
+        },
+        errorMessage: {
+          text: formErrors.file.message
+        } if formErrors.file.message
+      }) }}
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Upload"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {% set initiateHtml %}
+<pre class="app-developer-notes__payload">{
+  redirect: '/uploads/multistep-form/add/upload-status-poller',
+  s3Bucket: config.get('bucket'),
+  s3Path: 'animals',
+  maxFileSize: 1024 * 1024 * 100,
+  mimeTypes: ['image/png', 'image/jpeg', 'image/gif']
+}</pre>
+  {% endset %}
+
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called cdp-uploader <code>POST /initiate</code> with the request below." },
+          { html: "Saved the response (<code>uploadId</code>, <code>uploadUrl</code>, <code>statusUrl</code>) in the <code>animals</code> session, next to the answers so far." }
+        ],
+        html: initiateHtml
+      },
+      {
+        heading: "When you press Upload",
+        items: [
+          { html: "The browser sends the picture straight to cdp-uploader at the <code>uploadUrl</code> below, not to this frontend." },
+          { html: "cdp-uploader checks the type and size, virus scans the file in the background and redirects to <code>/uploads/multistep-form/add/upload-status-poller</code>." }
+        ]
+      }
+    ],
+    payloadHeading: "uploadUrl from /initiate",
+    payload: "{ uploadUrl: " + action + " }",
+    code: "src/server/routes/uploads/multistep-form/controllers/upload-form.js",
+    docs: {
+      text: "cdp-uploader POST /initiate",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#post-initiate"
+    }
+  }) }}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <!-- we use the url provided by the init call to set the form's action. -->
+  <form action="{{ action }}" method="post" enctype="multipart/form-data">
+
+    {% call govukFieldset() %}
+
+      {{ govukFileUpload({
+        id: "basicfile",
+        name: "basicfile",
+        label: {
+          text: "Any file",
+          classes: "govuk-label--m"
+        },
+        hint: {
+          text: "Any file with a max size of 100 MB."
+        },
+        errorMessage: {
+          text: formErrors.basicfile.message
+        } if formErrors.basicfile.message
+      }) }}
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Upload"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {% set initiateHtml %}
+<pre class="app-developer-notes__payload">{
+  redirect: '/uploads/basic/complete',
+  s3Bucket: config.get('bucket')
+}</pre>
+  {% endset %}
+
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Cleared the <code>basic-upload</code> session." },
+          { html: "Called cdp-uploader <code>POST /initiate</code> with the request below." },
+          { html: "Saved the <code>statusUrl</code> from the response in the <code>basic-upload</code> session." }
+        ],
+        html: initiateHtml
+      },
+      {
+        heading: "When you press Upload",
+        items: [
+          { html: "The form's <code>action</code> is the <code>uploadUrl</code> from <code>/initiate</code>, so the browser sends the file to cdp-uploader, not to this frontend." },
+          { html: "cdp-uploader virus scans the file and redirects the browser to <code>/uploads/basic/complete?uploadId=…</code>." },
+          "The upload URL is unique and single use, one per upload. Refresh this page and you get a new one."
+        ]
+      }
+    ],
+    payloadHeading: "uploadUrl from /initiate",
+    payload: "{ uploadUrl: " + action + " }",
+    code: "src/server/routes/uploads/basic/controllers/basic-upload-form.js",
+    docs: {
+      text: "cdp-uploader POST /initiate",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#post-initiate"
+    }
+  }) }}
+{% endblock %}

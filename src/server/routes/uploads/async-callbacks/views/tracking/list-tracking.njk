@@ -1,0 +1,62 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% set asideHtml %}
+  <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+    <a class="govuk-link govuk-link--text-colour" href="/uploads/async-callbacks/{{ bird.birdId }}/tracking/spotter">New {{ bird.name }} tracking</a>
+  </h2>
+{% endset %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads",
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Tracking locations for a {{ bird.name }}.
+  </p>
+  <p>
+     Genus: {{ bird.genus }}<br>
+     Species: {{ bird.species }}
+   </p>
+
+  <ul class="govuk-list govuk-list--spaced">
+    {% for tracking in trackings %}
+      <li class="govuk-!-margin-bottom-1">
+        <a class="govuk-link govuk-link--no-visited-state"
+           href="/uploads/async-callbacks/{{ bird.birdId }}/tracking/{{ tracking.trackingId }}">
+           {{ tracking.date.toLocaleDateString() }}
+           {{ tracking.date.toLocaleTimeString() }}</a>
+           Tracked by {{ tracking.spotter }}
+      </li>
+
+    {% else %}
+      <li class="govuk-!-margin-bottom-1">No tracking locations uploaded.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/async-callbacks/birds/{birdId}/trackings</code>, which reads the Mongo <code>birdtrackings</code> collection." }
+        ]
+      },
+      {
+        heading: "When you select a tracking",
+        items: [
+          "Shows the tracking: still processing, rejected, or the locations read from the uploaded CSV."
+        ]
+      }
+    ],
+    code: "src/server/routes/uploads/async-callbacks/controllers/tracking/list-tracking.js"
+  }) }}
+{% endblock %}

@@ -7,11 +7,7 @@ function mockRequest(options) {
 function expectedNavigation(currentHref) {
   return [
     { text: 'Home', href: '/' },
-    { text: 'Basic Upload', href: '/basic' },
-    { text: 'Animals', href: '/animals' },
-    { text: 'Creatures', href: '/creatures' },
-    { text: 'Plants', href: '/plants' },
-    { text: 'Birds', href: '/birds' }
+    { text: 'File uploads', href: '/uploads' }
   ].map((item) => ({ ...item, current: item.href === currentHref }))
 }
 
@@ -29,8 +25,14 @@ describe('#buildNavigation', () => {
   })
 
   test('Should highlight a section for its nested paths', () => {
-    expect(buildNavigation(mockRequest({ path: '/animals/add/kind' }))).toEqual(
-      expectedNavigation('/animals')
+    expect(
+      buildNavigation(mockRequest({ path: '/uploads/multistep-form/add/kind' }))
+    ).toEqual(expectedNavigation('/uploads'))
+  })
+
+  test('Should not highlight a section for a path that only shares its prefix', () => {
+    expect(buildNavigation(mockRequest({ path: '/uploadsxyz' }))).toEqual(
+      expectedNavigation()
     )
   })
 })

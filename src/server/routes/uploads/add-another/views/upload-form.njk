@@ -1,0 +1,95 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Upload multiple pictures of your plant."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <h2 class="govuk-heading-m">Uploaded files</h2>
+
+  <ul class="govuk-list govuk-list--bullet govuk-list--spaced govuk-!-margin-bottom-7">
+    {% for file in plantSession.files %}
+      <li>{{ file.filename }}</li>
+    {% else %}
+      <li>No files for your plant uploaded yet.</li>
+    {% endfor %}
+  </ul>
+
+  <form action="{{ action }}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    {% call govukFieldset() %}
+
+      {{ govukFileUpload({
+        id: "file",
+        name: "file",
+        label: {
+          text: "Picture",
+          classes: "govuk-label--m"
+        },
+        hint: {
+          text: "File types of .png or .jpeg with a max size of 100 MB"
+        },
+        errorMessage: {
+          text: formErrors.file.message
+        } if formErrors.file.message
+      }) }}
+
+    {% endcall %}
+
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: "Upload",
+        name: "button",
+        value: "upload"
+      }) }}
+
+      <a class="govuk-link" href="/uploads/add-another/add/summary">Next</a>
+    </div>
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {% set initiateHtml %}
+<pre class="app-developer-notes__payload">{
+  redirect: '/uploads/add-another/add/upload-status-poller',
+  s3Bucket: config.get('bucket'),
+  s3Path: 'plants',
+  mimeTypes: ['image/png', 'image/jpeg'],
+  metadata: { plantId: plantSession?.plantId }
+}</pre>
+  {% endset %}
+
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Read the <code>plants</code> session: the plant's name and the files uploaded so far." },
+          { html: "Called cdp-uploader <code>POST /initiate</code> with the request below. Every visit to this page starts a new upload, one per file." },
+          { html: "Saved the response (<code>uploadUrl</code>, <code>statusUrl</code>) in the <code>plants</code> session." }
+        ],
+        html: initiateHtml
+      },
+      {
+        heading: "When you press Upload",
+        items: [
+          { html: "The file and the CSRF <code>crumb</code> go to cdp-uploader at the <code>uploadUrl</code> below, not to this frontend." },
+          "cdp-uploader scans the file and redirects to the upload status poller, which brings you back here to add another.",
+          "Next skips the upload and goes to Summary."
+        ]
+      }
+    ],
+    payloadHeading: "uploadUrl from /initiate",
+    payload: "{ uploadUrl: " + action + " }",
+    code: "src/server/routes/uploads/add-another/controllers/upload-form.js",
+    docs: {
+      text: "cdp-uploader POST /initiate",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#post-initiate"
+    }
+  }) }}
+{% endblock %}

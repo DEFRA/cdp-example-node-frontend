@@ -1,0 +1,64 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% set asideHtml %}
+  <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+    <a class="govuk-link govuk-link--text-colour" href="/uploads/async-callbacks/tracking">New tracking</a>
+  </h2>
+{% endset %}
+
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads",
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+{% endblock %}
+
+{% block example %}
+   <p>
+   Tracking rare birds.
+  </p>
+   <p>
+      Recording the tracking locations for rare birds.
+  </p>
+
+  <ul class="govuk-list govuk-list--spaced">
+    {% for bird in birds %}
+      <li class="govuk-!-margin-bottom-1">
+        <a class="govuk-link govuk-link--no-visited-state"
+           href="/uploads/async-callbacks/{{ bird.birdId }}">{{ bird.name }}</a>
+      </li>
+
+    {% else %}
+      <li class="govuk-!-margin-bottom-1">No rare birds.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Nothing was called: the birds are static data in <code>data/birds.js</code>." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          "Pick a bird to see its trackings, or New tracking to upload one.",
+          { html: "Unlike the other examples, no session holds the upload: the backend keeps it, and cdp-uploader tells the backend the scan result with a <code>callback</code>. You can close the browser and come back later." }
+        ]
+      }
+    ],
+    code: "src/server/routes/uploads/async-callbacks/controllers/list-birds.js",
+    docs: {
+      text: "cdp-uploader callback",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#callback"
+    }
+  }) }}
+{% endblock %}

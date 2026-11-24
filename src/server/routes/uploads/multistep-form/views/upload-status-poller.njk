@@ -1,0 +1,51 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block head %}
+  {{ super() }}
+  <meta http-equiv="refresh" content="1">
+{% endblock %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Virus check."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Your files are currently being checked for viruses {{ appLoader({ classes: "app-loader--is-loading" }) }}
+  </p>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          "cdp-uploader received the picture and redirected the browser here.",
+          { html: "We called the <code>statusUrl</code> saved in the <code>animals</code> session (cdp-uploader <code>GET /status/{uploadId}</code>). It is not <code>ready</code> yet." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          { html: "A <code>&lt;meta http-equiv=\"refresh\"&gt;</code> reloads this page every second, which calls <code>/status</code> again." },
+          { html: "When <code>ready</code> and <code>form.file.hasError</code> is set, you go back to Upload picture with the uploader's <code>errorMessage</code>." },
+          { html: "Otherwise the file's <code>filename</code> and <code>s3Key</code> are saved in the session and you go to Your details." }
+        ]
+      }
+    ],
+    payloadHeading: "Latest /status response",
+    payload: status,
+    code: [
+      "src/server/routes/uploads/multistep-form/controllers/upload-status-poller.js",
+      "src/server/routes/uploads/common/helpers/provide-upload-status.js"
+    ],
+    docs: {
+      text: "cdp-uploader GET /status",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#get-statusuploadid"
+    }
+  }) }}
+{% endblock %}

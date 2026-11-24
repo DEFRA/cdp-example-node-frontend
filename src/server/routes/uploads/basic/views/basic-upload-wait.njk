@@ -1,0 +1,48 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block head %}
+  {{ super() }}
+  <meta http-equiv="refresh" content="1">
+{% endblock %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "Virus check."
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Your file is currently being checked for viruses {{ appLoader({ classes: "app-loader--is-loading" }) }}
+  </p>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "cdp-uploader received the file and redirected the browser to <code>/uploads/basic/complete</code>." },
+          { html: "We read the <code>statusUrl</code> saved in the <code>basic-upload</code> session and called cdp-uploader <code>GET /status/{uploadId}</code>." },
+          { html: "<code>uploadStatus</code> is not <code>ready</code> yet, so we show this holding page." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          { html: "A <code>&lt;meta http-equiv=\"refresh\"&gt;</code> reloads this page every second, which calls <code>/status</code> again." },
+          "Once the scan is finished the same URL shows the result, or sends you back to the form with the uploader's error message."
+        ]
+      }
+    ],
+    payloadHeading: "Latest /status response",
+    payload: status,
+    code: "src/server/routes/uploads/basic/controllers/basic-upload-complete.js",
+    docs: {
+      text: "cdp-uploader GET /status",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#get-statusuploadid"
+    }
+  }) }}
+{% endblock %}
