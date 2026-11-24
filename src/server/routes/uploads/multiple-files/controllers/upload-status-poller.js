@@ -42,6 +42,7 @@ const uploadStatusPollerController = {
       }
 
       request.yar.set(creatureId, {
+        creatureId,
         fields: uploadStatus.form
       })
 
