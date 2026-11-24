@@ -26,6 +26,14 @@ describe('#uploads', () => {
   })
 
   test('Should show the side navigation and File uploads tab on an example', async () => {
+    // Basic calls cdp-uploader's /initiate before rendering
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      Response.json({
+        uploadUrl: '/upload-and-scan/123',
+        statusUrl: '/status/123'
+      })
+    )
+
     const { result, statusCode } = await server.inject({
       method: 'GET',
       url: '/uploads/basic'
