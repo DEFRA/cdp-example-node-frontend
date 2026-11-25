@@ -1,0 +1,90 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <h2 class="govuk-heading-m">
+    {{ creature.name | capitalize }} the {{ creature.kind | capitalize }}
+  </h2>
+
+  <ul class="govuk-list">
+    <li>
+      <strong>Seen:</strong> {{ creature.date | formatDate }}
+    </li>
+    <li>
+      <strong>Seen in real life:</strong> {{ creature.realLifeSighting }}
+    </li>
+
+    {% if creature.address | length %}
+      <li>
+        <strong>Address:</strong>
+        {% for addressKey, addressValue in creature.address %}
+          {{ addressValue }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </li>
+    {% endif %}
+  </ul>
+
+  {% if creature.creatureFiles | length %}
+    <ul class="govuk-list govuk-list--spaced">
+      <li>
+        <strong>Images</strong>
+      </li>
+      {% for file in creature.creatureFiles %}
+        <li>
+          <img class="app-img" src="/file/{{ file.fileUrl | urlencode }}" alt="{{ file.filename }} picture">
+        </li>
+
+      {% else %}
+        <li>No files available for your creature.</li>
+      {% endfor %}
+    </ul>
+
+  {% endif %}
+
+  {% if creature.evidenceFiles | length %}
+    <ul class="govuk-list govuk-list--spaced">
+      <li>
+        <strong>Supporting evidence images</strong>
+      </li>
+      {% for file in creature.evidenceFiles %}
+        <li>
+          <img class="app-img" src="/file/{{ file.fileUrl | urlencode }}" alt="{{ file.filename }} picture">
+        </li>
+
+      {% else %}
+        <li>No evidence files available for your creature.</li>
+      {% endfor %}
+    </ul>
+
+  {% endif %}
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/multiple-files/creatures/{creatureId}</code>." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          { html: "The browser loads each image from <code>/file/{s3Key}</code>, a route on this frontend that streams the object from S3." },
+          "It doesn't check who is asking: a real service must check the user may see the file first."
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multiple-files/controllers/creature.js",
+      "src/server/routes/uploads/common/files/file-controller.js"
+    ]
+  }) }}
+{% endblock %}

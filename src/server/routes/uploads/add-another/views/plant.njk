@@ -1,0 +1,51 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <h2 class="govuk-heading-m">
+    {{ plant.name }} the plant🌵
+  </h2>
+
+  <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-7">
+
+    {% for file in plant.files %}
+
+      <li>
+        <img class="app-img" src="/file/{{ file.fileUrl | urlencode }}" alt="{{ file.filename }} picture">
+      </li>
+
+    {% else %}
+      <li>No files for your plant uploaded yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/add-another/plants/{plantId}</code>." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          { html: "The browser loads each picture from <code>/file/{s3Key}</code>, a route on this frontend that streams the object from S3." },
+          "It doesn't check who is asking: a real service must check the user may see the file first."
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/add-another/controllers/plant.js",
+      "src/server/routes/uploads/common/files/file-controller.js"
+    ]
+  }) }}
+{% endblock %}

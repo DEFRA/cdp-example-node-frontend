@@ -1,0 +1,62 @@
+{#
+  Explains what happens behind the scenes of an example page, collapsed under the example in a GOV.UK details
+  component. Sections are rendered in order, typically "Before this page" and "When you press <button>" (or "What
+  happens next"). Items are text, or { html } for markup; a section's html is rendered after its items. `code` is a
+  repo path, or a list of them.
+#}
+{% set githubBlobUrl = "https://github.com/DEFRA/cdp-example-node-frontend/blob/main/" %}
+{% set codePaths = ([params.code] if params.code is string else params.code) if params.code else [] %}
+
+<details class="govuk-details app-developer-notes{% if params.classes %} {{ params.classes }}{% endif %}"
+         data-testid="app-developer-notes">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">Developer notes: what happens behind the scenes</span>
+  </summary>
+  <div class="govuk-details__text">
+  {% for section in params.sections %}
+    <h2 class="app-developer-notes__heading" data-testid="app-developer-notes-heading">{{ section.heading }}</h2>
+
+    {% if section.items | length %}
+      <ol class="app-developer-notes__list" data-testid="app-developer-notes-list">
+        {% for item in section.items %}
+          <li>{{ item.html | safe if item.html else (item.text or item) }}</li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+
+    {% if section.html %}
+      {{ section.html | safe }}
+    {% endif %}
+  {% endfor %}
+
+  {% if params.payload %}
+    {% if params.payloadHeading %}
+      <h2 class="app-developer-notes__heading">{{ params.payloadHeading }}</h2>
+    {% endif %}
+    <pre class="app-developer-notes__payload" data-testid="app-developer-notes-payload">{{ params.payload }}</pre>
+  {% endif %}
+
+  {% if codePaths | length or params.docs %}
+    <dl class="app-developer-notes__sources">
+      {% if codePaths | length %}
+        <dt>Code</dt>
+        {% for path in codePaths %}
+          <dd>
+            <a class="govuk-link" href="{{ githubBlobUrl }}{{ path }}" data-testid="app-developer-notes-code">
+              {{- path | replace("src/server/routes/", "") -}}
+            </a>
+          </dd>
+        {% endfor %}
+      {% endif %}
+      {% if params.docs %}
+        <dt>Docs</dt>
+        <dd>
+          <a class="govuk-link" href="{{ params.docs.href }}" data-testid="app-developer-notes-docs">
+            {{- params.docs.text -}}
+          </a>
+        </dd>
+      {% endif %}
+    </dl>
+  {% endif %}
+  </div>
+</details>

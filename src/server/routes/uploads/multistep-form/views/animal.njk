@@ -1,0 +1,42 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <h2 class="govuk-heading-m">
+    {{ animal.name }} the {{ animal.kind }}
+  </h2>
+
+  <p><strong class="govuk-!-margin-right-1">Phone number:</strong>{{ animal.phoneNumber }}</p>
+
+  <img class="app-img" src="/file/{{ animal.file.fileUrl | urlencode }}" alt="{{ animal.name }} picture">
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/multistep-form/animals/{animalId}</code>." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          { html: "The browser loads the picture from <code>/file/{s3Key}</code>, a route on this frontend that streams the object from S3." },
+          "It doesn't check who is asking: a real service must check the user may see the file first."
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multistep-form/controllers/animal.js",
+      "src/server/routes/uploads/common/files/file-controller.js"
+    ]
+  }) }}
+{% endblock %}

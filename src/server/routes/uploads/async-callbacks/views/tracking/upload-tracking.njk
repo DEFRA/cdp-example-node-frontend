@@ -1,0 +1,89 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Tracking locations for a {{ bird.name }}.
+  </p>
+  <p>
+     Genus: {{ bird.genus }}<br>
+     Species: {{ bird.species }}
+  </p>
+  <p>
+     Spotter: {{ spotter }}
+  </p>
+
+  <form action="{{ action }}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    {% call govukFieldset() %}
+
+      {{ govukFileUpload({
+        id: "file",
+        name: "file",
+        label: {
+          text: "Tracking data",
+          classes: "govuk-label--m"
+        },
+        hint: {
+          text: "File types of .csv or .txt"
+        },
+        errorMessage: {
+          text: formErrors.file.message
+        } if formErrors.file.message
+      }) }}
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Upload"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {% set initiateHtml %}
+<pre class="app-developer-notes__payload">{
+  redirect: `/uploads/async-callbacks/${birdId}/tracking/${trackingId}/uploaded`,
+  callback: `${backendUrl}/uploads/async-callbacks/birds/${birdId}/tracking/${trackingId}/callback`,
+  s3Bucket: config.get('bucket'),
+  s3Path: 'birds/tracking',
+  mimeTypes: ['text/csv', 'text/plain']
+}</pre>
+  {% endset %}
+
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Loaded the tracking from the backend, <code>GET /uploads/async-callbacks/birds/{birdId}/tracking/{trackingId}</code>." },
+          { html: "Called cdp-uploader <code>POST /initiate</code> with the request below. The <code>callback</code> points at the backend, not this frontend." },
+          { html: "Saved the <code>statusUrl</code> on the tracking in the backend (<code>POST …/status-url</code>), not in a session." }
+        ],
+        html: initiateHtml
+      },
+      {
+        heading: "When you press Upload",
+        items: [
+          { html: "The file goes to cdp-uploader at the <code>uploadUrl</code> below, which redirects back to <code>…/uploaded</code> straight away, without waiting for the scan." },
+          { html: "When the scan finishes, cdp-uploader POSTs the result to the backend <code>callback</code>. The backend saves the S3 key and marks the tracking <code>readyforprocessing</code>, or <code>rejected</code>." }
+        ]
+      }
+    ],
+    payloadHeading: "uploadUrl from /initiate",
+    payload: "{ uploadUrl: " + action + " }",
+    code: "src/server/routes/uploads/async-callbacks/controllers/tracking/upload-tracking.js",
+    docs: {
+      text: "cdp-uploader callback",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#callback"
+    }
+  }) }}
+{% endblock %}

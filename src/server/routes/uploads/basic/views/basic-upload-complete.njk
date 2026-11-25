@@ -1,0 +1,44 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File upload complete"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    The file was uploaded and scanned. No issues were found and it was uploaded to S3.
+  </p>
+  <p>Here's the S3 metadata:</p>
+  <pre class="app-code-block">{{ metadata }}</pre>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Polled cdp-uploader <code>/status</code> until <code>uploadStatus</code> was <code>ready</code>." },
+          { html: "Checked the <code>basicfile</code> field of <code>form</code>: no file, or <code>hasError</code> (virus, empty, too big…), sends you back to the form with the error message." },
+          { html: "Called S3 <code>HeadObject</code> with the <code>s3Bucket</code> and <code>s3Key</code> from the status, to prove the file is there." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          "Nothing, the example ends here. Your service would now store the S3 key or process the file.",
+          "The frontend never receives the file itself, only where it is in S3.",
+          "A file with a virus is never put in S3. You get an error message explaining why it was rejected instead."
+        ]
+      }
+    ],
+    code: "src/server/routes/uploads/basic/controllers/basic-upload-complete.js",
+    docs: {
+      text: "cdp-uploader file fields",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#file-field-in-form"
+    }
+  }) }}
+{% endblock %}

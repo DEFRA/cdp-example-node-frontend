@@ -1,0 +1,23 @@
+{#
+  Side navigation for the examples inside one feature, styled like the GOV.UK Design System website's own side
+  navigation. Items mirror govukServiceNavigation: `current` is the page itself, `active` a page inside that item.
+#}
+<nav class="app-side-navigation{% if params.classes %} {{ params.classes }}{% endif %}"
+     aria-label="{{ params.label or params.heading }}" data-testid="app-side-navigation">
+  {% if params.heading %}
+    <h2 class="app-side-navigation__heading" data-testid="app-side-navigation-heading">{{ params.heading }}</h2>
+  {% endif %}
+
+  <ul class="app-side-navigation__list">
+    {% for item in params.items %}
+      {% set isHighlighted = item.current or item.active %}
+      <li class="app-side-navigation__item{% if isHighlighted %} app-side-navigation__item--current{% endif %}"
+          data-testid="app-side-navigation-item">
+        <a class="app-side-navigation__link" href="{{ item.href }}"
+           {%- if item.current %} aria-current="page"{% elif item.active %} aria-current="true"{% endif %}>
+          {{- item.text -}}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

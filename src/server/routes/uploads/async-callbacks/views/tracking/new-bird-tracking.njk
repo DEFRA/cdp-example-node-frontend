@@ -1,0 +1,68 @@
+{% extends 'layouts/uploads.njk' %}
+
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads",
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    {% call govukFieldset() %}
+
+      {{ govukInput({
+        label: {
+          text: "Spotter name",
+          classes: "govuk-label--m"
+        },
+        id: "spotter",
+        name: "spotter",
+        hint: {
+          text: "What is the spotter's name?"
+        },
+        errorMessage: {
+          text: formErrors.spotter.message
+        } if formErrors.spotter.message
+      }) }}
+
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Next"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          "Nothing was called, this step is a plain form."
+        ]
+      },
+      {
+        heading: "When you press Next",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/async-callbacks/{birdId}/tracking/spotter</code>." },
+          { html: "<code>spotter</code> is validated, then the backend <code>POST /uploads/async-callbacks/birds/{birdId}/tracking</code> creates a tracking in Mongo with a new <code>trackingId</code>." },
+          "You go to the upload page for that tracking."
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/new-bird-tracking.js",
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/create-bird-tracking.js"
+    ]
+  }) }}
+{% endblock %}

@@ -8,22 +8,25 @@ Based on the CDP template https://github.com/DEFRA/cdp-node-frontend-template
 
 - [Requirements](#requirements)
   - [Node.js](#nodejs)
+- [Server-side Caching](#server-side-caching)
+- [Redis](#redis)
+- [Proxy](#proxy)
 - [Local development](#local-development)
   - [Setup](#setup)
+  - [Git hooks](#git-hooks)
+  - [Local dependencies](#local-dependencies)
   - [Development](#development)
-    - [Updating dependencies](#updating-dependencies)
-  - [AWS CLI](#aws-cli)
-    - [AWS Local](#aws-local)
-      - [AWS local alias](#aws-local-alias)
-    - [LocalStack](#localstack)
-      - [Docker](#docker)
-    - [Localstack CLI](#localstack-cli)
-  - [Local JSON API](#local-json-api)
   - [Production](#production)
   - [Npm scripts](#npm-scripts)
+  - [Update dependencies](#update-dependencies)
+  - [Formatting](#formatting)
+    - [Windows prettier issue](#windows-prettier-issue)
 - [Docker](#docker)
-  - [Development Image](#development-image)
-  - [Production Image](#production-image)
+  - [Development image](#development-image)
+  - [Production image](#production-image)
+  - [Docker Compose](#docker-compose)
+  - [Dependabot](#dependabot)
+  - [SonarCloud](#sonarcloud)
 - [Licence](#licence)
   - [About the licence](#about-the-licence)
 
@@ -31,8 +34,7 @@ Based on the CDP template https://github.com/DEFRA/cdp-node-frontend-template
 
 ### Node.js
 
-Please install [Node.js](http://nodejs.org/) `>= v18` and [npm](https://nodejs.org/) `>= v9`. You will find it
-easier to use the Node Version Manager [nvm](https://github.com/creationix/nvm).
+Please install Node Version Manager [nvm](https://github.com/creationix/nvm)
 
 To use the correct version of Node.js for this application, via nvm:
 
@@ -40,6 +42,35 @@ To use the correct version of Node.js for this application, via nvm:
 cd cdp-example-node-frontend
 nvm use
 ```
+
+## Server-side Caching
+
+We use Catbox for server-side caching. By default the service will use CatboxRedis when deployed and CatboxMemory for
+local development.
+You can override the default behaviour by setting the `SESSION_CACHE_ENGINE` environment variable to either `redis` or
+`memory`.
+
+Please note: CatboxMemory (`memory`) is _not_ suitable for production use! The cache will not be shared between each
+instance of the service and it will not persist between restarts.
+
+## Redis
+
+Redis is an in-memory key-value store. Every instance of a service has access to the same Redis key-value store similar
+to how services might have a database (or MongoDB). All frontend services are given access to a namespaced prefixed that
+matches the service name. e.g. `my-service` will have access to everything in Redis that is prefixed with `my-service`.
+
+## Proxy
+
+We are using forward-proxy which is set up by default. Services are automatically configured with the proxy environment
+variables when deployed.
+
+Node.js 24 uses these variables to route outbound HTTP(S) requests through the proxy:
+
+NODE_USE_ENV_PROXY=1
+HTTPS_PROXY=...
+NO_PROXY=...
+
+No additional proxy configuration is required in the service.
 
 ## Local development
 
@@ -51,6 +82,38 @@ Install application dependencies:
 npm install
 ```
 
+### Git hooks
+
+Install git hooks (optional)
+
+```bash
+npm run setup:husky
+```
+
+### Local dependencies
+
+The examples need [cdp-uploader](https://github.com/DEFRA/cdp-uploader), an S3 bucket and Redis. Start them with
+[Docker Compose](#docker-compose):
+
+```bash
+docker compose up -d
+```
+
+The Animals, Creatures, Plants and Birds examples also need
+[cdp-example-node-backend](https://github.com/DEFRA/cdp-example-node-backend) and its MongoDB:
+
+```bash
+docker compose --profile backend up -d
+```
+
+The frontend talks to the local AWS emulator with these credentials, so export them before running it:
+
+```bash
+export AWS_REGION=eu-west-2
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=test
+```
+
 ### Development
 
 To run the application in `development` mode run:
@@ -59,59 +122,7 @@ To run the application in `development` mode run:
 npm run dev
 ```
 
-#### Updating dependencies
-
-To update dependencies, globally install https://www.npmjs.com/package/npm-check-updates. Then run the below script,
-run tests, test the application and commit the altered `package.json` and `package-lock.json` files. For more
-options around updates check the package docs.
-
-```bash
-ncu -i
-```
-
-### AWS CLI
-
-- Install the AWS CLI https://aws.amazon.com/cli/
-- And add to your `.aws/credentials`
-
-```bash
-[localstack]
-aws_access_key_id = test
-aws_secret_access_key = test
-```
-
-### LocalStack
-
-Either run _localstack_ directly via _docker_ and _AWS CLI_, or via the _localstack CLI_.
-
-#### Docker
-
-- Run AWS LocalStack Docker container:
-
-```bash
-docker run --pull=always -d -p 4566:4566 -p 4510-4559:4510-4559 localstack/localstack:latest
-```
-
-Note the exposed endpoint is `http://localhost:4566`
-
-### Localstack CLI
-
-- Install [LocalStack CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli)
-- Run the CLI
-
-```
-localstack start
-```
-
-Note the exposed endpoint is `https://localhost:4566`
-
-### Local JSON API
-
-Whilst the APIs are being developed this app uses a local JSON mock API. To start this locally run:
-
-```bash
-npm run mockApi
-```
+The frontend is then available on [http://localhost:3000](http://localhost:3000).
 
 ### Production
 
@@ -130,9 +141,34 @@ To view them in your command line run:
 npm run
 ```
 
+### Update dependencies
+
+To update dependencies use [npm-check-updates](https://github.com/raineorshine/npm-check-updates):
+
+> The following script is a good start. Check out all the options on
+> the [npm-check-updates](https://github.com/raineorshine/npm-check-updates)
+
+```bash
+ncu --interactive --format group
+```
+
+### Formatting
+
+#### Windows prettier issue
+
+If you are having issues with formatting of line breaks on Windows update your global git config by running:
+
+```bash
+git config --global core.autocrlf false
+```
+
 ## Docker
 
 ### Development image
+
+> [!TIP]
+> For Apple Silicon users, you may need to add `--platform linux/amd64` to the `docker run` command to ensure
+> compatibility fEx: `docker build --platform=linux/arm64 --no-cache --tag cdp-example-node-frontend`
 
 Build:
 
@@ -159,6 +195,35 @@ Run:
 ```bash
 docker run -p 3000:3000 cdp-example-node-frontend
 ```
+
+### Docker Compose
+
+A local environment with:
+
+- Floci (replacing Localstack) for AWS services (S3, SQS), with the `cdp-example-node-frontend` bucket
+- Redis
+- [cdp-uploader](https://github.com/DEFRA/cdp-uploader) on [http://localhost:7337](http://localhost:7337), with its
+  mock virus scanner (files with `virus` in the name are rejected)
+- Optional, with `--profile backend`: [cdp-example-node-backend](https://github.com/DEFRA/cdp-example-node-backend) on
+  [http://localhost:3049](http://localhost:3049) and MongoDB
+
+```bash
+docker compose up -d
+```
+
+The frontend itself runs on your machine with `npm run dev`: cdp-uploader hands back `http://localhost:7337` upload and
+status URLs, which only resolve from the host.
+
+The Birds example sends cdp-uploader a callback URL that points at the backend on `localhost`, which cdp-uploader
+cannot reach from inside Docker, so the backend is not told when a Birds upload has been scanned.
+
+### Dependabot
+
+Dependabot is configured in [.github/dependabot.yml](.github/dependabot.yml).
+
+### SonarCloud
+
+Instructions for setting up SonarCloud can be found in [sonar-project.properties](./sonar-project.properties).
 
 ## Licence
 

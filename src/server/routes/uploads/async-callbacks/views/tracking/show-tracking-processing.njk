@@ -1,0 +1,62 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads"
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Tracking locations for a {{ bird.name }}.
+  </p>
+  <p>
+     Genus: {{ bird.genus }}<br>
+     Species: {{ bird.species }}
+  </p>
+
+    <p>
+  {% if spotter %}
+      Spotter: {{ spotter }}
+  {% else %}
+      Spotter: No spotter
+  {% endif %}
+    </p>
+
+
+   <p>
+
+      Tracking locations are still being processed. Please check back later.
+
+  </p>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "cdp-uploader redirected to <code>…/uploaded</code>, which sent you on to <code>…/process-status</code> and then here." },
+          { html: "Called the backend <code>GET /uploads/async-callbacks/birds/{birdId}/tracking/{trackingId}</code>. The status is still <code>uploadpending</code>, <code>readyforprocessing</code> or <code>processing</code>." }
+        ]
+      },
+      {
+        heading: "What happens next",
+        items: [
+          { html: "Nothing polls cdp-uploader: the backend hears about the scan through the <code>callback</code>." },
+          "Each time this page loads, the backend moves a scanned tracking a step closer to ready, to simulate slow processing. Refresh to check again."
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/show-tracking.js",
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/process-status.js"
+    ],
+    docs: {
+      text: "cdp-uploader callback",
+      href: "https://github.com/DEFRA/cdp-uploader?tab=readme-ov-file#callback"
+    }
+  }) }}
+{% endblock %}

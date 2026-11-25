@@ -1,0 +1,73 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% set asideHtml %}
+  <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+    <a class="govuk-link govuk-link--text-colour" href="/uploads/multiple-files/add">Add creature</a>
+  </h2>
+{% endset %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads",
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Details of observed mythical creatures.
+  </p>
+
+  <ul class="govuk-list govuk-list--spaced">
+    {% for creature in creatures %}
+      <li>
+        <a class="govuk-link govuk-link--no-visited-state" href="/uploads/multiple-files/{{ creature.creatureId }}">
+          {{ creature.name | capitalize }} the {{ creature.kind | capitalize }}
+        </a>
+        <ul class="govuk-list govuk-list--bullet govuk-body-s">
+          <li>
+            <strong>Seen:</strong> {{ creature.date | formatDate }}
+          </li>
+          {% if creature.address | length %}
+            <li>
+              <strong>Address:</strong>
+
+              {% for addressKey, addressValue in creature.address %}
+                {{ addressValue }}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </li>
+          {% endif %}
+        </ul>
+      </li>
+    {% else %}
+      <li class="govuk-!-margin-bottom-1">No creatures uploaded.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/multiple-files/creatures</code>, which reads the Mongo <code>creatures</code> collection." }
+        ]
+      },
+      {
+        heading: "When you select Add creature",
+        items: [
+          { html: "<code>/uploads/multiple-files/add</code> makes a new <code>creatureId</code> (a UUID) and starts a session entry keyed by it." },
+          { html: "It redirects to <code>/uploads/multiple-files/{creatureId}/upload</code>: the whole sighting, files included, is one page." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/multiple-files/controllers/list.js",
+      "src/server/routes/uploads/multiple-files/controllers/start.js"
+    ]
+  }) }}
+{% endblock %}

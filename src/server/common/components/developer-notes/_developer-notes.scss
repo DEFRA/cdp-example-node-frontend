@@ -1,0 +1,68 @@
+@use 'govuk-frontend' as *;
+
+$app-code-font: ui-monospace, sfmono-regular, menlo, consolas, monospace;
+
+.app-developer-notes {
+  margin-top: govuk-spacing(6);
+
+  .govuk-details__text {
+    @include govuk-font($size: 16);
+
+    overflow-wrap: break-word;
+
+    > :first-child {
+      margin-top: 0;
+    }
+
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  code {
+    font-family: $app-code-font;
+    font-size: 0.875em;
+  }
+}
+
+.app-developer-notes__heading {
+  @include govuk-font($size: 16, $weight: bold);
+
+  margin-top: govuk-spacing(3);
+  margin-bottom: govuk-spacing(1);
+}
+
+.app-developer-notes__list {
+  margin-top: 0;
+  margin-bottom: govuk-spacing(3);
+  padding-left: govuk-spacing(4);
+
+  li {
+    margin-bottom: govuk-spacing(1);
+  }
+}
+
+.app-developer-notes__payload {
+  margin-top: 0;
+  margin-bottom: govuk-spacing(3);
+  padding: govuk-spacing(2);
+  overflow-x: auto;
+  background-color: govuk-functional-colour(surface-background);
+  font-family: $app-code-font;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.app-developer-notes__sources {
+  margin: govuk-spacing(3) 0 0;
+
+  dt {
+    font-weight: $govuk-font-weight-bold;
+  }
+
+  dd {
+    margin: 0 0 govuk-spacing(1);
+  }
+}

@@ -1,0 +1,30 @@
+{% extends 'layouts/page.njk' %}
+
+{#
+  Layout for the file upload examples: the uploads side navigation, then the page heading, the example and its
+  developer notes collapsed underneath. Below desktop width the side navigation stacks above the content.
+
+  Blocks: pageHeading, example, developerNotes. Override uploadsMain to replace both columns.
+#}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter-from-desktop">
+      {{ appSideNavigation({
+        heading: "File uploads",
+        items: uploadsNavigation
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-three-quarters-from-desktop">
+      {% block pageHeading %}{% endblock %}
+
+      {% block uploadsMain %}
+        <div class="govuk-body" data-testid="app-page-body">
+          {% block example %}{% endblock %}
+        </div>
+
+        {% block developerNotes %}{% endblock %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

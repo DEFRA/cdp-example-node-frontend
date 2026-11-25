@@ -1,10 +1,10 @@
-import { renderTestComponent } from '../../../../../test-helpers/component-helpers.js'
+import { renderComponent } from '#/test-helpers/component-helpers.js'
 
 describe('Loader Component', () => {
   let $buttonLoader
 
   beforeEach(() => {
-    $buttonLoader = renderTestComponent('loader', {
+    $buttonLoader = renderComponent('loader', {
       name: 'button-loader'
     })('[data-testid="app-loader"]').first()
   })

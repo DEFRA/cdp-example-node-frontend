@@ -1,0 +1,59 @@
+{% extends 'layouts/uploads.njk' %}
+
+{% set asideHtml %}
+  <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+    <a class="govuk-link govuk-link--text-colour" href="/uploads/add-another/add">Add plant</a>
+  </h2>
+{% endset %}
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads",
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <p>
+    Information about your favourite plants.
+  </p>
+
+  <ul class="govuk-list govuk-list--spaced">
+    {% for plant in plants %}
+      <li class="govuk-!-margin-bottom-1">
+        <a class="govuk-link govuk-link--no-visited-state"
+           href="/uploads/add-another/{{ plant.plantId }}">{{ plant.name }} the plant</a>
+      </li>
+
+    {% else %}
+      <li class="govuk-!-margin-bottom-1">No plants uploaded.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Called the backend <code>GET /uploads/add-another/plants</code>, which reads the Mongo <code>plants</code> collection." }
+        ]
+      },
+      {
+        heading: "When you select Add plant",
+        items: [
+          { html: "<code>/uploads/add-another/add</code> clears the <code>plants</code> session and saves a new <code>plantId</code> (a UUID) in it." },
+          "It redirects to Details, then to Upload pictures, where you add one file at a time."
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/add-another/controllers/list.js",
+      "src/server/routes/uploads/add-another/controllers/start.js"
+    ]
+  }) }}
+{% endblock %}

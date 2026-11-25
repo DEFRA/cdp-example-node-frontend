@@ -1,0 +1,68 @@
+{% extends 'layouts/uploads.njk' %}
+
+
+{% block pageHeading %}
+  {{ appHeading({
+    text: heading,
+    caption: "File uploads",
+    aside: {
+      html: asideHtml
+    }
+  }) }}
+{% endblock %}
+
+{% block example %}
+  <form action="{{ action }}" method="post">
+    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+
+    {% call govukFieldset() %}
+
+      {{ govukSelect({
+        id: "birdId",
+        name: "birdId",
+        label: {
+          text: "Bird",
+          classes: "govuk-label--m"
+        },
+        hint: {
+          text: "What kind of bird?"
+        },
+        items: birds,
+        errorMessage: {
+          text: formErrors.bird.message
+        } if formErrors.bird.message
+      }) }}
+
+
+    {% endcall %}
+
+    {{ govukButton({
+      text: "Next"
+    }) }}
+
+  </form>
+{% endblock %}
+
+{% block developerNotes %}
+  {{ appDeveloperNotes({
+    sections: [
+      {
+        heading: "Before this page",
+        items: [
+          { html: "Nothing was called: the options come from <code>data/birds.js</code>." }
+        ]
+      },
+      {
+        heading: "When you press Next",
+        items: [
+          { html: "The form posts to this frontend, <code>POST /uploads/async-callbacks/tracking</code>." },
+          { html: "<code>birdId</code> is validated with Joi and you go to <code>/uploads/async-callbacks/{birdId}/tracking/spotter</code>." }
+        ]
+      }
+    ],
+    code: [
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/new-tracking.js",
+      "src/server/routes/uploads/async-callbacks/controllers/tracking/create-tracking.js"
+    ]
+  }) }}
+{% endblock %}

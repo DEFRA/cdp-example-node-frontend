@@ -1,0 +1,28 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Core delivery platform (CDP) Node.js Frontend."
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body" data-testid="app-page-body">
+        <p>
+          Working examples of common things a CDP frontend does. Each example page has developer notes explaining what
+          happens behind the scenes, with a link to the code.
+        </p>
+
+        <h2 class="govuk-heading-m">
+          <a href="/uploads" class="govuk-link govuk-link--no-visited-state" data-testid="app-feature-link">File uploads</a>
+        </h2>
+        <p>
+          Virus scan files with
+          <a href="https://github.com/DEFRA/cdp-uploader" class="govuk-link govuk-link--no-visited-state">cdp-uploader</a>
+          and store them in S3: from a basic single file to multistep forms, multiple files and async callbacks.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
